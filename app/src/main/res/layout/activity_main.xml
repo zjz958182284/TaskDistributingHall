@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+  <fragment
+      android:id="@+id/fragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:name="com.example.taskdistributinghall.Fragment.Home.HomeFragment"/>
+
+<ImageView
+    android:id="@+id/homePageBtn"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_weight="1"
+    app:layout_constraintBottom_toTopOf="@id/homePageText"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toLeftOf="@+id/chatRoomBtn"
+    android:src="@drawable/homepage"/>
+
+    <ImageView
+        android:outlineSpotShadowColor="@color/colorAccent"
+        android:id="@+id/personalCenterBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@id/personalCenterText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/missionBtn"
+        android:layout_weight="1"
+        android:src="@drawable/personalcenter"/>
+
+    <ImageView
+        android:id="@+id/chatRoomBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@id/homePageText"
+        app:layout_constraintLeft_toRightOf="@+id/homePageBtn"
+        app:layout_constraintRight_toLeftOf="@+id/missionBtn"
+        android:src="@drawable/chat"/>
+
+    <ImageView
+        android:id="@+id/missionBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@id/homePageText"
+        app:layout_constraintLeft_toRightOf="@+id/chatRoomBtn"
+        app:layout_constraintRight_toLeftOf="@+id/personalCenterBtn"
+        android:src="@drawable/mission"/>
+
+
+    <TextView
+        android:id="@+id/homePageText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="   首页"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chatRoomText" />
+    <TextView
+        android:id="@+id/chatRoomText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text=" 聊天室"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/homePageText"
+        app:layout_constraintRight_toLeftOf="@id/missionText" />
+
+    <TextView
+        android:id="@+id/missionText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="   任务"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/chatRoomText"
+        app:layout_constraintRight_toLeftOf="@id/personalCenterText" />
+
+    <TextView
+        android:id="@+id/personalCenterText"
+        android:text="   个人"
+        android:textSize="15dp"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/missionText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
