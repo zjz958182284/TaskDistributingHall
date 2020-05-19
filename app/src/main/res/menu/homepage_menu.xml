@@ -19,6 +19,4 @@
     <item android:id="@+id/about_bar"
         android:title="about"
         app:showAsAction="never"/>
-
-
 </menu>

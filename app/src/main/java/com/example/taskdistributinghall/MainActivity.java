@@ -1,68 +1,66 @@
 package com.example.taskdistributinghall;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.taskdistributinghall.Fragment.ChatRoom.ChatRoomFragment;
 import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
 import com.example.taskdistributinghall.Fragment.Mission.MissionFragment;
 import com.example.taskdistributinghall.Fragment.PersonalCenter.PersonalCenterFragment;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.homepage_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private List<Fragment> fragmentList;
+    private MainPageAdapter mainPageAdapter;
+    private TabLayout.Tab homePage;
+    private TabLayout.Tab chatRoom;
+    private TabLayout.Tab mission;
+    private TabLayout.Tab personalCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ImageView fragment1=findViewById(R.id.homePageBtn);
-        ImageView fragment2=findViewById(R.id.personalCenterBtn);
-        ImageView fragment3=findViewById(R.id.chatRoomBtn);
-        ImageView fragment4=findViewById(R.id.missionBtn);
-        fragment1.setOnClickListener(listen);
-        fragment2.setOnClickListener(listen);
-        fragment3.setOnClickListener(listen);
-        fragment4.setOnClickListener(listen);
-
+     //   Toolbar toolbar=findViewById(R.id.toolbar);
+     //   setSupportActionBar(toolbar);
+        initFragmentList();
+        initViews();
     }
 
-    View.OnClickListener listen=new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            Fragment f = null;
-            switch (v.getId()) {
-                case R.id.homePageBtn:
-                    f = new HomeFragment();
-                    break;
-                case R.id.personalCenterBtn:
-                    f = new PersonalCenterFragment();
-                    break;
-                case R.id.chatRoomBtn:
-                    f=new ChatRoomFragment();
-                    break;
-                case R.id.missionBtn:
-                    f=new MissionFragment();
-                    break;
-                default:
-                    break;
-            }
-            ft.replace(R.id.fragment, f);
-            ft.commit();
-        }
-    };
+   public void initViews(){
+        viewPager=findViewById(R.id.id_vp);
+        mainPageAdapter=new MainPageAdapter(getSupportFragmentManager(),fragmentList);
+        viewPager.setAdapter(mainPageAdapter);
+        tabLayout=findViewById(R.id.id_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+
+        homePage=tabLayout.getTabAt(0);
+        chatRoom=tabLayout.getTabAt(1);
+        mission=tabLayout.getTabAt(2);
+        personalCenter=tabLayout.getTabAt(3);
+
+        homePage.setIcon(R.drawable.homepage);
+        chatRoom.setIcon(R.drawable.chat);
+        mission.setIcon(R.drawable.mission);
+        personalCenter.setIcon(R.drawable.personalcenter);
+
+
+   }
+
+    public void initFragmentList(){
+    fragmentList=new ArrayList<>();
+    fragmentList.add(new HomeFragment());
+    fragmentList.add(new ChatRoomFragment());
+    fragmentList.add(new MissionFragment());
+    fragmentList.add(new PersonalCenterFragment());
+    }
+
 }
