@@ -1,8 +1,8 @@
 package com.example.taskdistributinghall;
 
 public class Task {
-    //public static  enum taskState {unaccepted,accepted,completed,cancelled};
-    public  String id;
+    public static  enum taskState {unaccepted,accepted,completed,cancelled};
+    public  int id;
     public  String  date;
     public String  publisher;
     public String  content;
