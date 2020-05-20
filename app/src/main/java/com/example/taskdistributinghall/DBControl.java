@@ -129,8 +129,8 @@ public class DBControl {
     public  static List<Task> searchPublishedTask(String phone) {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
-            ResultSet rs = stat.executeQuery("select * from task where publisher=" + "'" + phone + "'"
-                    + "order by date");
+            ResultSet rs = stat.executeQuery("select * from task where publisher=" + "'" +
+                    phone + "'" + "order by date");
             List<Task> list = new LinkedList<Task>();
             if (rs.next()) {
                 do {
@@ -322,9 +322,7 @@ public class DBControl {
         try (Connection connc = GetConnection();
              Statement stat = connc.createStatement()) {
             int rows = stat.executeUpdate("delete from Task where id=" + id);
-            if (rows > 0)
-                return true;
-            else return false;
+            return rows > 0;
         }
     }
 
@@ -356,9 +354,7 @@ public class DBControl {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             int rows = stat.executeUpdate("update task set status='" + status + "' where id="+ID);
-            if (rows > 0)
-                return true;
-            else return false;
+            return rows > 0;
         }
     }
 
@@ -373,9 +369,7 @@ public class DBControl {
                 rows= stat.executeUpdate("update task set acceptor='"+phone+"'"+"where id="+ID);
             else
                 rows= stat.executeUpdate("update task set acceptor=null where id="+ID);
-          if(rows>0)
-              return true;
-          else return false;
+            return rows > 0;
         }
     }
 
@@ -386,9 +380,7 @@ public class DBControl {
         try (Connection conn=GetConnection();
              Statement stat=conn.createStatement()){
            int rows= stat.executeUpdate("delete from pendingTask where id="+ID);
-           if(rows>0)
-               return  true;
-           else  return  false;
+           return rows>0;
         }
     }
 
