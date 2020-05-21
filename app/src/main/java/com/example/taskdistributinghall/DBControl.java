@@ -77,7 +77,7 @@ public class DBControl {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select * from task where type=" + "'" + type + "'" +
-                    "order by date desc");
+              " and status='"+"unaccepted' order by date desc");
             List<Task> list = new LinkedList<Task>();
             if (rs.next()) {
                 do {
