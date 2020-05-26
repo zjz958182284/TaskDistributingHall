@@ -2,11 +2,13 @@ package com.example.taskdistributinghall;
 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -352,12 +354,23 @@ public class DBControl {
                status=null;
         }
         try (Connection conn = GetConnection();
-             Statement stat = conn.createStatement()) {
-            int rows = stat.executeUpdate("update task set status='" + status + "' where id="+ID);
-            return rows > 0;
+             Statement stat = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE)) {
+            ResultSet rs= stat.executeQuery("select * from task  where id="+ID);
+            if(rs.next()){
+              if(status.equals("unaccepted")){
+                rs.updateDate("date",new Date(new java.util.Date().getTime()));//重置任务发布时间
+                rs.updateString("status",status);
+                rs.updateRow();
+            }
+              else {
+                  rs.updateString("status",status);
+                  rs.updateRow();
+              }
+            return true;
+           }
+            return false;   //没有找到该任务
         }
     }
-
     /**
      * 根据任务ID和接收人phone修改任务的接收者
      */
