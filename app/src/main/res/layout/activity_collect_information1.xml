@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CollectInformation">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:title="完善资料"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toRightOf="@id/name_edit"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="10dp"
+        android:text="用户名:"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/name_edit"
+        app:layout_constraintHorizontal_weight="2"/>
+
+    <EditText
+        android:id="@+id/name_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/name_text"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+
+    <TextView
+        android:id="@+id/email_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_edit"
+        app:layout_constraintLeft_toRightOf="@id/email_edit"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="邮箱   :"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/email_edit"
+        app:layout_constraintHorizontal_weight="2"/>
+
+    <EditText
+        android:id="@+id/email_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/email_text"
+        app:layout_constraintTop_toBottomOf="@id/name_edit"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        app:layout_constraintRight_toRightOf="parent"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/age_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_edit"
+        app:layout_constraintLeft_toRightOf="@id/age_edit"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="年龄   :"
+        android:textStyle="bold"
+        android:textSize="15dp"
+
+        app:layout_constraintBaseline_toBaselineOf="@id/age_edit"
+        app:layout_constraintHorizontal_weight="2"/>
+
+    <EditText
+        android:id="@+id/age_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/age_text"
+        app:layout_constraintTop_toBottomOf="@id/email_edit"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确认"
+        android:layout_marginTop="30dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/age_edit"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
