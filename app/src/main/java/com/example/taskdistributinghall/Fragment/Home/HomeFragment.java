@@ -1,10 +1,12 @@
 package com.example.taskdistributinghall.Fragment.Home;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.taskdistributinghall.AddMissionPage;
 import com.example.taskdistributinghall.R;
 
 import static com.example.taskdistributinghall.R.layout;
@@ -46,7 +49,17 @@ public class HomeFragment  extends Fragment {
         androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) getActivity().findViewById(R.id.toolbar);
         AppCompatActivity appCompatActivity=(AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
-        super.onViewCreated(view, savedInstanceState);
 
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_bar:
+                Intent intent1=new Intent(getActivity(), AddMissionPage.class);
+                startActivity(intent1);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

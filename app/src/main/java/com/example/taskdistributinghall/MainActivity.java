@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(mainPageAdapter);
         tabLayout=findViewById(R.id.id_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
         homePage=tabLayout.getTabAt(0);
         chatRoom=tabLayout.getTabAt(1);
         mission=tabLayout.getTabAt(2);
