@@ -1,10 +1,12 @@
 package com.example.taskdistributinghall;
 
+import com.example.taskdistributinghall.Model.Task;
+import com.example.taskdistributinghall.Model.User;
+
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;

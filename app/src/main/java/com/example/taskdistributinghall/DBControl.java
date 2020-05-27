@@ -1,6 +1,19 @@
 package com.example.taskdistributinghall;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.media.ImageReader;
+import android.media.ImageWriter;
+
+import com.example.taskdistributinghall.Model.Task;
+import com.example.taskdistributinghall.Model.User;
+
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -8,7 +21,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -112,6 +124,8 @@ public class DBControl {
             ResultSet rs = stat.executeQuery("select * from user where phone=" + "'" + phone + "'");
             if (rs.next()) {
                 User user = new User();
+                Blob blob=rs.getBlob("picture");
+                user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());
                 user.phone = rs.getString("phone");
                 user.acceptedTask = rs.getInt("acceptedTask");
                 user.completedTask = rs.getInt("completedTask");
@@ -205,6 +219,8 @@ public class DBControl {
             if (rs.next()) {
                 do {
                     User user = new User();
+                    Blob blob=rs.getBlob("picture");
+                    user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());
                     user.phone = rs.getString("phone");
                     user.acceptedTask = rs.getInt("acceptedTask");
                     user.completedTask = rs.getInt("completedTask");
@@ -219,6 +235,17 @@ public class DBControl {
             } else return null;
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    //查询用户ip
+    public String getUserIp(String phone) throws SQLException {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()) {
+           ResultSet rs= stat.executeQuery("select ip from user where phone='"+phone+"'");
+            if(rs.next())
+                return  rs.getString("ip");
+            return  null;
         }
     }
 
@@ -263,8 +290,23 @@ public class DBControl {
         }
     }
 
+    //根据手机号保存ip
+   public static boolean updateIP(String phone) throws SQLException {
+       try (Connection conn = GetConnection();
+            Statement stat = conn.createStatement()) {
+           try {
+               String ip= InetAddress.getLocalHost().getHostAddress();
+               int rows=stat.executeUpdate("update user set ip='"+ip+"' where phone='"+phone+"'");
+               return  rows>0;
+           } catch (UnknownHostException e) {
+               e.printStackTrace();
+           }
+       }
+       return false;
+   }
+
     /**
-     * 根据手机号，昵称，性别，学院，年级，地址更新用户信息
+     * 根据图像，手机号，昵称，性别，学院，年级，地址更新用户信息
      *
      * @param name
      * @param sex
@@ -273,12 +315,16 @@ public class DBControl {
      * @param address
      * @throws SQLException
      */
-    public static  boolean updateUser(String phone, String name, String sex, String dept, String grade,
-                              String address) throws SQLException {
+    public static  boolean updateUser(Bitmap bmp,String phone, String name, String sex, String dept, String grade,
+                                      String address) throws SQLException {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE)) {
             ResultSet rs = stat.executeQuery("select * from user where phone=" + "'" + phone + "'");
             if (rs.next()) {
+                Blob blob=conn.createBlob();
+                OutputStream os=blob.setBinaryStream(0);
+                bmp.compress(Bitmap.CompressFormat.PNG,100,os);//将bmp图片存入数据库
+                rs.updateBlob("picture",blob);
                 rs.updateString("name", name);
                 rs.updateString("dept", dept);
                 rs.updateString("sex", sex);

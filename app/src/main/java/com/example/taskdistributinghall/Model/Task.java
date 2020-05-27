@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Model;
 
 public class Task {
     public static  enum taskState {unaccepted,accepted,completed,cancelled};

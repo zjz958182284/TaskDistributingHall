@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Model;
 
 public class pendingTask {
     public  String phone;

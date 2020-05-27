@@ -1,6 +1,8 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Model;
 
 
+import android.graphics.Bitmap;
+import android.media.Image;
 
 public class User {
     public String phone;
@@ -11,4 +13,5 @@ public class User {
     public  String address;
     public  int  completedTask;
     public  int acceptedTask;
+    public Bitmap headPortrait;
 }
