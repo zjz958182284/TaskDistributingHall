@@ -1,5 +1,6 @@
 package com.example.taskdistributinghall;
 
+import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 
@@ -100,7 +101,7 @@ public class DBControlTest {
     @Test
     public void updateUser() {
         try {
-            boolean flag=  DBControl.updateUser("19945102192","zjz","男","计算机学院","大一","信二一舍301");
+            boolean flag=  DBControl.updateUser(null,"19945102192","zjz","男","计算机学院","大一","信二一舍301");
             assertTrue(flag);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -165,8 +166,8 @@ public class DBControlTest {
     @Test
     public void validateAccount() {
         try {
-            boolean b= DBControl.validateAccount("123","789");
-            assertTrue(b);
+            int b= DBControl.validateAccount("123","789");
+            assertEquals(1,b);
         } catch (SQLException e) {
             e.printStackTrace();
         }

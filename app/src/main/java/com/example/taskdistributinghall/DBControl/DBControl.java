@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.DBControl;
 
 
 import android.graphics.Bitmap;
@@ -27,15 +27,16 @@ import java.util.List;
 
 public class DBControl {
 
-    public static Connection GetConnection() {
+    public static Connection GetConnection() throws SQLException{
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://192.168.0.104:3306/taskhalldb";
+        String url = "jdbc:mysql://192.168.0.103:3306/taskhalldb";
         try {
             Class.forName(driver);
-            return DriverManager.getConnection(url, "zjz", "Xjz19990507");
-        } catch (ClassNotFoundException | SQLException e) {
-            return null;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+        return DriverManager.getConnection(url, "zjz", "Xjz19990507");
+
     }
 
     //根据ID查询任务
@@ -239,7 +240,7 @@ public class DBControl {
     }
 
     //查询用户ip
-    public String getUserIp(String phone) throws SQLException {
+    public static String getUserIp(String phone) throws SQLException {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
            ResultSet rs= stat.executeQuery("select ip from user where phone='"+phone+"'");
@@ -447,17 +448,18 @@ public class DBControl {
      * 验证用户名和密码
      * @param phone
      * @param password
-     * @return
+     * @return 0:用户名不存在，1:验证成功,2:密码错误
      * @throws SQLException
      */
-    public static  boolean validateAccount(String phone,String password) throws SQLException {
+    public static  int validateAccount(String phone,String password) throws SQLException {
         try (Connection conn=GetConnection();
              Statement stat=conn.createStatement()){
             ResultSet rs=stat.executeQuery("select password from user where phone='"+phone+"'");
             if(rs.next()) {
                 String pw = rs.getString(1);
-                return pw.equals(password);
-            } else return false;
+                if(pw.equals(password)) return 1;
+                else return 2;
+            } else return 0;
         }
     }
 }
