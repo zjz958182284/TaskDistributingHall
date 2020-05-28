@@ -3,9 +3,27 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#6A5ACD</item>
+        <item name="colorPrimaryDark">#FF6347</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorControlActivated">#FF0000</item>
+        <item name="android:colorPrimary">#8CE600</item>
+        <item name="android:textColorPrimary">#33E6CC</item>
+        <item name="android:textColorSecondary">#FF8033</item>
     </style>
+
+    <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:colorControlNormal">@android:color/holo_red_dark</item>
+        <!--这个也正确,用这个吧-->
+        <item name="colorControlNormal">#7400A1</item>
+    </style>
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light">
+        <!-- 设置 toolbar 溢出菜单的文字的颜色 -->
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="actionMenuTextColor">#FF69B4</item>
+        <item name="colorButtonNormal">#EE82EE</item>
+        <item name="colorControlNormal">#5000B8</item>
+    </style>
+
 
 </resources>

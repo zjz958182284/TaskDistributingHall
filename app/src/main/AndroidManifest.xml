@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CollectInformation"></activity>
+        <activity android:name=".AddMissionPage"></activity>
+        <activity android:name=".Fragment.PersonalCenter.AboutPage" />
+        <activity android:name=".CollectInformation" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".Login"
