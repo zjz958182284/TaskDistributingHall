@@ -11,14 +11,15 @@
       android:layout_width="match_parent"
       android:layout_height="50dp"
       android:layout_alignParentBottom="true"
+      android:layout_marginBottom="0dp"
       android:background="#FFFFFF"
       android:fillViewport="false"
       app:layout_scrollFlags="scroll"
       app:tabIndicatorHeight="0dp"
       app:tabMode="fixed"
-      app:tabSelectedTextColor="#FF6347"
-      />
-    <androidx.viewpager.widget.ViewPager
+      app:tabSelectedTextColor="#FF6347" />
+
+  <androidx.viewpager.widget.ViewPager
         android:id="@+id/id_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

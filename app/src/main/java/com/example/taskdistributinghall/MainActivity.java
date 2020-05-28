@@ -2,6 +2,7 @@ package com.example.taskdistributinghall;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout.Tab chatRoom;
     private TabLayout.Tab mission;
     private TabLayout.Tab personalCenter;
+    private long lastPressTime=0; //记录上一次按下返回键的时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
     fragmentList.add(new ChatRoomFragment());
     fragmentList.add(new MissionFragment());
     fragmentList.add(new PersonalCenterFragment());
+    }
+
+    /**
+     * 优化app退出
+     */
+    @Override
+    public void onBackPressed(){
+        if(lastPressTime==0) {
+           lastPressTime = System.currentTimeMillis();
+            Toast.makeText(this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+        }
+        else if((System.currentTimeMillis()-lastPressTime)>2000){
+            Toast.makeText(this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+            lastPressTime=System.currentTimeMillis();
+        }
+        else System.exit(0);
     }
 
 }

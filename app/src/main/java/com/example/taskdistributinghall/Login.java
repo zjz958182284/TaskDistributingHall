@@ -19,7 +19,6 @@ import com.example.taskdistributinghall.DBControl.DBControl;
 import java.sql.SQLException;
 
 public class Login extends AppCompatActivity {
-    public static final int popup_toast=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 EditText etUser=findViewById(R.id.phone_edit);
                 EditText etPassWord=findViewById(R.id.password_edit);
-                    /*
+                    /**
                      *  验证登录是否成功
                      */
 
@@ -43,38 +42,50 @@ public class Login extends AppCompatActivity {
                             try {
                                 int loginState=DBControl.validateAccount(phone,password);
                                 if(loginState==1){
-                                    Looper.prepare();
-                                   Toast.makeText(Login.this,"登陆成功",
-                                            Toast.LENGTH_SHORT).show();
-                                   Looper.loop();
-                                    Intent intent=new Intent();
-                                    intent.setClass(Login.this,MainActivity.class);
-                                    startActivity(intent);
+                                   runOnUiThread(new Runnable() {
+                                       @Override
+                                       public void run() {
+                                           Toast.makeText(Login.this,"登陆成功",
+                                                   Toast.LENGTH_SHORT).show();
+                                           Intent intent=new Intent();
+                                           intent.setClass(Login.this,MainActivity.class);
+                                           startActivity(intent);
+                                           Login.this.finish();
+                                       }
+                                   });
                                 }
                                 else if(loginState==0){
-                                    Looper.prepare();
-                                    Toast.makeText(Login.this,"不存在此用户请注册账号",
-                                            Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(Login.this,"不存在此用户请注册账号",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                                 else {
-                                    Looper.prepare();
-                                    Toast.makeText(Login.this,"密码错误",
-                                            Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
-                                    etPassWord.setText("");
+                                   runOnUiThread(new Runnable() {
+                                       @Override
+                                       public void run() {
+                                           Toast.makeText(Login.this,"密码错误",
+                                                   Toast.LENGTH_SHORT).show();
+                                       }
+                                   });
                                 }
                             } catch (SQLException ex) {
-                                Looper.prepare();
-                                Toast.makeText(Login.this,"数据库连接失败请重新登录",
-                                        Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(Login.this," 数据库连接失败请重新登录",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-
                         }
                     }).start();
             }
         });
+
         TextView create_btn=findViewById(R.id.create_text);
         create_btn.setOnClickListener(new View.OnClickListener() {
             @Override
