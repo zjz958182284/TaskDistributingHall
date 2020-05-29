@@ -3,6 +3,7 @@
     <color name="colorPrimary">#FF7F50</color>
     <color name="colorPrimaryDark">#FF7F50</color>
     <color name="colorAccent">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="btn_bg_normal">#FF0000</color>
     <color name="btn_bg_pressed">#990000</color>
 

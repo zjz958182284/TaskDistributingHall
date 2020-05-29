@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.example.taskdistributinghall.R;
 
 public class SignUp extends AppCompatActivity {
 
@@ -33,8 +35,8 @@ public class SignUp extends AppCompatActivity {
                 String confirmPassword=((EditText)findViewById(R.id.password_edit2)).getText().toString();
                 if(password.equals(confirmPassword)){
                 Intent intent=new Intent();
-                intent.setClass(SignUp.this,CollectInformation.class);
-                intent.putExtra("phone",phone);
+                intent.setClass(SignUp.this, CollectInformation.class);
+                intent.putExtra("phone",phone);  //与CollectInformationActivity交互数据
                 intent.putExtra("password",password);
                 startActivity(intent);
                 }

@@ -3,16 +3,14 @@ package com.example.taskdistributinghall.DBControl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.media.ImageReader;
-import android.media.ImageWriter;
 
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -292,18 +291,39 @@ public class DBControl {
     }
 
     //根据手机号保存ip
-   public static boolean updateIP(String phone) throws SQLException {
+   public static void updateIP(String phone) throws SQLException {
        try (Connection conn = GetConnection();
             Statement stat = conn.createStatement()) {
+           String localip = null;// 本地IP，如果没有配置外网IP则返回它
+           String netip = null;// 外网IP
            try {
-               String ip= InetAddress.getLocalHost().getHostAddress();
-               int rows=stat.executeUpdate("update user set ip='"+ip+"' where phone='"+phone+"'");
-               return  rows>0;
-           } catch (UnknownHostException e) {
+               Enumeration<NetworkInterface> netInterfaces;
+               netInterfaces = NetworkInterface.getNetworkInterfaces();
+               InetAddress ip = null;
+               boolean finded = false;// 是否找到外网IP
+               while (netInterfaces.hasMoreElements() && !finded) {
+                   NetworkInterface ni = netInterfaces.nextElement();
+                   Enumeration<InetAddress> address = ni.getInetAddresses();
+                   while (address.hasMoreElements()) {
+                       ip = address.nextElement();
+                       if (!ip.isSiteLocalAddress()
+                               && !ip.isLoopbackAddress()
+                               && !ip.getHostAddress().contains(":")) {// 外网IP
+                           netip = ip.getHostAddress();
+                           finded = true;
+                           break;
+                       } else if (ip.isSiteLocalAddress()
+                               && !ip.isLoopbackAddress()
+                               && !ip.getHostAddress().contains(":")) {// 内网IP
+                           localip = ip.getHostAddress();
+                       }
+                   }
+               }
+           } catch (SocketException e) {
                e.printStackTrace();
            }
+           int rows=stat.executeUpdate("update user set ip='"+localip+"' where phone='"+phone+"'");
        }
-       return false;
    }
 
     /**

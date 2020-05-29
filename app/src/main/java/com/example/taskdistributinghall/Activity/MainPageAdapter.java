@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

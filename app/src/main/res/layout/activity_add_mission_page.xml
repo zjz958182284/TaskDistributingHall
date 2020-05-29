@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddMissionPage"
+    tools:context=".Activity.AddMissionPage"
     android:background="#DCDCDC">
 
 
@@ -67,7 +67,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view2"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="10dp"
@@ -77,16 +77,67 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/mission_type_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="#FF7F50"
+                        android:padding="10dp"
+                        android:text="请选择任务类型" />
+
+
+                    <RadioGroup
+                        android:id="@+id/radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/errand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="跑腿"
+                            android:layout_weight="1"
+                            android:textSize="20dp"
+                            android:textColor="#FF7F50"
+                            />
+                        <RadioButton
+                            android:id="@+id/study"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="学习"
+                            android:layout_weight="1"
+                            android:textSize="20dp"
+                            android:textColor="#FF7F50"
+                            />
+                        <RadioButton
+                            android:id="@+id/collaboration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="合作"
+                            android:layout_weight="1"
+                            android:textSize="20dp"
+                            android:textColor="#FF7F50"
+                            />
+
+                    </RadioGroup>
+
                     <TextView
                     android:id="@+id/mission_title_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    android:layout_marginTop="15dp"
                     android:textColor="#FF7F50"
                     android:padding="10dp"
+                        android:gravity="center"
                     android:text="任务标题" />
                     <EditText
                         android:id="@+id/mission_title_edit"
@@ -103,6 +154,7 @@
                         android:textStyle="bold"
                         android:textColor="#FF7F50"
                         android:padding="10dp"
+                        android:gravity="center"
                         android:text="任务详细" />
                     <EditText
                         android:id="@+id/mission_description_edit"
@@ -124,7 +176,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view3"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="200dp"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
@@ -140,7 +192,7 @@
             android:id="@+id/bounty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="赏金"
+            android:text="赏金（请输入整数金额）"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="#FF7F50"
@@ -151,62 +203,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal" />
-
-
-        <TextView
-            android:id="@+id/limited_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="限制人数"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"
-            android:textColor="#FF7F50" />
-        <EditText
-            android:id="@+id/limited_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number" />
-
-
-        <TextView
-            android:id="@+id/allowed_location_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="允许位置"
-            android:textSize="20dp"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:textColor="#FF7F50"
-         />
-
-        <EditText
-            android:id="@+id/allowed_location_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="例如:武汉，湖南省，北京市"
-            android:ems="10" />
-
-
-        <TextView
-            android:id="@+id/limited_date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="期限"
-            android:textSize="20dp"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:textColor="#FF7F50"
-            />
-
-        <EditText
-            android:id="@+id/limited_date_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="例如:30天"
-            android:ems="10" />
-
 
     </LinearLayout>
     </androidx.cardview.widget.CardView>

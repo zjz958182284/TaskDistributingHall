@@ -1,17 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.AppCompat.NoActionBar"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_marginBottom="6dp"
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is a chat Room"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="135dp"
-        tools:ignore="MissingConstraints" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="196dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/view_border"
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:text="请输入消息······"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:text="发送"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/chat_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/line1"
+        android:layout_below="@id/line2"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:id="@+id/line2"
+        android:background="#F08080"
+        android:layout_height="wrap_content">
+
+        <com.shehuan.niv.NiceImageView
+            android:id="@+id/header_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_weight="2"
+            android:elevation="2dp"
+            android:src="@drawable/test"
+            app:border_color="#FFFAFA"
+            app:border_width="1dp"
+            app:inner_border_color="#F08080"
+            app:inner_border_width="1dp"
+            app:is_circle="true"
+            app:is_cover_src="true" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:text="test" />
+    </LinearLayout>
+
+
+</RelativeLayout>

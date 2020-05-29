@@ -1,17 +1,18 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Activity;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.taskdistributinghall.Activity.MainPageAdapter;
 import com.example.taskdistributinghall.Fragment.ChatRoom.ChatRoomFragment;
 import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
 import com.example.taskdistributinghall.Fragment.Mission.MissionFragment;
 import com.example.taskdistributinghall.Fragment.PersonalCenter.PersonalCenterFragment;
+import com.example.taskdistributinghall.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -49,13 +50,10 @@ public class MainActivity extends AppCompatActivity {
         chatRoom=tabLayout.getTabAt(1);
         mission=tabLayout.getTabAt(2);
         personalCenter=tabLayout.getTabAt(3);
-
         homePage.setIcon(R.drawable.homepage);
         chatRoom.setIcon(R.drawable.chat);
         mission.setIcon(R.drawable.mission);
         personalCenter.setIcon(R.drawable.personalcenter);
-
-
    }
 
     public void initFragmentList(){
