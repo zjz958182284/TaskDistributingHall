@@ -10,17 +10,16 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Testing"
+        android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".mission_detail_page"></activity>
         <activity android:name=".Activity.AddMissionPage" />
         <activity android:name=".Fragment.PersonalCenter.AboutPage" />
         <activity android:name=".Activity.CollectInformation" />
         <activity android:name=".Activity.MainActivity" />
-        <activity
-            android:name=".Activity.Login"
-            android:label="testing">
+        <activity android:name=".Activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,4 +30,5 @@
             android:name=".Activity.SignUp"
             android:parentActivityName=".Activity.Login" />
     </application>
+
 </manifest>

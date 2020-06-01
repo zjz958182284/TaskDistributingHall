@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:id="@+id/chat_page_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    app:cardCornerRadius="5dp"
+    android:elevation="30dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.shehuan.niv.NiceImageView
+            android:id="@+id/chat_head_image"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:elevation="5dp"
+            android:src="@drawable/test"
+            app:border_color="#FFFAFA"
+            app:border_width="4dp"
+            app:inner_border_color="#F08080"
+            app:inner_border_width="4dp"
+            app:is_circle="true"
+            app:is_cover_src="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/chat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="你的名字"
+            android:textSize="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/chat_head_image"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:textSize="17dp"
+            android:maxLines="1"
+            android:minLines="1"
+            android:ellipsize="end"
+            android:text="想找个人帮忙做android项目,要不然最近一直熬夜，已经快要暴毙了，求找个人来求救"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/chat_head_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chat_name" />
+
+
+        <TextView
+            android:id="@+id/time"
+            android:text="上午0:12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
