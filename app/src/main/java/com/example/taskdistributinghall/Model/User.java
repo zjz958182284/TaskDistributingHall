@@ -14,4 +14,5 @@ public class User {
     public  int  completedTask;
     public  int acceptedTask;
     public Bitmap headPortrait;
+    public String ip;
 }

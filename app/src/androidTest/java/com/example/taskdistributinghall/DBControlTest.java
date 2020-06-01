@@ -16,7 +16,12 @@ public class DBControlTest {
 
     @Test
     public void getConnection() {
-        Connection connection = DBControl.GetConnection();
+        Connection connection = null;
+        try {
+            connection = DBControl.GetConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         assertNotNull(connection);
     }
 
@@ -82,7 +87,7 @@ public class DBControlTest {
     @Test
     public void addUser() {
         try {
-            DBControl.addUser("123","789");
+            DBControl.addUser("1232","789");
         } catch (SQLException e) {
             e.printStackTrace();
         }

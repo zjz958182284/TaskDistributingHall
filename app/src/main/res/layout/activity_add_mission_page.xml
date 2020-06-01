@@ -92,41 +92,41 @@
 
 
                     <RadioGroup
-                        android:id="@+id/radio_group"
-                        android:layout_width="match_parent"
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/errand"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:text="跑腿"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:textColor="#FF7F50"
+                        />
+                    <RadioButton
+                        android:id="@+id/study"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="学习"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:textColor="#FF7F50"
+                        />
+                    <RadioButton
+                        android:id="@+id/collaboration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="合作"
+                        android:layout_weight="1"
+                        android:textSize="20dp"
+                        android:textColor="#FF7F50"
+                        />
 
-                        android:orientation="horizontal">
-                        <RadioButton
-                            android:id="@+id/errand"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="跑腿"
-                            android:layout_weight="1"
-                            android:textSize="20dp"
-                            android:textColor="#FF7F50"
-                            />
-                        <RadioButton
-                            android:id="@+id/study"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="学习"
-                            android:layout_weight="1"
-                            android:textSize="20dp"
-                            android:textColor="#FF7F50"
-                            />
-                        <RadioButton
-                            android:id="@+id/collaboration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="合作"
-                            android:layout_weight="1"
-                            android:textSize="20dp"
-                            android:textColor="#FF7F50"
-                            />
-
-                    </RadioGroup>
+                </RadioGroup>
 
                     <TextView
                     android:id="@+id/mission_title_text"

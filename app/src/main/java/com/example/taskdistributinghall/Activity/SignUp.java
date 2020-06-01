@@ -39,6 +39,7 @@ public class SignUp extends AppCompatActivity {
                 intent.putExtra("phone",phone);  //与CollectInformationActivity交互数据
                 intent.putExtra("password",password);
                 startActivity(intent);
+                SignUp.this.finish();
                 }
                 else {
                     Toast.makeText(SignUp.this,"密码与确认密码不相符请重新输入密码",Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -134,6 +135,7 @@ public class DBControl {
                 user.grade = rs.getString("grade");
                 user.sex = rs.getString("sex");
                 user.name = rs.getString("name");
+                user.ip=rs.getString("ip");
                 return user;
             } else return null;
         } catch (SQLException e) {
@@ -220,7 +222,7 @@ public class DBControl {
                 do {
                     User user = new User();
                     Blob blob=rs.getBlob("picture");
-                    user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());
+                    user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                     user.phone = rs.getString("phone");
                     user.acceptedTask = rs.getInt("acceptedTask");
                     user.completedTask = rs.getInt("completedTask");
@@ -229,6 +231,7 @@ public class DBControl {
                     user.grade = rs.getString("grade");
                     user.sex = rs.getString("sex");
                     user.name = rs.getString("name");
+                    user.ip=rs.getString("ip");
                     list.add(user);
                 } while (rs.next());
                 return list;
@@ -249,6 +252,31 @@ public class DBControl {
         }
     }
 
+    //查询对方滞留消息量
+    public static int getRetentionRecordNum(String senderPhone,String receiverPhone) throws SQLException {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()) {
+            ResultSet rs=stat.executeQuery("select count(record) from chatRecordTemp where " +
+                    "senderPhone='"+senderPhone+"' and receiverPhone='"+receiverPhone+"'");
+            if(rs.next())
+                return rs.getInt(1);
+            return 0;
+        }
+    }
+
+    public static List<String> getRetentionRecord(String senderPhone,String receiverPhone) throws SQLException {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()) {
+            ResultSet rs = stat.executeQuery("select record from chatRecordTemp where " +
+                    "senderPhone='" + senderPhone + "' and receiverPhone='" + receiverPhone + "'" +
+                    "order by date");
+            List<String> list=new ArrayList<String>();
+            while (rs.next()){
+                list.add(rs.getString(1));
+            }
+            return  list;
+        }
+    }
     //根据任务ID和接受人添加正在请求的任务项
     public static  void addRequestingTask(String phone, int ID) throws SQLException {
         try (Connection conn = GetConnection();) {
@@ -290,7 +318,17 @@ public class DBControl {
         }
     }
 
-    //根据手机号保存ip
+    //删除对方滞留的消息
+    public static  boolean deleteRetentionRecords(String senderPhone,String receiverPhone) throws SQLException {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()){
+            int rows=stat.executeUpdate("delete from chatRecordTemp where " +
+                    "senderPhone='"+senderPhone+"' and receiverPhone='"+receiverPhone+"'");
+            return  rows>0;
+        }
+    }
+
+    //根据手机号更新ip
    public static void updateIP(String phone) throws SQLException {
        try (Connection conn = GetConnection();
             Statement stat = conn.createStatement()) {
@@ -342,14 +380,15 @@ public class DBControl {
              Statement stat = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE)) {
             ResultSet rs = stat.executeQuery("select * from user where phone=" + "'" + phone + "'");
             if (rs.next()) {
-                Blob blob=conn.createBlob();
-                OutputStream os=blob.setBinaryStream(0);
-                bmp.compress(Bitmap.CompressFormat.PNG,100,os);//将bmp图片存入数据库
-                rs.updateBlob("picture",blob);
+                if(bmp!=null) {
+                    Blob blob = conn.createBlob();
+                    OutputStream os = blob.setBinaryStream(0);
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, os);//将bmp图片存入数据库
+                    rs.updateBlob("picture", blob);
+                }
                 rs.updateString("name", name);
                 rs.updateString("dept", dept);
                 rs.updateString("sex", sex);
-                rs.updateString("grade", grade);
                 rs.updateString("address", address);
                 rs.updateRow();
                 return true;
@@ -378,6 +417,20 @@ public class DBControl {
             stat.setString(2, content);
             stat.setString(3, title);
             stat.setString(4, type);
+            stat.executeUpdate();
+        }
+    }
+
+    /**
+     * 对方用户不在线时暂存发送给对方的聊天记录
+     */
+    public static void addTempChatRecord(String senderPhone,String receiverPhone,String message) throws SQLException {
+        try (Connection connc = GetConnection();
+             PreparedStatement stat = connc.prepareStatement("insert into chatRecordTemp （" +
+                     "senderPhone,receiverPhone,record) values(?,?,?)")){
+            stat.setString(1,senderPhone);
+            stat.setString(2,receiverPhone);
+            stat.setString(3,message);
             stat.executeUpdate();
         }
     }

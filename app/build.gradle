@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.taskdistributinghall"
-        minSdkVersion 27
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -34,9 +34,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation files('libs/mysql-connector-java-5.1.48.jar')
-
     implementation 'org.jetbrains:annotations:15.0'
-
     implementation 'com.google.android.material:material:1.1.0'
-
 }
