@@ -1,7 +1,6 @@
 package com.example.taskdistributinghall.Fragment.Home;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +31,6 @@ public class HomeFragment  extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(layout.home_page,container,false);
-
         return view;
     }
 
@@ -48,15 +45,14 @@ public class HomeFragment  extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.homepage_menu,menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) getActivity().findViewById(R.id.home_page_toolbar);
+        androidx.appcompat.widget.Toolbar toolbar= getActivity().findViewById(R.id.home_page_toolbar);
         AppCompatActivity appCompatActivity=(AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
-        super.onViewCreated(view, savedInstanceState);
 
         // 把項目清單準備好，放在一個List物件裏頭
         List<String> listStr = new ArrayList<>();
@@ -71,8 +67,7 @@ public class HomeFragment  extends Fragment {
         // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
         RecyclerViewAdapter adapter=new RecyclerViewAdapter(listStr);
         recyclerView.setAdapter(adapter);
-
-
+        super.onViewCreated(view, savedInstanceState);
 
     }
 

@@ -45,10 +45,10 @@ public class ChatRoomFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) getActivity().findViewById(R.id.chat_page_toolbar);
+        androidx.appcompat.widget.Toolbar toolbar1= (androidx.appcompat.widget.Toolbar) getActivity().findViewById(R.id.chat_page_toolbar);
         AppCompatActivity appCompatActivity=(AppCompatActivity)getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-        super.onViewCreated(view, savedInstanceState);
+        appCompatActivity.setSupportActionBar(toolbar1);
+
 
         // 把項目清單準備好，放在一個List物件裏頭
         List<String> listStr = new ArrayList<>();
@@ -63,13 +63,19 @@ public class ChatRoomFragment extends Fragment {
         // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
         ChatPageRecyclerViewAdapter adapter=new ChatPageRecyclerViewAdapter(listStr);
         recyclerView1.setAdapter(adapter);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.add_bar:
-                Intent intent1=new Intent(getActivity(), Chat.class); /**  */
+
+          // case R.id.add_bar:
+          //     Intent intent1=new Intent(getActivity(), Chat.class); /**  */
+
+            case R.id.chat_page_add_bar:
+                Intent intent1=new Intent(getActivity(), AddMissionPage.class);
+
                 startActivity(intent1);
         }
         return super.onOptionsItemSelected(item);
