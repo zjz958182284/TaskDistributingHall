@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:padding="5dp"
     android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:padding="15dp"
-        android:layout_height="wrap_content"
-        >
 
         <ImageView
-        android:id="@+id/imageViewRecept"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_weight="5"
-        app:srcCompat="@drawable/tomato" />
+            android:id="@+id/imageViewRecept"
+            android:layout_alignParentLeft="true"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/textViewRecept"
+            android:layout_marginLeft="5dp"
+            android:background="@color/black"
+            app:srcCompat="@drawable/tomato" />
 
         <TextView
             android:id="@+id/textViewRecept"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/imageViewRecept"
             android:layout_marginRight="55dp"
+            android:paddingLeft="10dp"
             android:textSize="20dp"
-            android:text="TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"
-            android:layout_width="match_parent" />
-    </LinearLayout>
+            android:text="TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest" />
 
 
-</LinearLayout>
+
+</RelativeLayout>

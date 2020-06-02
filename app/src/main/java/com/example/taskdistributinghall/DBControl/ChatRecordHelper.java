@@ -15,10 +15,10 @@ public class ChatRecordHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql=" create table chatRecordTemp(\n" +
+        String sql="create table chatRecordTemp(\n" +
                 " senderphone varchar(15),\n" +
                 " receiverphone varchar(15),\n" +
-                "date TIMESTAMP default CURRENT_TIMESTAMP,\n" +
+                "date datetime default (datetime(CURRENT_TIMESTAMP,'localtime')),\n" +
                 "record varchar(100),\n" +
                 "issend  enum(1,0),\n"+
                 "primary key(senderphone,receiverphone,date)\n" +
@@ -26,7 +26,7 @@ public class ChatRecordHelper extends SQLiteOpenHelper {
         String sql2="create table chatTimeStamp(\n" +
                 "senderphone varchar(15),\n" +
                 "  receiverphone varchar(15),\n" +
-                " date datetime default CURRENT_TIMESTAMP,\n" +
+                " date datetime default (datetime(CURRENT_TIMESTAMP,'localtime')),\n" +
                 " primary key(senderphone,receiverphone,date)\n" +
                 " );";
         db.execSQL(sql);

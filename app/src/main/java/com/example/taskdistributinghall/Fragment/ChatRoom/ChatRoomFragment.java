@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.taskdistributinghall.Activity.AddMissionPage;
+import com.example.taskdistributinghall.Activity.Chat;
+import com.example.taskdistributinghall.Activity.SignUp;
 import com.example.taskdistributinghall.R;
 
 import java.util.ArrayList;
@@ -67,9 +69,11 @@ public class ChatRoomFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_bar:
-                Intent intent1=new Intent(getActivity(), AddMissionPage.class);
+                Intent intent1=new Intent(getActivity(), Chat.class); /**  */
                 startActivity(intent1);
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

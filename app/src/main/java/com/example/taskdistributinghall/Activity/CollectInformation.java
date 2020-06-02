@@ -60,15 +60,6 @@ public class CollectInformation extends AppCompatActivity {
                         try {
                             DBControl.addUser(phone,password);
                             DBControl.updateUser(null,phone,name,gender,dept,grade,address);
-                            /**
-                             * 保存用户数据到本地
-                             */
-                            SharedPreferences sp=getApplicationContext().getSharedPreferences(phone ,
-                                    Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor=sp.edit();
-                            editor.putString("password",password);
-                            editor.putString("phone",phone);
-                            editor.apply();
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

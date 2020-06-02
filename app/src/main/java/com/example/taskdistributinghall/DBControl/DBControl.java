@@ -269,7 +269,7 @@ public class DBControl {
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select record from chatRecordTemp where " +
                     "senderPhone='" + senderPhone + "' and receiverPhone='" + receiverPhone + "'" +
-                    "order by date");
+                    " order by date");
             List<String> list=new ArrayList<String>();
             while (rs.next()){
                 list.add(rs.getString(1));
@@ -426,8 +426,8 @@ public class DBControl {
      */
     public static void addTempChatRecord(String senderPhone,String receiverPhone,String message) throws SQLException {
         try (Connection connc = GetConnection();
-             PreparedStatement stat = connc.prepareStatement("insert into chatRecordTemp （" +
-                     "senderPhone,receiverPhone,record) values(?,?,?)")){
+             PreparedStatement stat = connc.prepareStatement("insert into chatRecordTemp(" +
+                     "senderphone,receiverphone,record) values (?,?,?)")){
             stat.setString(1,senderPhone);
             stat.setString(2,receiverPhone);
             stat.setString(3,message);
@@ -448,6 +448,19 @@ public class DBControl {
         }
     }
 
+    /**
+     * 删除离线聊天记录
+     */
+
+    public static  boolean deleteRecords(String senderPhone,String receiverPhone) throws SQLException {
+        try (Connection connc = GetConnection();
+             PreparedStatement stat = connc.prepareStatement("delete from chatRecordTemp " +
+                     "where senderPhone=? and receiverPhone=? ")){
+            stat.setString(1,senderPhone);
+            stat.setString(2,receiverPhone);
+            return stat.executeUpdate()>0;
+        }
+    }
     /**
      * 根据任务ID修改任务状态
      * @param ID

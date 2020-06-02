@@ -11,5 +11,6 @@
         android:layout_height="wrap_content"
         android:text="已接取任务"
         tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="247dp" />
+        tools:layout_editor_absoluteY="247dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

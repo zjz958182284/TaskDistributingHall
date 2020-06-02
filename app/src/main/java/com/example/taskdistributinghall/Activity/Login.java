@@ -1,6 +1,8 @@
 package com.example.taskdistributinghall.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +45,15 @@ public class Login extends AppCompatActivity {
                                    runOnUiThread(new Runnable() {
                                        @Override
                                        public void run() {
+                                           /**
+                                            * 保存用户数据到本地
+                                            */
+                                           SharedPreferences sp=getApplicationContext().getSharedPreferences(phone ,
+                                                   Context.MODE_PRIVATE);
+                                           SharedPreferences.Editor editor=sp.edit();
+                                           editor.putString("password",password);
+                                           editor.putString("phone",phone);
+                                           editor.apply();
                                            Toast.makeText(Login.this,"登陆成功",
                                                    Toast.LENGTH_SHORT).show();
                                            Intent intent=new Intent();
