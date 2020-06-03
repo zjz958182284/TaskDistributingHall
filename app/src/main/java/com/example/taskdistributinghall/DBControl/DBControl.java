@@ -126,6 +126,7 @@ public class DBControl {
             if (rs.next()) {
                 User user = new User();
                 Blob blob=rs.getBlob("picture");
+                if(blob!=null)
                 user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());
                 user.phone = rs.getString("phone");
                 user.acceptedTask = rs.getInt("acceptedTask");

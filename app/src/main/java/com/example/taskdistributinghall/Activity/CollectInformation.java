@@ -10,50 +10,64 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 
 public class CollectInformation extends AppCompatActivity {
-      String gender=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect_information1);
-        Intent collectionIntent=getIntent();
+
         Button ok_btn=findViewById(R.id.ok_btn);
+
         RadioGroup radioGroup=findViewById(R.id.gender_radio_group);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.men)
-                    gender="男";
-                else gender="女";
-            }
-        });
+     //  radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+     //      @Override
+     //      public void onCheckedChanged(RadioGroup group, int checkedId) {
+     //          if(checkedId==R.id.men)
+     //              gender="男";
+     //          else gender="女";
+     //      }
+     //  });
         ok_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(gender==null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(CollectInformation.this,"请选择性别",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                Intent collectionIntent=getIntent();
+               String gender=((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                 String phone=collectionIntent.getStringExtra("phone");
                 String password=collectionIntent.getStringExtra("password");//获取signup的数据
                 String name=((EditText)findViewById(R.id.name_edit)).getText().toString();
                 String address=((EditText)findViewById(R.id.address_edit)).getText().toString();
                 String grade=((EditText)findViewById(R.id.grade_edit)).getText().toString();
                 String dept=((EditText)findViewById(R.id.dept_edit)).getText().toString();
+                Intent intent=getIntent();
+
+                SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString("phone",phone);
+                editor.putString("password",password);
+                editor.apply();
+                if(gender==null ||name==null||address==null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+
+                        public void run() {
+                            Toast.makeText(CollectInformation.this,"请务必全部填写",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

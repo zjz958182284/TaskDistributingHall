@@ -26,7 +26,7 @@ public class PersonalCenterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.personal_center_page,null);
-       init(view);
+        init(view);
         return view;
      }
 
@@ -35,7 +35,7 @@ public class PersonalCenterFragment extends Fragment {
          int[] image_expense = new int[]{R.drawable.about_icon, R.drawable.sign_out_icon}; //存储图片
          int[] image_behind = new int[]{R.drawable.right_arrow, 0}; //存储图片
 
-         String[] titles=new String[]{"关于","退出"};
+         String[] titles=new String[]{"修改个人资料","退出"};
          if(listItem!=null) {
              for (int i = 0; i < image_expense.length; i++) {
                  Map<String, Object> map = new HashMap<String, Object>();
@@ -58,7 +58,7 @@ public class PersonalCenterFragment extends Fragment {
                      Map<String,Object>map=(Map<String, Object>)parent.getItemAtPosition(position);
                     switch (position){
                         case 0:
-                           Intent intent=new Intent(getActivity(), AboutPage.class);
+                           Intent intent=new Intent(getActivity(), ModifyPersonalInfo.class);
                             startActivity(intent);
                         case 1:
 
