@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activity.mission_detail_page">
 
     <ImageView
@@ -12,5 +13,120 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/test1"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="32dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        tools:layout_editor_absoluteY="32dp"
+        tools:context=".Mission_detail_page"
+        />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mission_detail_page_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:title="任务详情"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mission_detail_page_card_view1"
+            app:layout_constraintTop_toBottomOf="@id/mission_detail_page_toolbar"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="300dp">
+
+        <ImageView
+            android:id="@+id/mission_show_picture"
+            app:layout_constraintTop_toBottomOf="@id/mission_detail_page_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/test1"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:clickable="true"
+            app:layout_constraintLeft_toLeftOf="parent" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mission_detail_page_card_view2"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/mission_detail_page_card_view1"
+            android:layout_width="match_parent"
+            android:layout_height="270dp">
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/mission_title_text"
+                app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintLeft_toLeftOf="parent"
+                android:textSize="25dp"
+                android:text="这里放任务标题"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+              <TextView
+                  android:id="@+id/mission_detail_page_bounty_text"
+                  android:textSize="15dp"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintRight_toRightOf="parent"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="10dp"
+                  android:text="悬赏:300元"
+                  app:layout_constraintBaseline_toBaselineOf="@id/mission_title_text"/>
+            <TextView
+                android:id="@+id/detail_page_detail_text"
+                app:layout_constraintTop_toBottomOf="@id/detail_page_mission_type_text"
+                android:text="这里写任务详情,因为要写很多，所以我会当成小学作文来写，2011年,刀剑神域出了，如果记错那就抱歉了，毕竟是小学生作文，kirito,桐人是我的偶像，我想像他一样那么厉害，拿着双刀流吊打boss，感觉无所不能，对我来说就是英雄的存在，就像我家后院的割草机，更重要的是他有一位漂亮的正宫还有无数的后宫。还有必须一提Asuna,是我心中的女神。如果不知道这是什么东西，那我推荐你去科普。我曾经幻想2022年会有像刀剑神域一样的游戏，可是现实总是残酷的...剧终。因为已经到达行数了。"
+                android:layout_width="match_parent"
+                android:gravity="top"
+                android:enabled="true"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:minLines="8"
+                android:maxLines="10"
+                android:scrollbars="vertical"
+                android:layout_margin="10dp" />
+              <TextView
+                  android:id="@+id/detail_page_mission_location_text"
+                  android:textSize="15dp"
+                  android:text="位置:大理"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/mission_title_text"
+                  app:layout_constraintBaseline_toBaselineOf="@id/detail_page_mission_type_text"/>
+              <TextView
+                  android:id="@+id/detail_page_mission_type_text"
+                  app:layout_constraintTop_toBottomOf="@id/mission_title_text"
+                  android:textSize="15dp"
+                  android:text="任务类型：跑腿，代理"
+                  android:layout_marginStart="40dp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                 app:layout_constraintLeft_toRightOf="@id/detail_page_mission_location_text"/>
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/accepted_btn"
+            app:layout_constraintTop_toBottomOf="@id/mission_detail_page_card_view2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="接受任务"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
