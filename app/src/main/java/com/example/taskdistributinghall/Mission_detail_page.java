@@ -27,7 +27,7 @@ public class Mission_detail_page extends AppCompatActivity {
             }
         });
 
-        Button button=findViewById(R.id.accepted_btn);
+        Button button=findViewById(R.id.accept_task_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

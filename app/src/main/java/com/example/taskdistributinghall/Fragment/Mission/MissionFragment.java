@@ -1,11 +1,9 @@
 package com.example.taskdistributinghall.Fragment.Mission;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +29,7 @@ public class MissionFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initFragmen();
+        initFragment();
         TabLayout tabLayout=view.findViewById(R.id.tab_layout);
         missionPageAdapter=new MissionPageAdapter(getChildFragmentManager(),fragmentList);
         viewPager=view.findViewById(R.id.view_Pager);
@@ -40,7 +38,7 @@ public class MissionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-   public void initFragmen(){
+   public void initFragment(){
         fragmentList=new ArrayList<>();
         fragmentList.add(new AcceptedTaskPage());
         fragmentList.add(new PublishedTaskPage());
