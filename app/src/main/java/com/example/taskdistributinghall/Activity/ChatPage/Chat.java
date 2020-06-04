@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall.Activity;
+package com.example.taskdistributinghall.Activity.ChatPage;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -22,7 +22,6 @@ import com.example.taskdistributinghall.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -34,7 +33,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,13 +41,13 @@ public class Chat extends AppCompatActivity {
     private  User me; //我 /test/
     private  User he;//对方用户  /test/
     private  LinkedList<Message> messages=new LinkedList<Message>();
-    private  ChatListViewAdapter listViewAdapter;
+    private ChatListViewAdapter listViewAdapter;
     private  ListView listView;
     private  String chatTime;//指示当前聊天部分的时间；
     private  boolean isSend=false;//编辑框内文本是否发送
     private  boolean isSendOffLine=true;//默认离线发送
     private SQLiteDatabase  recordDatabase; //获得sqlite数据库操作对象
-    private boolean flagOnline=true,flagOff=true,flagReceive=true;//控制三个线程结束标志
+    private boolean flagOnline=true,flagOff=true,flagReceive=true;//控制三个线程结束de标志
 
 
 
@@ -130,15 +128,15 @@ public class Chat extends AppCompatActivity {
     }
 
     public void StartChat(){
+
         //尚未连接成功时离线发送
         //连接成功在线发送消息
         //在线发送消息
-        /**
-         * 更新界面
-         */
         /*
-          降低cpu占用率
-                            */
+         * 更新界面
+         *  降低cpu占用率
+
+                */
         //对方客户端退出连接,继续侦听下一次连接
         Thread sendOnLineThread = new Thread(new Runnable() {
             @Override
@@ -361,12 +359,16 @@ public class Chat extends AppCompatActivity {
         else values.put("issend",1);
         recordDatabase.insert("chatRecordTemp",null,values);
     }
+
+
     public synchronized void  StoreNativeChatRecord(String record,int type,String date){
         ContentValues values=new ContentValues();
         values.put("senderphone",me.phone);
         values.put("receiverphone",he.phone);
+
         values.put("date",date);
         values.put("record",record);
+
         if(type==Message.heSend)
             values.put("issend",0);
         else values.put("issend",1);
@@ -379,6 +381,7 @@ public class Chat extends AppCompatActivity {
                     DBControl.addTempChatRecord(me.phone, he.phone, record);
                 } catch (SQLException e) {
                     runOnUiThread(new Runnable() {
+
                         @Override
                         public void run() {
                             Toast.makeText(Chat.this, "消息发送失败", Toast.LENGTH_SHORT).show();
@@ -387,8 +390,11 @@ public class Chat extends AppCompatActivity {
                 }
             }
 
+
+
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         flagOff=flagOnline=flagReceive=false;
     }

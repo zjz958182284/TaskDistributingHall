@@ -22,6 +22,7 @@ import java.util.Map;
 
 public class PersonalCenterFragment extends Fragment {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

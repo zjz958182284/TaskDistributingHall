@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall.Activity;
+package com.example.taskdistributinghall.Activity.ChatPage;
 
 import android.content.Context;
 import android.graphics.Bitmap;

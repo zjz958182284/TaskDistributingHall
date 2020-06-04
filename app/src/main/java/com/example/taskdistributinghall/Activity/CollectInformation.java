@@ -2,24 +2,18 @@ package com.example.taskdistributinghall.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.taskdistributinghall.Activity.MainPage.MainActivity;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.R;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
 
 public class CollectInformation extends AppCompatActivity {
@@ -45,7 +39,6 @@ public class CollectInformation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent collectionIntent=getIntent();
-               String gender=((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                 String phone=collectionIntent.getStringExtra("phone");
                 String password=collectionIntent.getStringExtra("password");//获取signup的数据
                 String name=((EditText)findViewById(R.id.name_edit)).getText().toString();
@@ -54,12 +47,7 @@ public class CollectInformation extends AppCompatActivity {
                 String dept=((EditText)findViewById(R.id.dept_edit)).getText().toString();
                 Intent intent=getIntent();
 
-                SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info",Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=sp.edit();
-                editor.putString("phone",phone);
-                editor.putString("password",password);
-                editor.apply();
-                if(gender==null ||name==null||address==null){
+                if(name==null||address==null){
                     runOnUiThread(new Runnable() {
                         @Override
 
@@ -73,7 +61,7 @@ public class CollectInformation extends AppCompatActivity {
                     public void run() {
                         try {
                             DBControl.addUser(phone,password);
-                            DBControl.updateUser(null,phone,name,gender,dept,grade,address);
+                            DBControl.updateUser(null,phone,name,dept,grade,address);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

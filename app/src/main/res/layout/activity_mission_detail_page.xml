@@ -4,18 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".Activity.MissionDetailPage">
 
-    tools:context=".Activity.mission_detail_page">
-
-    <ImageView
-        android:id="@+id/imageView3"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/test1"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="32dp"
-        tools:context=".Mission_detail_page"
-        />
+        android:layout_height="wrap_content">
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,5 +122,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </RelativeLayout>
 </ScrollView>
 

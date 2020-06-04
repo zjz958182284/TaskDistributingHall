@@ -106,7 +106,7 @@ public class DBControlTest {
     @Test
     public void updateUser() {
         try {
-            boolean flag=  DBControl.updateUser(null,"19945102192","zjz","男","计算机学院","大一","信二一舍301");
+            boolean flag=  DBControl.updateUser(null,"19945102192","zjz","计算机学院","大一","信二一舍301");
             assertTrue(flag);
         } catch (SQLException e) {
             e.printStackTrace();

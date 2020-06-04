@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall.Activity;
+package com.example.taskdistributinghall.Activity.MainPage;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -7,24 +7,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.taskdistributinghall.Activity.MainPageAdapter;
+import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Fragment.ChatRoom.ChatRoomFragment;
 import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
 import com.example.taskdistributinghall.Fragment.Mission.MissionFragment;
 import com.example.taskdistributinghall.Fragment.PersonalCenter.PersonalCenterFragment;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private List<Fragment> fragmentList;
+    private List<Fragment> fragmentList=new ArrayList<>();;
     private MainPageAdapter mainPageAdapter;
     private TabLayout.Tab homePage;
     private TabLayout.Tab chatRoom;
+    List<Task> tasks;
     private TabLayout.Tab mission;
     private TabLayout.Tab personalCenter;
     private long lastPressTime=0; //记录上一次按下返回键的时间
@@ -33,11 +36,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
      //   Toolbar toolbar=findViewById(R.id.toolbar);
      //   setSupportActionBar(toolbar);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    tasks= DBControl.searchAllTask();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initFragmentList();
+                            initViews();
+                        }
+                    });
 
-        initFragmentList();
-        initViews();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
    public void initViews(){
@@ -57,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
    }
 
     public void initFragmentList(){
-    fragmentList=new ArrayList<>();
-    fragmentList.add(new HomeFragment());
+
+    fragmentList.add(new HomeFragment(tasks));
     fragmentList.add(new ChatRoomFragment());
     fragmentList.add(new MissionFragment());
     fragmentList.add(new PersonalCenterFragment());

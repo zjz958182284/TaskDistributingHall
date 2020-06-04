@@ -17,14 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.taskdistributinghall.Activity.AddMissionPage;
-import com.example.taskdistributinghall.Activity.Chat;
-import com.example.taskdistributinghall.Activity.SignUp;
+import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRoomFragment extends Fragment {
+
+    User user=null;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class ChatRoomFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         androidx.appcompat.widget.Toolbar toolbar1= (androidx.appcompat.widget.Toolbar) getActivity().findViewById(R.id.chat_page_toolbar);
         AppCompatActivity appCompatActivity=(AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar1);
@@ -63,7 +65,7 @@ public class ChatRoomFragment extends Fragment {
         // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
         ChatPageRecyclerViewAdapter adapter=new ChatPageRecyclerViewAdapter(listStr);
         recyclerView1.setAdapter(adapter);
-        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override

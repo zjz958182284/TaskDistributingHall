@@ -1,6 +1,7 @@
 package com.example.taskdistributinghall.Fragment.Home;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.taskdistributinghall.Activity.AddMissionPage;
+import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +31,24 @@ import static com.example.taskdistributinghall.R.layout;
 
 public class HomeFragment  extends Fragment {
 
+ private List<Task> tasks;
+ private RecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+    private View view;
+    public  HomeFragment(List<Task> tasks){
+        this.tasks=tasks;
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(layout.home_page,container,false);
+        View view=inflater.inflate(R.layout.home_page,container,false);
+        recyclerView=view.findViewById(R.id.home_page_recycler_view);
+        adapter=new RecyclerViewAdapter(getContext(),tasks);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         return view;
     }
 
@@ -54,19 +72,6 @@ public class HomeFragment  extends Fragment {
         AppCompatActivity appCompatActivity=(AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
 
-        // 把項目清單準備好，放在一個List物件裏頭
-        List<String> listStr = new ArrayList<>();
-        for (int i = 0; i < 50; i++)
-            listStr.add(new String("第" + String.valueOf(i+1) + "項"));
-        RecyclerView recyclerView=view.findViewById(R.id.home_page_recycler_view);
-
-        // 設定RecyclerView使用的LayoutManager，
-        // LayoutManager決定項目的排列方式。
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
-
-        // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
-        RecyclerViewAdapter adapter=new RecyclerViewAdapter(listStr);
-        recyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
 
     }
@@ -76,7 +81,8 @@ public class HomeFragment  extends Fragment {
         switch (item.getItemId()){
             case R.id.add_bar:
                 Intent intent1=new Intent(getActivity(), AddMissionPage.class);
-                startActivity(intent1);
+              // Bundle bundle=
+              // startActivity(intent1);
         }
         return super.onOptionsItemSelected(item);
     }

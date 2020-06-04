@@ -72,24 +72,23 @@
                     app:layout_constraintTop_toBottomOf="@id/description_text"
                     app:layout_constraintLeft_toRightOf="@id/bounty_text"/>
 
+
                 <TextView
-                    android:layout_marginTop="3dp"
                     android:id="@+id/location_text"
-                    android:text="位置:"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:minLines="1"
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/description_text"
-                    app:layout_constraintLeft_toRightOf="@id/mission_type"/>
-
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:text="日期:"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/mission_type"
+                    app:layout_constraintTop_toBottomOf="@id/description_text" />
 
                 <TextView
-                    android:id="@+id/location"
-                    android:text="大理"
+                    android:id="@+id/date"
+                    android:text="2020-06-03 20:23"
                     app:layout_constraintBaseline_toBaselineOf="@id/location_text"
                     android:layout_marginStart="3dp"
                     android:layout_width="wrap_content"
@@ -120,6 +119,19 @@
                     app:layout_constraintTop_toBottomOf="@id/bounty_text"
                     app:layout_constraintLeft_toRightOf="@id/mission_type_text"
                    />
+
+                <TextView
+                    android:id="@+id/task_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginTop="4dp"
+                    android:text="id"
+
+                    android:visibility="invisible"
+                    app:layout_constraintBaseline_toBaselineOf="@id/mission_type_text"
+                    app:layout_constraintLeft_toRightOf="@id/mission_type"
+                    app:layout_constraintTop_toBottomOf="@id/bounty_text" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.taskdistributinghall.Activity.MainPage.MainActivity;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.R;
 
@@ -46,8 +47,13 @@ public class Login extends AppCompatActivity {
                                        @Override
                                        public void run() {
                                            /**
-                                            * 保存用户数据到本地
+                                            * 保存用户数据到本地SP文件
                                             */
+                                           SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info",Context.MODE_PRIVATE);
+                                           SharedPreferences.Editor editor=sp.edit();
+                                           editor.putString("phone",phone);
+                                           editor.putString("password",password);
+                                           editor.apply();
 
                                            Toast.makeText(Login.this,"登陆成功",
                                                    Toast.LENGTH_SHORT).show();

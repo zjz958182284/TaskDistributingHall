@@ -12,46 +12,39 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskdistributinghall.Mission_detail_page;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     @NonNull
     // 儲存要顯示的資料。
-    private List<String>titleList;//标题
+    private List<Task> tasks;
+    private LayoutInflater inflater;
 
-    public RecyclerViewAdapter(List<String> listStr) {
-        titleList = listStr;
+    public RecyclerViewAdapter(Context context,@NotNull List<Task> tasks) {
+        this.tasks=tasks;
+        this.inflater=LayoutInflater.from(context);
     }
 
-    // ViewHolder 是把項目中所有的 View 物件包起來。
-    // 它在 onCreateViewHolder() 中使用。
-    public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
-        public ImageView imgView;
-        public TextView textView;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgView=itemView.findViewById(R.id.mission_view);
-            textView=itemView.findViewById(R.id.mission_title);
-            itemView.setOnClickListener(this); // 處理按下的事件。
-        }
 
 
-        @Override
-        public void onClick(View view) {
-          Context context= view.getContext();
-          Intent intent =new Intent(context, Mission_detail_page.class);
-          context.startActivity(intent);
-        }
-    }
+   //    @Override
+   //    public void onClick(View view) {
+   //      Context context= view.getContext();
+   //      Intent intent =new Intent(context, Mission_detail_page.class);
+   //      context.startActivity(intent);
+   //    }
 
+
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.home_page_mission_view,parent,false);
-       ViewHolder viewHolder=new ViewHolder(v);
-        return viewHolder;
+        View v= inflater.inflate(R.layout.home_page_mission_view,parent,false);
+        return new ViewHolder(v);
     }
 
 
@@ -60,7 +53,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // 把資料設定給 holder。
         holder.imgView.setImageResource(R.drawable.test1);
-        holder.textView.setText(titleList.get(position));
+        holder.timeView.setText((tasks.get(position).date).substring(0,16));
+        holder.titleView.setText(tasks.get(position).title);
+        holder.detailView.setText(tasks.get(position).content);
+        holder.idView.setText(String.valueOf(tasks.get(position).id));
+
+        int rewards=tasks.get(position).rewards;
+        String reward=String.valueOf(rewards);
+        holder.bountyView.setText(reward+"元");
+        String type=tasks.get(position).type;
+        if(type.equals("errand"))
+            type="跑腿";
+        else if(type.equals("study"))
+            type="学习";
+        else type="合作";
+        holder.typeView.setText(type);
     }
 
 
@@ -68,6 +75,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // RecyclerView會呼叫這個方法，我們要傳回總共有幾個項目。
     @Override
     public int getItemCount() {
-        return titleList.size();
+        return tasks.size();
     }
-}
+
+
+
+    // ViewHolder 是把項目中所有的 View 物件包起來。
+    // 它在 onCreateViewHolder() 中使用。
+    class ViewHolder extends  RecyclerView.ViewHolder {
+       private ImageView imgView;
+       private TextView titleView;
+       private   TextView detailView;
+       private TextView bountyView;
+       private TextView timeView;
+       private TextView typeView;
+       private  TextView idView;
+
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imgView=itemView.findViewById(R.id.mission_view);
+            titleView =itemView.findViewById(R.id.mission_title);
+            detailView=itemView.findViewById(R.id.description_text);
+            bountyView=itemView.findViewById(R.id.bounty);
+            timeView=itemView.findViewById(R.id.date);
+            typeView=itemView.findViewById(R.id.mission_type);
+            idView=itemView.findViewById(R.id.task_id);
+        }
+}}

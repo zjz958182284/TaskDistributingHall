@@ -1,56 +1,36 @@
 package com.example.taskdistributinghall.Fragment.PersonalCenter;
 
-import android.Manifest;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.example.taskdistributinghall.Activity.Login;
-import com.example.taskdistributinghall.Activity.MainActivity;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
 import com.shehuan.niv.NiceImageView;
 
-import java.io.File;
 import java.sql.SQLException;
-import java.util.zip.Inflater;
 
 public class ModifyPersonalInfo extends AppCompatActivity {
     private Uri imageUri;
     NiceImageView niceImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
+    Camera camera=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,17 +40,21 @@ public class ModifyPersonalInfo extends AppCompatActivity {
         Button button=findViewById(R.id.ok_btn);
         niceImageView=findViewById(R.id.profile_photo);
         RadioGroup radioGroup=findViewById(R.id.gender_radio_group);
+
+
         //打开相册
         niceImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //camera=Camera.
+
+
                 dispatchTakePictureIntent();
         }
         });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String gender=((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                 String name=((EditText)findViewById(R.id.name_edit)).getText().toString();
                 String address=((EditText)findViewById(R.id.address_edit)).getText().toString();
                 String grade=((EditText)findViewById(R.id.grade_edit)).getText().toString();
@@ -81,8 +65,9 @@ public class ModifyPersonalInfo extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
+
                             if( DBControl.updateUser(((BitmapDrawable)niceImageView.getDrawable()).getBitmap()
-                             ,phone,name,gender,dept,grade,address)){
+                             ,phone,name,dept,grade,address)){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -90,6 +75,7 @@ public class ModifyPersonalInfo extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                             }
 
                         } catch (SQLException e) {
@@ -103,6 +89,7 @@ public class ModifyPersonalInfo extends AppCompatActivity {
                         }
                     }
                 }).start();
+
 
             }
         });
@@ -118,10 +105,17 @@ public class ModifyPersonalInfo extends AppCompatActivity {
                 String phone=sp.getString("phone","");
                 User user=DBControl.searchUserByPhone(phone);
                 if(user!=null){
-                    ((EditText)findViewById(R.id.name_edit)).setText(user.name);
-                    ((EditText)findViewById(R.id.address_edit)).setText(user.address);
-                    ((EditText)findViewById(R.id.grade_edit)).setText(user.grade);
-                    ((EditText)findViewById(R.id.dept_edit)).setText(user.dept);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((NiceImageView)findViewById(R.id.profile_photo)).setImageBitmap(user.headPortrait==null?null:user.headPortrait);
+                            ((EditText)findViewById(R.id.name_edit)).setText(user.name);
+                            ((EditText)findViewById(R.id.address_edit)).setText(user.address);
+                            ((EditText)findViewById(R.id.grade_edit)).setText(user.grade);
+                            ((EditText)findViewById(R.id.dept_edit)).setText(user.dept);
+                        }
+                    });
+
                 }
             }
         }).start();

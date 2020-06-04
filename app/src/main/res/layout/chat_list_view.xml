@@ -37,7 +37,18 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/chat_head_image"
             app:layout_constraintTop_toTopOf="parent"/>
-
+        <TextView
+            android:id="@+id/his_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18679595"
+            android:visibility="invisible"
+            android:textSize="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/chat_name"
+            app:layout_constraintTop_toTopOf="parent"/>
         <TextView
             android:id="@+id/message_text"
             android:layout_width="0dp"

@@ -24,8 +24,8 @@
         <activity android:name=".Fragment.PersonalCenter.ModifyPersonalInfo" />
         <activity android:name=".Fragment.PersonalCenter.AboutPage" />
         <activity android:name=".Activity.CollectInformation" />
-        <activity android:name=".Activity.MainActivity" />
-        <activity android:name=".Activity.Chat"/>
+        <activity android:name=".Activity.MainPage.MainActivity" />
+        <activity android:name=".Activity.ChatPage.Chat"/>
         <activity android:name=".Activity.Login">
 
 

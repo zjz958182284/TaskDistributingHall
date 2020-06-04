@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -27,7 +29,8 @@ import java.util.List;
 
 public class DBControl {
 
-    public static Connection GetConnection() throws SQLException{
+    public static Connection
+    GetConnection() throws SQLException{
         String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://192.168.0.103:3306/taskhalldb";
         try {
@@ -61,6 +64,29 @@ public class DBControl {
             } else return null;
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    //查询所有任务
+    public static List<Task> searchAllTask() throws SQLException {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()){
+           ResultSet rs= stat.executeQuery("select * from task order by date desc");
+           List<Task> tasks=new ArrayList<>();
+           while ((rs.next())){
+               Task task=new Task();
+               task.id = rs.getInt("id");
+               task.date = rs.getString("date");
+               task.publisher = rs.getString("publisher");
+               task.content = rs.getString("content");
+               task.title = rs.getString("title");
+               task.rewards = rs.getInt("rewards");
+               task.acceptor = rs.getString("acceptor");
+               task.type = rs.getString("type");
+               task.status=rs.getString("status");
+               tasks.add(task);
+           }
+           return tasks;
         }
     }
 
@@ -127,7 +153,11 @@ public class DBControl {
                 User user = new User();
                 Blob blob=rs.getBlob("picture");
                 if(blob!=null)
-                user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());
+                    user.headPortrait = BitmapFactory.decodeStream(blob.getBinaryStream());
+            ///   if(blob!=null) {
+            ///       byte[] bytes=blob.getBytes(1, (int) blob.length());
+            ///       user.headPortrait = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+            ///   }
                 user.phone = rs.getString("phone");
                 user.acceptedTask = rs.getInt("acceptedTask");
                 user.completedTask = rs.getInt("completedTask");
@@ -280,8 +310,8 @@ public class DBControl {
     }
     //根据任务ID和接受人添加正在请求的任务项
     public static  void addRequestingTask(String phone, int ID) throws SQLException {
-        try (Connection conn = GetConnection();) {
-            PreparedStatement stat = conn.prepareStatement("insert into pendingTask values(?,?)");
+        try (Connection conn = GetConnection();
+             PreparedStatement stat = conn.prepareStatement("insert into pendingTask values(?,?)")) {
             stat.setString(1, phone);
             stat.setInt(2, ID);
             stat.executeUpdate();
@@ -369,13 +399,12 @@ public class DBControl {
      * 根据图像，手机号，昵称，性别，学院，年级，地址更新用户信息
      *
      * @param name
-     * @param sex
      * @param dept
      * @param grade
      * @param address
      * @throws SQLException
      */
-    public static  boolean updateUser(Bitmap bmp,String phone, String name, String sex, String dept, String grade,
+    public static  boolean updateUser(Bitmap bmp,String phone, String name, String dept, String grade,
                                       String address) throws SQLException {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE)) {
@@ -383,13 +412,14 @@ public class DBControl {
             if (rs.next()) {
                 if(bmp!=null) {
                     Blob blob = conn.createBlob();
-                    OutputStream os = blob.setBinaryStream(0);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, os);//将bmp图片存入数据库
+                    ByteArrayOutputStream bos=new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);//将bmp图片存入数据库
+                    blob.setBytes(1,bos.toByteArray());
                     rs.updateBlob("picture", blob);
                 }
                 rs.updateString("name", name);
                 rs.updateString("dept", dept);
-                rs.updateString("sex", sex);
+                rs.updateString("grade",grade);
                 rs.updateString("address", address);
                 rs.updateRow();
                 return true;

@@ -41,7 +41,6 @@
                 android:layout_height="113dp"
                 android:layout_marginTop="84dp"
                 android:elevation="3dp"
-                android:src="@drawable/test"
                 app:border_color="#FFFAFA"
                 app:border_width="4dp"
                 app:inner_border_color="#F08080"
