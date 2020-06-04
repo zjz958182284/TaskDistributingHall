@@ -17,8 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity android:name=".Activity.MissionDetailPage"/>
         <activity android:name=".Resume_page"></activity>
+
+        <activity android:name=".AcceptedTaskDetailPage"></activity>
+        <activity android:name=".PublishedTaskDetailPage" />
+        <activity android:name=".Resume_page"/>
+
         <activity android:name=".Mission_detail_page" />
         <activity android:name=".Activity.AddMissionPage" />
         <activity android:name=".Fragment.PersonalCenter.ModifyPersonalInfo" />
