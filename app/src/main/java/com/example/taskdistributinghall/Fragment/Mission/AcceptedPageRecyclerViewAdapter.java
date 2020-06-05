@@ -12,52 +12,100 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskdistributinghall.AcceptedTaskDetailPage;
+import com.example.taskdistributinghall.Fragment.Home.RecyclerViewAdapter;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
 import java.util.List;
 
-public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<AcceptedPageRecyclerViewAdapter.AcceptedPageViewHolder>{
-    private List<String> acceptedPageMissionTitle;//标题
-
-    public AcceptedPageRecyclerViewAdapter(List<String> listStr){
-        acceptedPageMissionTitle=listStr;
+public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<AcceptedPageRecyclerViewAdapter.ViewHolder>{
+    private List<Task> tasks;
+    private LayoutInflater inflater;
+    private AcceptedPageRecyclerViewAdapter.ItemClick itemClick;
+    public AcceptedPageRecyclerViewAdapter(Context context,List<Task> tasks){
+        this.tasks=tasks;
+        inflater=LayoutInflater.from(context);
     }
 
-    public class AcceptedPageViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
-        public ImageView imgView;
-        public TextView textView;
+    public void setTasks(List<Task> tasks){
+        this.tasks=tasks;
+    }
 
-        public  AcceptedPageViewHolder(View itemView){
-            super(itemView);
-            imgView=itemView.findViewById(R.id.accepted_page_mission_view);
-            textView=itemView.findViewById(R.id.accepted_page_mission_title);
-            itemView.setOnClickListener(this); // 處理按下的事件。
-        }
-        @Override
-        public void onClick(View v) {
-            Context context= v.getContext();
-            Intent intent =new Intent(context, AcceptedTaskDetailPage.class);
-            context.startActivity(intent);
-        }
+
+    @NonNull
+    @Override
+    public AcceptedPageRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v= inflater.inflate(R.layout.home_page_mission_view,parent,false);
+
+        return new ViewHolder(v);
     }
 
 
 
     @Override
-    public AcceptedPageRecyclerViewAdapter.AcceptedPageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.accepted_task_view,parent,false);
-        AcceptedPageRecyclerViewAdapter.AcceptedPageViewHolder viewHolder=new AcceptedPageRecyclerViewAdapter.AcceptedPageViewHolder(v);
-        return viewHolder;
+    public void onBindViewHolder(@NonNull AcceptedPageRecyclerViewAdapter.ViewHolder holder, int position) {
+        // 把資料設定給 holder。
+        holder.imgView.setImageBitmap(tasks.get(position).taskPhoto);
+        holder.timeView.setText((tasks.get(position).date).substring(0,16));
+        holder.titleView.setText(tasks.get(position).title);
+        holder.detailView.setText(tasks.get(position).content);
+        holder.idView.setText(String.valueOf(tasks.get(position).id));
+        int rewards=tasks.get(position).rewards;
+        String reward=String.valueOf(rewards);
+        holder.bountyView.setText(reward+"元");
+        String type=tasks.get(position).type;
+        if(type.equals("errand"))
+            type="跑腿";
+        else if(type.equals("study"))
+            type="学习";
+        else type="合作";
+        holder.typeView.setText(type);
+        View v=holder.itemView;
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick!=null)
+                    itemClick.onItemClick(tasks.get(position));
+            }
+        });
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull AcceptedPageRecyclerViewAdapter.AcceptedPageViewHolder holder, int position) {
-        holder.imgView.setImageResource(R.drawable.test1);
-        holder.textView.setText(acceptedPageMissionTitle.get(position));
-    }
 
+    public void setItemClick(AcceptedPageRecyclerViewAdapter.ItemClick itemClick) {
+        this.itemClick = itemClick;
+    }
     @Override
     public int getItemCount() {
-        return acceptedPageMissionTitle.size();
+        return tasks.size();
+    }
+
+
+
+    class ViewHolder extends  RecyclerView.ViewHolder {
+        private ImageView imgView;
+        private TextView titleView;
+        private   TextView detailView;
+        private TextView bountyView;
+        private TextView timeView;
+        private TextView typeView;
+        private  TextView idView;
+
+
+        //包含有每一行的View
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imgView=itemView.findViewById(R.id.mission_view);
+            titleView =itemView.findViewById(R.id.mission_title);
+            detailView=itemView.findViewById(R.id.description_text);
+            bountyView=itemView.findViewById(R.id.bounty);
+            timeView=itemView.findViewById(R.id.date);
+            typeView=itemView.findViewById(R.id.mission_type);
+            idView=itemView.findViewById(R.id.task_id);
+        }
+
+    }
+
+    public  static  interface  ItemClick{
+        void onItemClick(Task task);
     }
 }

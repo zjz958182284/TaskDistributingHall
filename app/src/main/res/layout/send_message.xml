@@ -23,6 +23,7 @@
             android:layout_alignParentRight="true"
             android:layout_width="50dp"
             android:layout_height="40dp"
+            android:scaleType="fitXY"
             android:layout_alignTop="@id/textViewSend"
             android:layout_marginRight="5dp"
             android:background="@color/black"

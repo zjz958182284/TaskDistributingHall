@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -22,14 +24,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
+import com.example.taskdistributinghall.Fragment.Home.RecyclerViewAdapter;
 import com.example.taskdistributinghall.Fragment.PersonalCenter.ModifyPersonalInfo;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 public class AddMissionPage extends AppCompatActivity {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private final  static int REQUEST_IMAGE_CAPTURE=1;
     ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +113,21 @@ public class AddMissionPage extends AppCompatActivity {
                                     }
                                 });
                             else {
-                                DBControl.addTask(phone, detail, title, taskType, bounty);
+                                HomeFragment homeFragment=HomeFragment.getInstance();
+                                RecyclerViewAdapter adapter=homeFragment.getAdapter();
+                                DBControl.addTask(bitmap,phone, detail, title, taskType, bounty);
+                                List<Task> tasks=DBControl.searchAllTask();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(AddMissionPage.this, "发布任务成功",
                                                 Toast.LENGTH_SHORT).show();
                                         button.setVisibility(View.GONE);
+
+                                        //更新任务大厅界面
+                                        homeFragment.setTasks(tasks);
+                                        adapter.setTasks(tasks);
+                                        adapter.notifyDataSetChanged();
                                     }
                                 });
                             }
@@ -154,15 +169,39 @@ public class AddMissionPage extends AppCompatActivity {
                     imageBitmap = (Bitmap) extras.get("data");
                 }
 
-                // Get the dimensions of the View
-                int targetW = imageView.getWidth();
-                int targetH = imageView.getHeight();
-
-                if (imageBitmap != null) {
-                    imageBitmap = zoomBitmap(imageBitmap, targetW, targetH);
-                }
+            //    // Get the dimensions of the View
+            //    int targetW = imageView.getWidth();
+            //    int targetH = imageView.getHeight();
+//
+            //    if (imageBitmap != null) {
+            //        imageBitmap = zoomBitMap(imageBitmap, targetW, targetH);
+            //    }
                 imageView.setImageBitmap(imageBitmap);
             }
+        }
+
+        public Bitmap zoomBitMap(Bitmap bitmap,int w,int h){
+
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+
+            int photoW = bitmap.getWidth();
+            int photoH = bitmap.getHeight();
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(w,h);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+            byte[] bytes=bos.toByteArray();
+            bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,bmOptions);
+            return bitmap;
         }
 
         public  Bitmap zoomBitmap(Bitmap bitmap, int w, int h){
@@ -172,9 +211,8 @@ public class AddMissionPage extends AppCompatActivity {
             float scaleWidth = ((float) w / width);
             float scaleHeight = ((float) h / height);
             matrix.postScale(scaleWidth, scaleHeight);
-            Bitmap newBmp = Bitmap.createBitmap(bitmap, 0, 0, width, height,
+            return Bitmap.createBitmap(bitmap, 0, 0, width, height,
                     matrix, true);
-            return newBmp;
         }
 
 

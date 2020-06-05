@@ -328,6 +328,7 @@ public class Chat extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     messages.add(new Message(record, Message.heSend));
+                                    listViewAdapter.notifyDataSetChanged();
                                     listView.setSelection(messages.size()-1);
                                 }
                             });

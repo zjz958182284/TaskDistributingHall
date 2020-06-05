@@ -1,6 +1,8 @@
 package com.example.taskdistributinghall.Fragment.PersonalCenter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +10,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TabHost;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
+import com.shehuan.niv.NiceImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +28,38 @@ import java.util.List;
 import java.util.Map;
 
 public class PersonalCenterFragment extends Fragment {
-
+    User user;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.personal_center_page,null);
+
+        Thread thread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                String phone=sp.getString("phone","");
+                user= DBControl.searchUserByPhone(phone);
+
+            }
+        });
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        TextView name=view.findViewById(R.id.personal_name_text);
+        NiceImageView photo=view.findViewById(R.id.profile_photo);
+        TextView publish=view.findViewById(R.id.published_task_number);
+        TextView accept=view.findViewById(R.id.accepted_task_number);
+        name.setText(user.name);
+        publish.setText(String.valueOf(user.completedTask));
+        accept.setText(String.valueOf(user.acceptedTask));
+        photo.setImageBitmap(user.headPortrait);
         init(view);
         return view;
      }

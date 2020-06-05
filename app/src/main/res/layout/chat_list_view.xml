@@ -37,42 +37,54 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/chat_head_image"
             app:layout_constraintTop_toTopOf="parent"/>
+
+
         <TextView
-            android:id="@+id/his_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="18679595"
-            android:visibility="invisible"
-            android:textSize="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@id/chat_name"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginBottom="8dp"
+            android:text="未读消息:"
+            app:layout_constraintBottom_toTopOf="@id/message_text"
+            app:layout_constraintHorizontal_bias="0.663"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="36"
+            android:textColor="@color/btn_bg_pressed"
+            app:layout_constraintBottom_toTopOf="@id/message_text"
+
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/time" />
+
         <TextView
             android:id="@+id/message_text"
             android:layout_width="0dp"
+
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="10dp"
-            android:textSize="17dp"
+            android:ellipsize="end"
             android:maxLines="1"
             android:minLines="1"
-            android:ellipsize="end"
             android:text="想找个人帮忙做android项目,要不然最近一直熬夜，已经快要暴毙了，求找个人来求救"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:textSize="17dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@id/chat_head_image"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chat_name" />
 
-
         <TextView
             android:id="@+id/time"
-            android:text="上午0:12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="160dp"
+            android:text="上午0:12"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

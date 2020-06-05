@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PublishedTaskDetailPage">
+    tools:context=".Activity.PublishedTaskDetail.PublishedTaskDetailPage">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -89,12 +89,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"/>
+
                 <ImageView
                     android:id="@+id/published_task_detail_page_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
                     android:background="@drawable/test1"
                     app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_detail_text"
+                    tools:layout_editor_absoluteX="16dp" />
+
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"></ImageView>
+                    android:layout_height="60dp"
+                    android:text="查看请求人列表"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_image_view"
+                    android:layout_margin="15dp"/>
+
 
 
 

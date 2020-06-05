@@ -1,5 +1,8 @@
 package com.example.taskdistributinghall.Fragment.Mission;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,35 +14,82 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.taskdistributinghall.AcceptedTaskDetailPage;
+import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AcceptedTaskPage extends Fragment {
+
+    private  List<Task> tasks;
+    private AcceptedPageRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+
+
+
+    public AcceptedTaskPage(List<Task> tasks){this.tasks=tasks;}
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.accepted_task_page,null);
+        View view=inflater.inflate(R.layout.published_task_page,null);
+        recyclerView=view.findViewById(R.id.published_task_recycler_view);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        adapter=new AcceptedPageRecyclerViewAdapter(getContext(),tasks);
+        adapter.setItemClick(new AcceptedPageRecyclerViewAdapter.ItemClick() {
+            @Override
+            public void onItemClick(Task task) {
+                Intent intent=new Intent();
+                intent.putExtra("id",task.id);
+                intent =new Intent(getContext(), AcceptedTaskDetailPage.class);
+                startActivity(intent);
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        // 把項目清單準備好，放在一個List物件裏頭
-        List<String> listStr = new ArrayList<>();
-        for (int i = 0; i < 50; i++)
-            listStr.add(new String("第" + String.valueOf(i+1) + "項"));
-        RecyclerView recyclerView=view.findViewById(R.id.accepted_page_recycler_view);
-
-        // 設定RecyclerView使用的LayoutManager，
-        // LayoutManager決定項目的排列方式。
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
-
-        // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
-        AcceptedPageRecyclerViewAdapter adapter=new AcceptedPageRecyclerViewAdapter(listStr);
-        recyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //不是第一次加载滑动到这个fragment
+                    if(adapter!=null) {
+                        SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                        String phone=sp.getString("phone","");
+                        tasks= DBControl.searchAcceptedTask(phone);
+                        adapter.setTasks(tasks);
+                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }
+            }).start();
+
+
+        }
     }
 }

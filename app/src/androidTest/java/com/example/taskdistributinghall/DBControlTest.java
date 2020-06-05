@@ -32,6 +32,14 @@ public class DBControlTest {
     }
 
     @Test
+    public void searPublisher(){
+
+            User user=DBControl.searPublisher(18);
+            assertNotNull(user);
+
+    }
+
+    @Test
     public void searchTaskState() {
         Task.taskState state=DBControl.searchTaskState(1);
         assertNotNull(state);
@@ -117,8 +125,8 @@ public class DBControlTest {
     @Test
     public void addTask() {
         try {
-            DBControl.addTask("19945102192","test","test","study",5);
-            DBControl.addTask("123","test","test","errand",6);
+            DBControl.addTask(null,"19945102192","test","test","study",5);
+            DBControl.addTask(null,"123","test","test","errand",6);
         } catch (SQLException e) {
             e.printStackTrace();
         }

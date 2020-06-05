@@ -77,37 +77,37 @@
                     android:id="@+id/location_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="28dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:minLines="1"
                     android:text="日期:"
                     android:textStyle="bold"
-                    app:layout_constraintLeft_toRightOf="@id/mission_type"
+                    app:layout_constraintLeft_toRightOf="@id/mission_view"
                     app:layout_constraintTop_toBottomOf="@id/description_text" />
 
                 <TextView
                     android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
                     android:text="2020-06-03 20:23"
                     app:layout_constraintBaseline_toBaselineOf="@id/location_text"
-                    android:layout_marginStart="3dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/description_text"
-                    app:layout_constraintLeft_toRightOf="@id/location_text"/>
+                    app:layout_constraintLeft_toRightOf="@id/location_text"
+                    app:layout_constraintTop_toBottomOf="@id/description_text" />
 
                 <TextView
-                    android:layout_marginTop="3dp"
                     android:id="@+id/mission_type_text"
-                    android:text="任务类型:"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/bounty_text"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="4dp"
+                    android:text="任务类型:"
+                    android:textStyle="bold"
 
-                    app:layout_constraintLeft_toRightOf="@id/mission_view"/>
-
+                    app:layout_constraintLeft_toRightOf="@id/bounty"
+                    app:layout_constraintTop_toBottomOf="@id/description_text" />
 
                 <TextView
                     android:id="@+id/mission_type"
@@ -124,14 +124,16 @@
                     android:id="@+id/task_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="44dp"
-                    android:layout_marginTop="4dp"
                     android:text="id"
-
                     android:visibility="invisible"
                     app:layout_constraintBaseline_toBaselineOf="@id/mission_type_text"
+
+                    app:layout_constraintBottom_toBottomOf="@id/mission_type"
+                    app:layout_constraintHorizontal_bias="0.488"
                     app:layout_constraintLeft_toRightOf="@id/mission_type"
-                    app:layout_constraintTop_toBottomOf="@id/bounty_text" />
+                    app:layout_constraintRight_toRightOf="@id/date"
+                    app:layout_constraintTop_toBottomOf="@id/bounty_text"
+                    app:layout_constraintVertical_bias="0.0" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

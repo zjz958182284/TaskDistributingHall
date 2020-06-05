@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.taskdistributinghall">
 
+    <meta-data
+
+        android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+
+        android:value="true" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,6 +15,7 @@
         android:required="true" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label=""
@@ -18,14 +24,15 @@
         android:theme="@style/AppTheme">
 
 
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
         <activity android:name=".Activity.MissionDetailPage"/>
         <activity android:name=".Resume_page"></activity>
 
         <activity android:name=".AcceptedTaskDetailPage"></activity>
-        <activity android:name=".PublishedTaskDetailPage" />
-        <activity android:name=".Resume_page"/>
-
-        <activity android:name=".Mission_detail_page" />
+        <activity android:name=".Activity.PublishedTaskDetail.PublishedTaskDetailPage" />
+        <activity android:name=".Mission_detail_page"/>
         <activity android:name=".Activity.AddMissionPage" />
         <activity android:name=".Fragment.PersonalCenter.ModifyPersonalInfo" />
         <activity android:name=".Fragment.PersonalCenter.AboutPage" />
@@ -33,6 +40,7 @@
         <activity android:name=".Activity.MainPage.MainActivity" />
         <activity android:name=".Activity.ChatPage.Chat"/>
         <activity android:name=".Activity.Login">
+
 
 
             <intent-filter>

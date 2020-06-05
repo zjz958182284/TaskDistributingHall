@@ -33,7 +33,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="337dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="left">
 
@@ -45,62 +45,38 @@
                 android:textStyle="bold"
                 android:textColor="#FF7F50"
                 android:padding="10dp"
-                android:text="添加简历" />
+                android:text="添加个人简历描述：" />
 
-            <ImageButton
-                android:id="@+id/select_view"
+            <EditText
+                android:id="@+id/mission_description_edit"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="center"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/add_icon"
-                android:elevation="8dp"/>
+
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_border"
+                android:ems="5"
+                android:enabled="true"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="80"
+                android:minLines="80"
+                android:scrollbars="vertical" />
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/resume_page_card_view2"
-        app:layout_constraintTop_toBottomOf="@id/resume_page_card_view1"
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/resume_page_m_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="#FF7F50"
-        android:padding="10dp"
-        android:gravity="center"
-        android:text="自我介绍" />
-    <EditText
-        android:id="@+id/mission_description_edit"
-        android:layout_width="match_parent"
-        android:gravity="top"
-        android:enabled="true"
-        android:layout_height="wrap_content"
-        android:ems="5"
-        android:minLines="8"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        android:layout_margin="10dp"
-        android:background="@drawable/custom_border"
-        android:inputType="textMultiLine" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
         <Button
+            android:id="@+id/resume_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="160dp"
             android:text="确认接取"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/resume_page_card_view2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintTop_toBottomOf="@id/resume_page_card_view1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

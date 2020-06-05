@@ -24,6 +24,7 @@
             android:layout_height="113dp"
             android:layout_marginTop="84dp"
             android:elevation="3dp"
+            android:scaleType="fitXY"
             android:importantForAutofill="auto"
             app:border_color="#FFFAFA"
             app:border_width="4dp"

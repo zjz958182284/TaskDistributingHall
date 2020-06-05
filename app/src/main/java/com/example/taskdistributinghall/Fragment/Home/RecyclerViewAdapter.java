@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.taskdistributinghall.Activity.MainPage.MainActivity;
 import com.example.taskdistributinghall.Mission_detail_page;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
@@ -24,10 +25,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // 儲存要顯示的資料。
     private List<Task> tasks;
     private LayoutInflater inflater;
-
+    private ItemClick itemClick;
+    public List<Task> getTasks(){
+        return tasks;
+    }
+    public void setTasks(List<Task> tasks){
+         this.tasks=tasks;
+    }
     public RecyclerViewAdapter(Context context,@NotNull List<Task> tasks) {
         this.tasks=tasks;
         this.inflater=LayoutInflater.from(context);
+
     }
 
 
@@ -43,6 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //为每一行填充数据
         View v= inflater.inflate(R.layout.home_page_mission_view,parent,false);
         return new ViewHolder(v);
     }
@@ -52,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // 把資料設定給 holder。
-        holder.imgView.setImageResource(R.drawable.test1);
+        holder.imgView.setImageBitmap(tasks.get(position).taskPhoto);
         holder.timeView.setText((tasks.get(position).date).substring(0,16));
         holder.titleView.setText(tasks.get(position).title);
         holder.detailView.setText(tasks.get(position).content);
@@ -68,6 +77,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             type="学习";
         else type="合作";
         holder.typeView.setText(type);
+        View v=holder.itemView;
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick!=null)
+                itemClick.onItemClick(tasks.get(position));
+            }
+        });
+
     }
 
 
@@ -78,11 +96,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return tasks.size();
     }
 
+    public void setItemClick(ItemClick itemClick) {
+        this.itemClick = itemClick;
+    }
 
 
     // ViewHolder 是把項目中所有的 View 物件包起來。
     // 它在 onCreateViewHolder() 中使用。
-    class ViewHolder extends  RecyclerView.ViewHolder {
+   public  class ViewHolder extends  RecyclerView.ViewHolder {
        private ImageView imgView;
        private TextView titleView;
        private   TextView detailView;
@@ -92,6 +113,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
        private  TextView idView;
 
 
+       //包含有每一行的View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgView=itemView.findViewById(R.id.mission_view);
@@ -102,4 +124,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             typeView=itemView.findViewById(R.id.mission_type);
             idView=itemView.findViewById(R.id.task_id);
         }
-}}
+
+}
+
+
+    public  static  interface  ItemClick{
+        void onItemClick(Task task);
+    }
+}

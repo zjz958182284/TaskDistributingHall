@@ -8,8 +8,6 @@ import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -51,6 +49,9 @@ public class DBControl {
                 Task task = new Task();
                 task.id = rs.getInt("id");
                 task.date = rs.getString("date");
+                Blob blob=rs.getBlob("picture");
+                if(blob!=null)
+                task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                 task.publisher = rs.getString("publisher");
                 task.content = rs.getString("content");
                 task.title = rs.getString("title");
@@ -74,7 +75,13 @@ public class DBControl {
            ResultSet rs= stat.executeQuery("select * from task order by date desc");
            List<Task> tasks=new ArrayList<>();
            while ((rs.next())){
+               String status=rs.getString("status");
+               if(!status.equals("unaccepted")) continue;
                Task task=new Task();
+               task.status=status;
+               Blob blob=rs.getBlob("picture");
+               if(blob!=null)
+               task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                task.id = rs.getInt("id");
                task.date = rs.getString("date");
                task.publisher = rs.getString("publisher");
@@ -83,7 +90,7 @@ public class DBControl {
                task.rewards = rs.getInt("rewards");
                task.acceptor = rs.getString("acceptor");
                task.type = rs.getString("type");
-               task.status=rs.getString("status");
+
                tasks.add(task);
            }
            return tasks;
@@ -126,6 +133,9 @@ public class DBControl {
                     if(!status.equals("unaccepted")) continue;
                     Task task = new Task();
                     task.status = status;
+                    Blob blob=rs.getBlob("picture");
+                    if(blob!=null)
+                    task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                     task.id = rs.getInt("id");
                     task.date = rs.getString("date");
                     task.publisher = rs.getString("publisher");
@@ -184,6 +194,9 @@ public class DBControl {
             if (rs.next()) {
                 do {
                     Task task = new Task();
+                    Blob blob=rs.getBlob("picture");
+                    if(blob!=null)
+                    task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                     task.id = rs.getInt("id");
                     task.date = rs.getString("date");
                     task.publisher = rs.getString("publisher");
@@ -195,8 +208,7 @@ public class DBControl {
                     task.type = rs.getString("type");
                     list.add(task);
                 } while (rs.next());
-                return list;
-            } else return null;
+            } return list;
         } catch (SQLException e) {
             return null;
         }
@@ -211,6 +223,9 @@ public class DBControl {
             if (rs.next()) {
                 do {
                     Task task = new Task();
+                    Blob blob=rs.getBlob("picture");
+                    if(blob!=null)
+                    task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                     task.id = rs.getInt("id");
                     task.date = rs.getString("date");
                     task.publisher = rs.getString("publisher");
@@ -222,8 +237,7 @@ public class DBControl {
                     task.type = rs.getString("type");
                     list.add(task);
                 } while (rs.next());
-                return list;
-            } else return null;
+            } return list;
         } catch (SQLException e) {
             return null;
         }
@@ -242,6 +256,37 @@ public class DBControl {
         }
     }
 
+    //根据任务ID查询任务发布人
+    public static User searPublisher(int ID) {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()) {
+            ResultSet rs = stat.executeQuery("select user.* from task,user where id=" + ID + " and task.publisher=user.phone");
+            if (rs.next()) {
+                User user = new User();
+                Blob blob = rs.getBlob("picture");
+                if (blob != null)
+                    user.headPortrait = BitmapFactory.decodeStream(blob.getBinaryStream());
+                ///   if(blob!=null) {
+                ///       byte[] bytes=blob.getBytes(1, (int) blob.length());
+                ///       user.headPortrait = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                ///   }
+                user.phone = rs.getString("phone");
+                user.acceptedTask = rs.getInt("acceptedTask");
+                user.completedTask = rs.getInt("completedTask");
+                user.address = rs.getString("address");
+                user.dept = rs.getString("dept");
+                user.grade = rs.getString("grade");
+                user.sex = rs.getString("sex");
+                user.name = rs.getString("name");
+                user.ip = rs.getString("ip");
+                return user;
+            } else return null;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     //根据任务ID查询正在请求任务的用户的集合
     public static  List<User> searchRequestingUser(int ID) {
         try (Connection conn = GetConnection();
@@ -253,6 +298,7 @@ public class DBControl {
                 do {
                     User user = new User();
                     Blob blob=rs.getBlob("picture");
+                    if(blob!=null)
                     user.headPortrait= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
                     user.phone = rs.getString("phone");
                     user.acceptedTask = rs.getInt("acceptedTask");
@@ -309,11 +355,12 @@ public class DBControl {
         }
     }
     //根据任务ID和接受人添加正在请求的任务项
-    public static  void addRequestingTask(String phone, int ID) throws SQLException {
+    public static  void addRequestingTask(String phone, int ID,String resume) throws SQLException {
         try (Connection conn = GetConnection();
-             PreparedStatement stat = conn.prepareStatement("insert into pendingTask values(?,?)")) {
+             PreparedStatement stat = conn.prepareStatement("insert into pendingTask values(?,?,?)")) {
             stat.setString(1, phone);
             stat.setInt(2, ID);
+            stat.setString(3,resume);
             stat.executeUpdate();
         }
     }
@@ -438,11 +485,18 @@ public class DBControl {
      * @param rewards
      * @throws SQLException
      */
-    public  static void addTask( String publisher, String content,
+    public  static void addTask( Bitmap bmp,String publisher, String content,
                         String title, String type, int rewards) throws SQLException {
         try (Connection connc = GetConnection();
              PreparedStatement stat = connc.prepareStatement("insert into task (publisher" +
-                     ",content,title,type,rewards)values(?,?,?,?,?)" )) {
+                     ",content,title,type,rewards,picture)values(?,?,?,?,?,?)" )) {
+            Blob blob = connc.createBlob();
+            if(bmp!=null) {
+                ByteArrayOutputStream bos=new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);//将bmp图片存入数据库
+                blob.setBytes(1,bos.toByteArray());
+            }
+            stat.setBlob(6,blob);
             stat.setInt(5, rewards);
             stat.setString(1, publisher);
             stat.setString(2, content);
@@ -483,13 +537,13 @@ public class DBControl {
      * 删除离线聊天记录
      */
 
-    public static  boolean deleteRecords(String senderPhone,String receiverPhone) throws SQLException {
+    public static void deleteRecords(String senderPhone, String receiverPhone) throws SQLException {
         try (Connection connc = GetConnection();
              PreparedStatement stat = connc.prepareStatement("delete from chatRecordTemp " +
                      "where senderPhone=? and receiverPhone=? ")){
             stat.setString(1,senderPhone);
             stat.setString(2,receiverPhone);
-            return stat.executeUpdate()>0;
+            stat.executeUpdate();
         }
     }
     /**

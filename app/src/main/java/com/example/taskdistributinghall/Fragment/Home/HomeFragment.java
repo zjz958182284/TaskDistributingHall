@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inspector.StaticInspectionCompanionProvider;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,26 +20,53 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.taskdistributinghall.Activity.AddMissionPage;
+import com.example.taskdistributinghall.Activity.Login;
+import com.example.taskdistributinghall.Activity.MainPage.MainActivity;
 import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Mission_detail_page;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.taskdistributinghall.R.layout;
 
 public class HomeFragment  extends Fragment {
 
- private List<Task> tasks;
- private RecyclerViewAdapter adapter;
+    private static HomeFragment homeFragment=null;
+    private List<Task> tasks ;
+    private RecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
+    private RecyclerViewAdapter.ItemClick itemClick;
     private View view;
     public  HomeFragment(List<Task> tasks){
         this.tasks=tasks;
+       homeFragment=this;
     }
 
+    public void setItemClick(RecyclerViewAdapter.ItemClick itemClick){this.itemClick=itemClick;}
+
+    public void setTasks(List<Task> tasks){
+        this.tasks=tasks;
+    }
+    public List<Task> getTasks(){
+        return tasks;
+    }
+    public RecyclerViewAdapter getAdapter(){
+        return adapter;
+    }
+
+
+    //无奈之举
+    //永远获取当前实例对象（不是单例模式）
+    public static HomeFragment getInstance() {
+     if(homeFragment!=null)
+         return homeFragment;
+       else return null;
+    }
 
     @Nullable
     @Override
@@ -46,6 +74,18 @@ public class HomeFragment  extends Fragment {
         View view=inflater.inflate(R.layout.home_page,container,false);
         recyclerView=view.findViewById(R.id.home_page_recycler_view);
         adapter=new RecyclerViewAdapter(getContext(),tasks);
+
+        adapter.setItemClick(new RecyclerViewAdapter.ItemClick() {
+            @Override
+            public void onItemClick(Task task) {
+                Intent intent=new Intent();
+                intent.putExtra("id",task.id);
+                intent.putExtra("publisher",task.publisher);
+                intent.setClass(getContext(), Mission_detail_page.class);
+                startActivity(intent);
+            }
+        });/////////
+
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -81,12 +121,44 @@ public class HomeFragment  extends Fragment {
         switch (item.getItemId()){
             case R.id.add_bar:
                 Intent intent1=new Intent(getActivity(), AddMissionPage.class);
-              // Bundle bundle=
-              // startActivity(intent1);
+               startActivity(intent1);
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+    //每次滑动到这个碎片就 实时 更新任务界面显示
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
 
-}
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //不是第一次加载滑动到这个fragment
+                        if(adapter!=null) {
+                        tasks=DBControl.searchAllTask();
+                            adapter.setTasks(tasks);
+                            Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
+        }
+    }
+
+
+
+    }
+
