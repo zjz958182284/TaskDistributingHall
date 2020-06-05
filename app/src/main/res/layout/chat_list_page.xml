@@ -39,9 +39,9 @@
         android:elevation="2dp"
         android:src="@drawable/test"
         app:border_color="#FFFAFA"
-
-        app:inner_border_color="#4D80E6"
-
+        app:border_width="1dp"
+        app:inner_border_color="#F08080"
+        app:inner_border_width="1dp"
         app:is_circle="true"
         app:is_cover_src="true"
         tools:ignore="MissingConstraints" />

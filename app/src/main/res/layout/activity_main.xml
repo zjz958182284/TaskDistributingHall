@@ -19,7 +19,7 @@
       app:layout_scrollFlags="scroll"
       app:tabIndicatorHeight="0dp"
       app:tabMode="fixed"
-      app:tabSelectedTextColor="#6495ED" />
+      app:tabSelectedTextColor="#FF6347" />
 
   <androidx.viewpager.widget.ViewPager
         android:id="@+id/id_vp"
