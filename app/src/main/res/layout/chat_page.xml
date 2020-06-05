@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:padding="5dp"
         android:id="@+id/line2"
-        android:background="#F08080"
+        android:background="#4169E1"
         android:layout_height="wrap_content">
 
         <com.shehuan.niv.NiceImageView
@@ -64,10 +64,7 @@
             android:layout_weight="2"
             android:elevation="2dp"
             android:src="@drawable/test"
-            app:border_color="#FFFAFA"
-            app:border_width="1dp"
-            app:inner_border_color="#F08080"
-            app:inner_border_width="1dp"
+
             app:is_circle="true"
             app:is_cover_src="true" />
 

@@ -14,7 +14,7 @@
         android:layout_margin="10dp"
         android:layout_marginTop="16dp"
         android:elevation="10dp"
-        app:cardBackgroundColor="#FA8072"
+        app:cardBackgroundColor="	#4169E1"
         app:cardCornerRadius="10dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="9dp">
@@ -44,7 +44,7 @@
                 android:src="@drawable/test"
                 app:border_color="#FFFAFA"
                 app:border_width="4dp"
-                app:inner_border_color="#F08080"
+                app:inner_border_color="#4D80E6"
                 app:inner_border_width="4dp"
                 app:is_circle="true"
                 app:is_cover_src="true"

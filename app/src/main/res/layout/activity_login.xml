@@ -4,36 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activity.Login">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="170dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/phone_edit"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/tomato" />
+        app:srcCompat="@drawable/test2" />
 
 
     <EditText
         android:id="@+id/phone_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:ems="10"
-        android:inputType="phone"
         android:hint="Phone Number"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:inputType="phone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
-
-
+        app:layout_constraintVertical_bias="0.384" />
 
     <EditText
         android:id="@+id/password_edit"
@@ -41,31 +42,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:ems="10"
+        android:layout_margin="20dp"
         app:layout_constraintHorizontal_weight="2"
         android:hint="password"
+
         android:inputType="textPassword"
         android:paddingTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/phone_edit" />
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="30dp"
+        android:layout_margin="20dp"
         android:text="Login"
+        android:background="#4D80E6"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_edit" />
+        app:layout_constraintTop_toBottomOf="@id/forget_text" />
 
     <TextView
         android:id="@+id/forget_text"
         android:clickable="true"
-        android:textColor="@color/colorAccent"
         android:autoLink="all"
         android:textStyle="italic"
         android:textSize="15dp"
         android:layout_marginRight="5dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
@@ -76,6 +83,7 @@
     <TextView
         android:id="@+id/create_text"
         android:clickable="true"
+        android:textSize="15dp"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

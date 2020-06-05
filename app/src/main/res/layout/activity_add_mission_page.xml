@@ -17,8 +17,7 @@
         android:id="@+id/add_mission_toolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:theme="@style/ToolbarTheme"
-        android:background="@color/colorPrimary"
+        android:background="#4169E1"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="MissingConstraints" />
@@ -47,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                android:textColor="#FF7F50"
+                android:textColor="#000000"
                 android:padding="10dp"
                 android:text="添加图片" />
 
@@ -86,8 +85,8 @@
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:textColor="#FF7F50"
                         android:padding="10dp"
+                        android:textColor="#000000"
                         android:text="请选择任务类型" />
 
 
@@ -105,7 +104,7 @@
                             android:text="跑腿"
                             android:layout_weight="1"
                             android:textSize="20dp"
-                            android:textColor="#FF7F50"
+
                             />
                         <RadioButton
                             android:id="@+id/study"
@@ -114,7 +113,7 @@
                             android:text="学习"
                             android:layout_weight="1"
                             android:textSize="20dp"
-                            android:textColor="#FF7F50"
+
                             />
                         <RadioButton
                             android:id="@+id/collaboration"
@@ -123,7 +122,7 @@
                             android:text="合作"
                             android:layout_weight="1"
                             android:textSize="20dp"
-                            android:textColor="#FF7F50"
+
                             />
 
                     </RadioGroup>
@@ -135,7 +134,7 @@
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:layout_marginTop="15dp"
-                    android:textColor="#FF7F50"
+                        android:textColor="#000000"
                     android:padding="10dp"
                         android:gravity="center"
                     android:text="任务标题" />
@@ -151,8 +150,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
+                        android:textColor="#000000"
                         android:textStyle="bold"
-                        android:textColor="#FF7F50"
                         android:padding="10dp"
                         android:gravity="center"
                         android:text="任务详细" />
@@ -195,7 +194,7 @@
             android:text="赏金（请输入整数金额）"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:textColor="#FF7F50"
+            android:textColor="#000000"
             android:padding="10dp" />
         <EditText
             android:id="@+id/bounty_edit"
@@ -212,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
+        android:background="#4D80E6"
         android:text="确认发布"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"

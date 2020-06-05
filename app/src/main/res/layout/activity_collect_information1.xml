@@ -11,7 +11,7 @@
         app:title="完善资料"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary"
+        android:background="#4169E1"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="MissingConstraints" />
@@ -108,6 +108,7 @@
         android:layout_height="wrap_content"
         android:text="确认"
         android:layout_marginTop="30dp"
+        android:background="#4D80E6"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/age_edit"/>

@@ -4,12 +4,12 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#6A5ACD</item>
-        <item name="colorPrimaryDark">#FF6347</item>
-        <item name="colorAccent">#FFFFFF</item>
-        <item name="colorControlActivated">#FF0000</item>
+        <item name="colorPrimaryDark">#4169E1</item>
+        <item name="colorAccent">#007FFF</item>
+        <item name="colorControlActivated">#1E90FF</item>
         <item name="android:colorPrimary">#8CE600</item>
-        <item name="android:textColorPrimary">#33E6CC</item>
-        <item name="android:textColorSecondary">#FF8033</item>
+        <item name="android:textColorPrimary">#FFFAFA</item>
+
     </style>
 
     <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.Light">
