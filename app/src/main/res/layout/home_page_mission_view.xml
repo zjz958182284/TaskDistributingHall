@@ -26,7 +26,7 @@
                     android:id="@+id/mission_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="标题"
+                    android:text="标题："
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/mission_view"
@@ -63,10 +63,11 @@
 
                 <TextView
                     android:id="@+id/bounty"
-                    android:text="300元"
+                    android:text="300"
                     android:textStyle="italic"
                     app:layout_constraintBaseline_toBaselineOf="@id/bounty_text"
                     android:layout_marginStart="3dp"
+                    android:ems="5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/description_text"
@@ -101,7 +102,7 @@
                     android:id="@+id/mission_type_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="4dp"
                     android:text="任务类型:"
                     android:textStyle="bold"
@@ -120,20 +121,7 @@
                     app:layout_constraintLeft_toRightOf="@id/mission_type_text"
                    />
 
-                <TextView
-                    android:id="@+id/task_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="id"
-                    android:visibility="invisible"
-                    app:layout_constraintBaseline_toBaselineOf="@id/mission_type_text"
 
-                    app:layout_constraintBottom_toBottomOf="@id/mission_type"
-                    app:layout_constraintHorizontal_bias="0.488"
-                    app:layout_constraintLeft_toRightOf="@id/mission_type"
-                    app:layout_constraintRight_toRightOf="@id/date"
-                    app:layout_constraintTop_toBottomOf="@id/bounty_text"
-                    app:layout_constraintVertical_bias="0.0" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

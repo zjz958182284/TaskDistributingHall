@@ -70,11 +70,12 @@
 
         <Button
             android:id="@+id/resume_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="160dp"
+            android:textColor="@color/colorPrimary"
             android:text="确认接取"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/resume_page_card_view1" />
 

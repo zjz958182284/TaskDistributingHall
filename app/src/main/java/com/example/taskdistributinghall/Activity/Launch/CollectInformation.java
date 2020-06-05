@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall.Activity;
+package com.example.taskdistributinghall.Activity.Launch;
 
 import androidx.appcompat.app.AppCompatActivity;
 

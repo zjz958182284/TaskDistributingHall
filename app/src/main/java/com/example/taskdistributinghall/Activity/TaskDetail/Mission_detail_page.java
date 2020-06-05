@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall;
+package com.example.taskdistributinghall.Activity.TaskDetail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,21 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.taskdistributinghall.Activity.Login;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
-
-import java.sql.SQLException;
+import com.example.taskdistributinghall.R;
+import com.example.taskdistributinghall.Resume_page;
 
 public class Mission_detail_page extends AppCompatActivity {
 
@@ -52,7 +49,7 @@ public class Mission_detail_page extends AppCompatActivity {
                     ((Button)findViewById(R.id.accept_task_btn)).setVisibility(View.GONE);
                 }
                 Task task= DBControl.searchTaskByID(taskID);
-                User user=DBControl.searPublisher(taskID);
+                User user=DBControl.searchPublisher(taskID);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -98,7 +95,7 @@ public class Mission_detail_page extends AppCompatActivity {
                 int taskID=intent.getIntExtra("id",0);
                 Intent intentForResume=new Intent();
                 intentForResume.putExtra("id",taskID);
-                intentForResume.setClass(Mission_detail_page.this,Resume_page.class);
+                intentForResume.setClass(Mission_detail_page.this, Resume_page.class);
                 startActivity(intentForResume);
                 finish();
             }

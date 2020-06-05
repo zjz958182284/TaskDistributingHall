@@ -14,25 +14,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.taskdistributinghall.Activity.PublishedTaskDetail.PublishedTaskDetailPage;
+import com.example.taskdistributinghall.Activity.TaskDetail.PublishedTaskDetailPage;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class PublishedTaskPage extends Fragment {
 
+    private static  PublishedTaskPage publishedTaskPage;
     private  List<Task> tasks;
     private PublishedPageRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
 
 
+public PublishedPageRecyclerViewAdapter getAdpter(){return adapter;}
+public List<Task> getTasks(){return  tasks;}
 
-    public  PublishedTaskPage(List<Task> tasks){this.tasks=tasks;}
+    public  PublishedTaskPage(List<Task> tasks){this.tasks=tasks;publishedTaskPage=this;}
+    public static PublishedTaskPage  getInstance(){
+        return publishedTaskPage;
+    }
 
 
     @Nullable
@@ -49,7 +53,7 @@ public class PublishedTaskPage extends Fragment {
             public void onItemClick(Task task) {
                 Intent intent=new Intent();
                 intent.putExtra("id",task.id);
-                intent =new Intent(getContext(), PublishedTaskDetailPage.class);
+                intent.setClass(getActivity(), PublishedTaskDetailPage.class);
                 startActivity(intent);
 
             }

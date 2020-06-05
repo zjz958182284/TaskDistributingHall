@@ -1,7 +1,6 @@
 package com.example.taskdistributinghall.Fragment.Mission;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.taskdistributinghall.Activity.PublishedTaskDetail.PublishedTaskDetailPage;
-import com.example.taskdistributinghall.Fragment.Home.RecyclerViewAdapter;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
@@ -47,7 +44,6 @@ public class PublishedPageRecyclerViewAdapter extends RecyclerView.Adapter<Publi
         holder.timeView.setText((tasks.get(position).date).substring(0,16));
         holder.titleView.setText(tasks.get(position).title);
         holder.detailView.setText(tasks.get(position).content);
-        holder.idView.setText(String.valueOf(tasks.get(position).id));
         int rewards=tasks.get(position).rewards;
         String reward=String.valueOf(rewards);
         holder.bountyView.setText(reward+"元");
@@ -84,7 +80,6 @@ public class PublishedPageRecyclerViewAdapter extends RecyclerView.Adapter<Publi
         private TextView bountyView;
         private TextView timeView;
         private TextView typeView;
-        private  TextView idView;
 
 
         //包含有每一行的View
@@ -96,7 +91,6 @@ public class PublishedPageRecyclerViewAdapter extends RecyclerView.Adapter<Publi
             bountyView=itemView.findViewById(R.id.bounty);
             timeView=itemView.findViewById(R.id.date);
             typeView=itemView.findViewById(R.id.mission_type);
-            idView=itemView.findViewById(R.id.task_id);
         }
 
     }
@@ -104,7 +98,13 @@ public class PublishedPageRecyclerViewAdapter extends RecyclerView.Adapter<Publi
     public void setItemClick(PublishedPageRecyclerViewAdapter.ItemClick itemClick) {
         this.itemClick = itemClick;
     }
+
+
     public  static  interface  ItemClick{
+        /**
+         *
+         * @param task 当前被点击列表项对应的任务
+         */
         void onItemClick(Task task);
     }
 }

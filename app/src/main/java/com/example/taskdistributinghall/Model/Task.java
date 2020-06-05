@@ -13,7 +13,7 @@ public class Task implements Serializable {
     public String title;
     public  String   status="unaccepted";
     public int rewards;
-    public Bitmap taskPhoto;
+  transient   public Bitmap taskPhoto;
     public String  acceptor;
     public String  type;
 }

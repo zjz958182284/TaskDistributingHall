@@ -14,12 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.taskdistributinghall.AcceptedTaskDetailPage;
+import com.example.taskdistributinghall.Activity.TaskDetail.AcceptedTaskDetailPage;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,8 +45,9 @@ public class AcceptedTaskPage extends Fragment {
             public void onItemClick(Task task) {
                 Intent intent=new Intent();
                 intent.putExtra("id",task.id);
-                intent =new Intent(getContext(), AcceptedTaskDetailPage.class);
+                intent.setClass(getContext(), AcceptedTaskDetailPage.class);
                 startActivity(intent);
+
             }
         });
 
@@ -85,6 +85,8 @@ public class AcceptedTaskPage extends Fragment {
                                 adapter.notifyDataSetChanged();
                             }
                         });
+
+
                     }
                 }
             }).start();

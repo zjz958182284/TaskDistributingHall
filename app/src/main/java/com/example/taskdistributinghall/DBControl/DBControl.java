@@ -40,6 +40,7 @@ public class DBControl {
 
     }
 
+
     //根据ID查询任务
     public static Task searchTaskByID(int ID) {
         try (Connection conn = GetConnection();
@@ -146,11 +147,26 @@ public class DBControl {
                     task.type = rs.getString("type");
                     list.add(task);
                 } while (rs.next());
-                return list;
-            } else return null;
+            }  return list;
         } catch (SQLException e) {
             return null;
         }
+    }
+
+
+    //
+    public  static String searchResume(String phone,int id) throws SQLException {
+        try (Connection conn = GetConnection();
+              PreparedStatement stat = conn.prepareStatement("select resume from pendingTask where id=? and " +
+                      "phone=?")) {
+            stat.setInt(1,id);
+            stat.setString(2,phone);
+            ResultSet rs=stat.executeQuery();
+            if(rs.next())
+                return rs.getString(1);
+            else return "";
+        }
+
     }
 
     //根据电话号码查询用户
@@ -189,7 +205,7 @@ public class DBControl {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select * from task where publisher=" + "'" +
-                    phone + "'" + "order by date");
+                    phone + "'" + "order by date desc");
             List<Task> list = new LinkedList<Task>();
             if (rs.next()) {
                 do {
@@ -218,7 +234,8 @@ public class DBControl {
     public  static List<Task> searchAcceptedTask(String phone) {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
-            ResultSet rs = stat.executeQuery("select * from task where acceptor=" + "'" + phone + "'");
+            ResultSet rs = stat.executeQuery("select * from task where acceptor=" + "'" + phone + "'" +
+                    " order by date desc");
             List<Task> list = new LinkedList<Task>();
             if (rs.next()) {
                 do {
@@ -257,7 +274,7 @@ public class DBControl {
     }
 
     //根据任务ID查询任务发布人
-    public static User searPublisher(int ID) {
+    public static User searchPublisher(int ID) {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select user.* from task,user where id=" + ID + " and task.publisher=user.phone");
@@ -287,6 +304,37 @@ public class DBControl {
         }
     }
 
+
+    //根据任务ID查询任务接收人
+    public static User searchAcceptor(int ID) {
+        try (Connection conn = GetConnection();
+             Statement stat = conn.createStatement()) {
+            ResultSet rs = stat.executeQuery("select user.* from task,user where id=" + ID + " and task.acceptor=user.phone");
+            if (rs.next()) {
+                User user = new User();
+                Blob blob = rs.getBlob("picture");
+                if (blob != null)
+                    user.headPortrait = BitmapFactory.decodeStream(blob.getBinaryStream());
+                ///   if(blob!=null) {
+                ///       byte[] bytes=blob.getBytes(1, (int) blob.length());
+                ///       user.headPortrait = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                ///   }
+                user.phone = rs.getString("phone");
+                user.acceptedTask = rs.getInt("acceptedTask");
+                user.completedTask = rs.getInt("completedTask");
+                user.address = rs.getString("address");
+                user.dept = rs.getString("dept");
+                user.grade = rs.getString("grade");
+                user.sex = rs.getString("sex");
+                user.name = rs.getString("name");
+                user.ip = rs.getString("ip");
+                return user;
+            } else return null;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
     //根据任务ID查询正在请求任务的用户的集合
     public static  List<User> searchRequestingUser(int ID) {
         try (Connection conn = GetConnection();
@@ -311,8 +359,7 @@ public class DBControl {
                     user.ip=rs.getString("ip");
                     list.add(user);
                 } while (rs.next());
-                return list;
-            } else return null;
+            }  return list;
         } catch (SQLException e) {
             return null;
         }
@@ -528,7 +575,8 @@ public class DBControl {
     public static  boolean deleteTask(int id) throws SQLException {
         try (Connection connc = GetConnection();
              Statement stat = connc.createStatement()) {
-            int rows = stat.executeUpdate("delete from Task where id=" + id);
+
+            int rows = stat.executeUpdate("delete from Task where id=" + id+" and status <> 'accepted'") ;
             return rows > 0;
         }
     }
@@ -580,6 +628,13 @@ public class DBControl {
                 rs.updateString("status",status);
                 rs.updateRow();
             }
+              else if(status.equals("completed")){
+                  Statement statement=conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
+                  statement.executeUpdate("update user,task set user.completedTask=user.completedTask+1 where" +
+                          "task.id="+ID+" and task.acceptor=user.phone");
+                  rs.updateString("status",status);
+                  rs.updateRow();
+              }
               else {
                   rs.updateString("status",status);
                   rs.updateRow();
@@ -595,12 +650,14 @@ public class DBControl {
     public static  boolean modifyAcceptor(int ID,String phone) throws SQLException {
         try (Connection conn=GetConnection();
         Statement stat=conn.createStatement()){
-            int rows;
+            stat.addBatch("update task set acceptor='"+phone+"'"+"where id="+ID);
             if(phone!=null)
-                rows= stat.executeUpdate("update task set acceptor='"+phone+"'"+"where id="+ID);
-            else
-                rows= stat.executeUpdate("update task set acceptor=null where id="+ID);
-            return rows > 0;
+            stat.addBatch("update user set acceptedTask=acceptedTask+1 where phone ='"+phone+"'");
+            int[] rows=stat.executeBatch();
+            for (int row : rows) {
+                if (row == 0) return false;
+            }
+            return true;
         }
     }
 

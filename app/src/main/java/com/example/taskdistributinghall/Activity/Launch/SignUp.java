@@ -1,4 +1,4 @@
-package com.example.taskdistributinghall.Activity;
+package com.example.taskdistributinghall.Activity.Launch;
 
 import android.content.Intent;
 import android.os.Bundle;

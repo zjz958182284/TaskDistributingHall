@@ -1,7 +1,6 @@
 package com.example.taskdistributinghall.Fragment.Home;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,8 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inspector.StaticInspectionCompanionProvider;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,19 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.taskdistributinghall.Activity.AddMissionPage;
-import com.example.taskdistributinghall.Activity.Login;
-import com.example.taskdistributinghall.Activity.MainPage.MainActivity;
 import com.example.taskdistributinghall.DBControl.DBControl;
-import com.example.taskdistributinghall.Mission_detail_page;
+import com.example.taskdistributinghall.Activity.TaskDetail.Mission_detail_page;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.example.taskdistributinghall.R.layout;
 
 public class HomeFragment  extends Fragment {
 

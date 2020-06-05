@@ -1,7 +1,6 @@
 package com.example.taskdistributinghall.Activity.MainPage;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,10 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Fragment.ChatRoom.ChatRoomFragment;
 import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
-import com.example.taskdistributinghall.Fragment.Home.RecyclerViewAdapter;
 import com.example.taskdistributinghall.Fragment.Mission.MissionFragment;
 import com.example.taskdistributinghall.Fragment.PersonalCenter.PersonalCenterFragment;
-import com.example.taskdistributinghall.Mission_detail_page;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 import com.google.android.material.tabs.TabLayout;
@@ -32,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private MainPageAdapter mainPageAdapter;
     private TabLayout.Tab homePage;
     private TabLayout.Tab chatRoom;
-    List<Task> tasks;
-    List<Task> publishedTask;
-    List<Task> acceptedTask;
+    private   List<Task> tasks;
+    private   List<Task> publishedTask;
+    private   List<Task> acceptedTask;
     private TabLayout.Tab mission;
     private TabLayout.Tab personalCenter;
     private long lastPressTime=0; //记录上一次按下返回键的时间
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
 
-                    //先把数据准备好再给fragment
+                    //先把数据准备好再注入到fragment
                     SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
                     String phone=sp.getString("phone","");
                     tasks= DBControl.searchAllTask();
@@ -95,12 +92,10 @@ public class MainActivity extends AppCompatActivity {
     public void initFragmentList(){
 
         HomeFragment homeFragment=new HomeFragment(tasks);
-    fragmentList.add(homeFragment);
-
-    fragmentList.add(new ChatRoomFragment());
-
-    fragmentList.add(new MissionFragment(publishedTask,acceptedTask));
-    fragmentList.add(new PersonalCenterFragment());
+        fragmentList.add(homeFragment);
+        fragmentList.add(new ChatRoomFragment());
+        fragmentList.add(new MissionFragment(publishedTask,acceptedTask));
+        fragmentList.add(new PersonalCenterFragment());
     }
 
     /**

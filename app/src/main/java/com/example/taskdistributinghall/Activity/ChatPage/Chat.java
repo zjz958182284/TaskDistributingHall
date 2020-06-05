@@ -1,6 +1,9 @@
 package com.example.taskdistributinghall.Activity.ChatPage;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Message;
 import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
+import com.shehuan.niv.NiceImageView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,12 +67,34 @@ public class Chat extends AppCompatActivity {
         // test ME
  //me=new User();me.phone="123";me.ip="192.168.0.101";
  //he=new User();he.phone="456";he.ip="192.168.0.3";
+        Thread thread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = getIntent();
+                String hePhone = intent.getStringExtra("phone");
+                SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                String mPhone=sp.getString("phone","");
+                me=DBControl.searchUserByPhone(hePhone);
+                he=DBControl.searchUserByPhone(mPhone);
+            }
+        });
 
-     listView=(ListView)findViewById(R.id.chat_list_view);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ((NiceImageView) findViewById(R.id.header_photo)).setImageBitmap(me.headPortrait);
+        ((TextView)findViewById(R.id.textView2)).setText(me.name);
+        listView=(ListView)findViewById(R.id.chat_list_view);
      listViewAdapter=new ChatListViewAdapter(this,messages,me.headPortrait
      ,he.headPortrait);
      listView.setAdapter(listViewAdapter);
      recordDatabase=new ChatRecordHelper(this).getReadableDatabase();
+
+
      /**
       * 初始化聊天记录
       * */
@@ -81,6 +108,9 @@ public class Chat extends AppCompatActivity {
              listView.setSelection(messages.size()-1);
          }
      });
+
+
+
 
      listView.setSelection(messages.size() - 1); //从最后一行显示
      listViewAdapter.notifyDataSetChanged();
@@ -324,20 +354,19 @@ public class Chat extends AppCompatActivity {
                         for (int i = 0; i < records.size(); ++i) {
                             String record=records.get(i);
                             String date=dates.get(i);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    messages.add(new Message(record, Message.heSend));
-                                    listViewAdapter.notifyDataSetChanged();
-                                    listView.setSelection(messages.size()-1);
-                                }
-                            });
-
                             StoreNativeChatRecord(records.get(i),Message.heSend,date);
+                            messages.add(new Message(record, Message.heSend));
                         }
 
                     }
-                    DBControl.deleteRecords(he.phone,me.phone);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listViewAdapter.notifyDataSetChanged();
+                            listView.setSelection(messages.size()-1);
+                        }
+                    });
+                    DBControl.deleteRecords(he.phone,me.phone);//清空离线聊天记录
                 } catch (SQLException e) {
                     runOnUiThread(new Runnable() {
                         @Override

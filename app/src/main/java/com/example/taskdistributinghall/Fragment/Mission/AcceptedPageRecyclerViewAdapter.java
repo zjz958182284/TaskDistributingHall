@@ -1,7 +1,6 @@
 package com.example.taskdistributinghall.Fragment.Mission;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.taskdistributinghall.AcceptedTaskDetailPage;
-import com.example.taskdistributinghall.Fragment.Home.RecyclerViewAdapter;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
@@ -37,6 +34,7 @@ public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<Accept
     public AcceptedPageRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= inflater.inflate(R.layout.home_page_mission_view,parent,false);
 
+
         return new ViewHolder(v);
     }
 
@@ -49,7 +47,6 @@ public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<Accept
         holder.timeView.setText((tasks.get(position).date).substring(0,16));
         holder.titleView.setText(tasks.get(position).title);
         holder.detailView.setText(tasks.get(position).content);
-        holder.idView.setText(String.valueOf(tasks.get(position).id));
         int rewards=tasks.get(position).rewards;
         String reward=String.valueOf(rewards);
         holder.bountyView.setText(reward+"元");
@@ -64,8 +61,8 @@ public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<Accept
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(itemClick!=null)
-                    itemClick.onItemClick(tasks.get(position));
+                if(itemClick!=null){
+                    itemClick.onItemClick(tasks.get(position));}
             }
         });
     }
@@ -88,7 +85,7 @@ public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<Accept
         private TextView bountyView;
         private TextView timeView;
         private TextView typeView;
-        private  TextView idView;
+
 
 
         //包含有每一行的View
@@ -100,7 +97,6 @@ public class AcceptedPageRecyclerViewAdapter extends RecyclerView.Adapter<Accept
             bountyView=itemView.findViewById(R.id.bounty);
             timeView=itemView.findViewById(R.id.date);
             typeView=itemView.findViewById(R.id.mission_type);
-            idView=itemView.findViewById(R.id.task_id);
         }
 
     }

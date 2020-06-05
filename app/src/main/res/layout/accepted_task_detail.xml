@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.TaskDetail.PublishedTaskDetailPage">
+    tools:context=".Activity.TaskDetail.AcceptedTaskDetailPage">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/published_task_detail_page_toolbar"
+            android:id="@+id/accepted_task_detail_page_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:title="发布任务详情"
@@ -24,7 +24,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_toolbar"
+            app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -34,21 +34,21 @@
 
 
                 <TextView
-                    android:id="@+id/published_task_detail_page_title_text"
+                    android:id="@+id/accepted_task_detail_page_title_text"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="这里放任务标题"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/published_task_detail_page_date_text"
+                    app:layout_constraintBottom_toTopOf="@id/accepted_task_detail_page_date_text"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
 
 
                 <TextView
-                    android:id="@+id/published_task_detail_page_bounty_text"
+                    android:id="@+id/accepted_task_detail_page_bounty_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -58,7 +58,7 @@
 
                     android:textSize="15dp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_title_text" />
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_title_text" />
 
                 <TextView
                     android:id="@+id/detail_page_detail_text"
@@ -69,10 +69,10 @@
                     android:text="任务描述:"
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_date_text" />
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_date_text" />
 
                 <TextView
-                    android:id="@+id/published_task_detail_page_detail_text"
+                    android:id="@+id/accepted_task_detail_page_detail_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -89,7 +89,7 @@
                     tools:layout_editor_absoluteX="9dp" />
 
                 <TextView
-                    android:id="@+id/published_task_detail_page_date_text"
+                    android:id="@+id/accepted_task_detail_page_date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -97,11 +97,11 @@
                     android:text="发布日期:大理"
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_title_text" />
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_title_text" />
 
 
                 <TextView
-                    android:id="@+id/published_task_detail_page_type_text"
+                    android:id="@+id/accepted_task_detail_page_type_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -109,36 +109,55 @@
                     android:text="任务类型：跑腿，代理"
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_date_text" />
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_date_text" />
+
 
                 <ImageView
-                    android:id="@+id/published_task_detail_page_image_view"
+                    android:id="@+id/accepted_task_detail_page_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:scaleType="fitXY"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_detail_text"
-                    tools:layout_editor_absoluteX="16dp" />
+                    android:src="@drawable/add_icon"
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_detail_text"
+                    tools:layout_editor_absoluteX="-158dp" />
 
                 <Button
-                    android:id="@+id/list_btn"
-                    android:layout_width="match_parent"
+                    android:id="@+id/bounty_got_btn"
+                    android:layout_width="180dp"
                     android:layout_height="60dp"
                     android:layout_margin="15dp"
-                    android:text="查看请求人列表"
+                    android:layout_marginRight="88dp"
+                    android:text="已收到酬金"
                     android:textColor="@color/colorPrimaryDark"
-                    app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_image_view" />
 
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_image_view" />
 
                 <Button
                     android:id="@+id/cancel_btn"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginTop="28dp"
+                    android:text="删除该任务"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:visibility="visible"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_image_view" />
+
+                <Button
+                    android:id="@+id/chat_btn"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_margin="15dp"
-                    android:text="删除该任务"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginTop="28dp"
+                    android:text="聊天室"
                     android:textColor="@color/colorPrimaryDark"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/list_btn" />
-
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

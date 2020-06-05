@@ -15,6 +15,6 @@ public class User implements Serializable {
     public  String address;
     public  int  completedTask;
     public  int acceptedTask;
-    public Bitmap headPortrait;
+  transient   public Bitmap headPortrait;
     public String ip;
 }
