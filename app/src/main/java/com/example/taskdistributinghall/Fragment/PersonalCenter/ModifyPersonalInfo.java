@@ -68,6 +68,7 @@ public class ModifyPersonalInfo extends AppCompatActivity {
 
                             if( DBControl.updateUser(((BitmapDrawable)niceImageView.getDrawable()).getBitmap()
                              ,phone,name,dept,grade,address)){
+                                PersonalCenterFragment.getInstance().refresh();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

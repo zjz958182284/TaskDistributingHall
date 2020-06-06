@@ -28,9 +28,17 @@ public class AcceptedTaskPage extends Fragment {
     private AcceptedPageRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
 
+    private static AcceptedTaskPage  acceptedTaskPage;
+    public static AcceptedTaskPage getInstance(){
+        return  acceptedTaskPage;
+    }
 
 
-    public AcceptedTaskPage(List<Task> tasks){this.tasks=tasks;}
+    public AcceptedTaskPage(List<Task> tasks){
+        AcceptedTaskPage.acceptedTaskPage=this;
+        this.tasks=tasks;
+
+    }
 
 
     @Nullable
@@ -90,8 +98,25 @@ public class AcceptedTaskPage extends Fragment {
                     }
                 }
             }).start();
-
-
         }
+    }
+
+    public  void refresh(){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                    String phone=sp.getString("phone","");
+                    tasks= DBControl.searchAcceptedTask(phone);
+                    adapter.setTasks(tasks);
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+        }).start();
     }
 }

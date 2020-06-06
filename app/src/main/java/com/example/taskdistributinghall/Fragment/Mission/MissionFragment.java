@@ -44,6 +44,7 @@ public class MissionFragment extends Fragment {
         viewPager=view.findViewById(R.id.view_Pager);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(missionPageAdapter);
+        missionPageAdapter.notifyDataSetChanged();
         super.onViewCreated(view, savedInstanceState);
     }
 

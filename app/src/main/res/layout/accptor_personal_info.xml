@@ -79,6 +79,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="140dp"
                     android:text="学院:"
+                    android:ems="14"
                     android:textSize="20dp"
                     android:maxLines="2"
                     android:textStyle="bold"

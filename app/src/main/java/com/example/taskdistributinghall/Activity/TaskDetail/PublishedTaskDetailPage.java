@@ -1,6 +1,8 @@
 package com.example.taskdistributinghall.Activity.TaskDetail;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.taskdistributinghall.Activity.AcceptorList.AcceptorListPage;
 import com.example.taskdistributinghall.Activity.ChatPage.Chat;
 import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
 import com.example.taskdistributinghall.Fragment.Mission.PublishedPageRecyclerViewAdapter;
 import com.example.taskdistributinghall.Fragment.Mission.PublishedTaskPage;
 import com.example.taskdistributinghall.Model.Task;
@@ -29,6 +32,7 @@ public class PublishedTaskDetailPage extends AppCompatActivity {
     Button cancelButton;
     Task task;
     Task.taskState state;
+    List<Task> tasks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +129,7 @@ public class PublishedTaskDetailPage extends AppCompatActivity {
                         DBControl.updateTaskState(id, Task.taskState.unaccepted);
 
                     } catch (SQLException e) {
-                        runOnUiThread(new Runnable() {
+                      runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(PublishedTaskDetailPage.this, "重新发布任务失败",
@@ -152,25 +156,18 @@ public class PublishedTaskDetailPage extends AppCompatActivity {
                 int id = intent.getIntExtra("id", 0);
                 try {
                     if (DBControl.deleteTask(id)) {
-                        List<Task> tasks = PublishedTaskPage.getInstance().getTasks();
-                        Iterator<Task> iterator = tasks.iterator();
-                        while (iterator.hasNext()) {
-                            if (iterator.next().id == id)
-                                iterator.remove();
-                        }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                                //获得适配器
-
-                                PublishedPageRecyclerViewAdapter adapter = PublishedTaskPage.getInstance().getAdpter();
-                                adapter.notifyDataSetChanged();
+                              //  PublishedTaskPage page=PublishedTaskPage.getInstance();
+                              //  page.refresh();
                                 Toast.makeText(PublishedTaskDetailPage.this, "删除任务成功",
                                         Toast.LENGTH_SHORT).show();
-                                finish();//一定要用在UI线程里！！！
+                                 button.setVisibility(View.GONE);
+                                 cancelButton.setVisibility(View.GONE);
                             }
                         });
+
                     }
                 } catch (SQLException e) {
                     runOnUiThread(new Runnable() {
@@ -184,6 +181,8 @@ public class PublishedTaskDetailPage extends AppCompatActivity {
                 }
             }
         }).start();
+
+
     }
     });
 

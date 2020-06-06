@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.taskdistributinghall.Activity.AcceptorList.AcceptorListPage;
 import com.example.taskdistributinghall.Activity.ChatPage.Chat;
 import com.example.taskdistributinghall.DBControl.DBControl;
+import com.example.taskdistributinghall.Fragment.Mission.AcceptedTaskPage;
+import com.example.taskdistributinghall.Fragment.PersonalCenter.PersonalCenterFragment;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
@@ -62,6 +64,17 @@ public class AcceptedTaskDetailPage extends AppCompatActivity {
     }
 
     private void initButton() {
+
+
+
+        if(task.status.equals("completed")){
+            bountyButton.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.GONE);
+        }else if(task.status.equals("cancelled")){
+            bountyButton.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.GONE);
+        }
+
         bountyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,14 +141,25 @@ public class AcceptedTaskDetailPage extends AppCompatActivity {
                         String phone=sp.getString("phone","");
                         try {
                             DBControl.updateTaskState(task.id, Task.taskState.completed);
+                            PersonalCenterFragment.getInstance().refresh();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    cancelButton.setVisibility(View.GONE);
+                                    bountyButton.setVisibility(View.GONE);
+                                }
+                            });
 
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
                         }
                     }
                 }).start();
-
-                AcceptedTaskDetailPage.this.finish();
             }
         });
 
@@ -171,13 +195,21 @@ public class AcceptedTaskDetailPage extends AppCompatActivity {
                         String phone=sp.getString("phone","");
                         try {
                             DBControl.modifyAcceptor(task.id,null);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AcceptedTaskPage acceptedTaskPage=AcceptedTaskPage.getInstance();
+                                    acceptedTaskPage.refresh();
+                                    AcceptedTaskDetailPage.this.finish();
+                                }
+                            });
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
 
-               AcceptedTaskDetailPage.this.finish();
+
             }
         });
 

@@ -33,7 +33,11 @@ public class SignUp extends AppCompatActivity {
                 String phone=((EditText)findViewById(R.id.phone_edit1)).getText().toString();
                 String password=((EditText)findViewById(R.id.password_edit1)).getText().toString();
                 String confirmPassword=((EditText)findViewById(R.id.password_edit2)).getText().toString();
-                if(password.equals(confirmPassword)){
+                boolean isEmpty=(password.equals("") || phone.equals(""));
+                if(isEmpty){
+                    Toast.makeText(SignUp.this,"请输入完整用户名和密码",Toast.LENGTH_SHORT).show();
+                }
+                else if(password.equals(confirmPassword)){
                 Intent intent=new Intent();
                 intent.setClass(SignUp.this, CollectInformation.class);
                 intent.putExtra("phone",phone);  //与CollectInformationActivity交互数据

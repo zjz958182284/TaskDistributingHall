@@ -114,22 +114,23 @@ public class AddMissionPage extends AppCompatActivity {
                                 });
                             else {
                                 HomeFragment homeFragment=HomeFragment.getInstance();
-                                RecyclerViewAdapter adapter=homeFragment.getAdapter();
+                              //  RecyclerViewAdapter adapter=homeFragment.getAdapter();
                                 DBControl.addTask(bitmap,phone, detail, title, taskType, bounty);
-                                List<Task> tasks=DBControl.searchAllTask();
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(AddMissionPage.this, "发布任务成功",
-                                                Toast.LENGTH_SHORT).show();
-                                        button.setVisibility(View.GONE);
+                               // List<Task> tasks=DBControl.searchAllTask();
+                             runOnUiThread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     Toast.makeText(AddMissionPage.this, "发布任务成功",
+                                             Toast.LENGTH_SHORT).show();
+                                     homeFragment.refresh();
+                                     button.setVisibility(View.GONE);
 
-                                        //更新任务大厅界面
-                                        homeFragment.setTasks(tasks);
-                                        adapter.setTasks(tasks);
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                });
+                                   //  //更新任务大厅界面
+                                   //  homeFragment.setTasks(tasks);
+                                   //  adapter.setTasks(tasks);
+                                   //  adapter.notifyDataSetChanged();
+                                 }
+                             });
                             }
                         } catch (SQLException e) {
                             runOnUiThread(new Runnable() {

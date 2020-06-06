@@ -26,10 +26,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PersonalCenterFragment extends Fragment {
+
+
     User user;
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private static PersonalCenterFragment fragment;
+
+    public  PersonalCenterFragment(){
+        PersonalCenterFragment.fragment=this;
+    }
+
+    public static PersonalCenterFragment getInstance(){
+        return PersonalCenterFragment.fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,5 +117,48 @@ public class PersonalCenterFragment extends Fragment {
              });
          }
      }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }).start();
+
+        }
+    }
+
+
+    public void refresh(){
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                        String phone=sp.getString("phone","");
+                        user= DBControl.searchUserByPhone(phone);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView name=PersonalCenterFragment.this.getView().findViewById(R.id.personal_name_text);
+                                NiceImageView photo=PersonalCenterFragment.this.getView().findViewById(R.id.profile_photo);
+                                TextView publish=PersonalCenterFragment.this.getView().findViewById(R.id.published_task_number);
+                                TextView accept=PersonalCenterFragment.this.getView().findViewById(R.id.accepted_task_number);
+                                name.setText(user.name);
+                                publish.setText(String.valueOf(user.completedTask));
+                                accept.setText(String.valueOf(user.acceptedTask));
+                                photo.setImageBitmap(user.headPortrait);
+                            }
+                        });
+
+                    }
+                }).start();
+            }
 }
 

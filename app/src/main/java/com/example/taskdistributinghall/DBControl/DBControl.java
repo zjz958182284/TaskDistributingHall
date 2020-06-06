@@ -631,7 +631,7 @@ public class DBControl {
               else if(status.equals("completed")){
                   Statement statement=conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
                   statement.executeUpdate("update user,task set user.completedTask=user.completedTask+1 where" +
-                          "task.id="+ID+" and task.acceptor=user.phone");
+                          " task.id="+ID+" and task.acceptor=user.phone");
                   rs.updateString("status",status);
                   rs.updateRow();
               }
@@ -650,7 +650,9 @@ public class DBControl {
     public static  boolean modifyAcceptor(int ID,String phone) throws SQLException {
         try (Connection conn=GetConnection();
         Statement stat=conn.createStatement()){
+            if(phone!=null)
             stat.addBatch("update task set acceptor='"+phone+"'"+"where id="+ID);
+            else stat.addBatch("update task set acceptor=null where id="+ID);
             if(phone!=null)
             stat.addBatch("update user set acceptedTask=acceptedTask+1 where phone ='"+phone+"'");
             int[] rows=stat.executeBatch();

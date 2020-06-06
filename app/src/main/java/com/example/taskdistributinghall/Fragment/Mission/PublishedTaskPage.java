@@ -32,7 +32,7 @@ public class PublishedTaskPage extends Fragment {
 
 public PublishedPageRecyclerViewAdapter getAdpter(){return adapter;}
 public List<Task> getTasks(){return  tasks;}
-
+    public void setTasks(List<Task> tasks){this.tasks=tasks;}
     public  PublishedTaskPage(List<Task> tasks){this.tasks=tasks;publishedTaskPage=this;}
     public static PublishedTaskPage  getInstance(){
         return publishedTaskPage;
@@ -72,31 +72,48 @@ public List<Task> getTasks(){return  tasks;}
 
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+   @Override
+   public void setUserVisibleHint(boolean isVisibleToUser) {
+       super.setUserVisibleHint(isVisibleToUser);
+       if (isVisibleToUser) {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //不是第一次加载滑动到这个fragment
-                    if(adapter!=null) {
-                        SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                        String phone=sp.getString("phone","");
-                        tasks=DBControl.searchPublishedTask(phone);
-                        adapter.setTasks(tasks);
-                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
+           new Thread(new Runnable() {
+               @Override
+               public void run() {
+                   //不是第一次加载滑动到这个fragment
+                   if(adapter!=null) {
+                       SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                       String phone=sp.getString("phone","");
+                       tasks=DBControl.searchPublishedTask(phone);
+                       adapter.setTasks(tasks);
+                       Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
+                               adapter.notifyDataSetChanged();
+                           }
+                       });
+                   }
+               }
+           }).start();
+
+       }
+   }
+
+    public void refresh(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                    String phone=sp.getString("phone","");
+                    tasks=DBControl.searchPublishedTask(phone);
+                    adapter.setTasks(tasks);
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
-            }).start();
-
-
-        }
+        }).start();
     }
 }

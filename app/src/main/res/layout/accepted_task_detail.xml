@@ -121,42 +121,50 @@
                     app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_detail_text"
                     tools:layout_editor_absoluteX="-158dp" />
 
-                <Button
-                    android:id="@+id/bounty_got_btn"
-                    android:layout_width="180dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginRight="88dp"
-                    android:text="已收到酬金"
-                    android:textColor="@color/colorPrimaryDark"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/line1"
+                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_image_view"
+                    >
 
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_image_view" />
+                    <Button
+                        android:id="@+id/bounty_got_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
 
-                <Button
+                        android:layout_weight="1"
+                        android:text="已收到酬金"
+                        android:textColor="@color/colorPrimaryDark"
+
+                        />
+
+                    <Button
                     android:id="@+id/cancel_btn"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:layout_marginLeft="52dp"
                     android:layout_marginTop="28dp"
-                    android:text="删除该任务"
+                    android:text="取消该任务"
+                    android:layout_weight="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:visibility="visible"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/accepted_task_detail_page_image_view" />
+                    />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/chat_btn"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginLeft="52dp"
-                    android:layout_marginTop="28dp"
+
+
                     android:text="聊天室"
                     android:textColor="@color/colorPrimaryDark"
                     android:visibility="visible"
-                    app:layout_constraintTop_toBottomOf="@id/cancel_btn"
+                    app:layout_constraintTop_toBottomOf="@id/line1"
                      />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

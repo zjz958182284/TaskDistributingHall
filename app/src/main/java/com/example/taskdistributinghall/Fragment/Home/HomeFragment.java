@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -52,6 +53,7 @@ public class HomeFragment  extends Fragment {
     }
 
 
+
     //无奈之举
     //永远获取当前实例对象（不是单例模式）
     public static HomeFragment getInstance() {
@@ -65,6 +67,7 @@ public class HomeFragment  extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.home_page,container,false);
         recyclerView=view.findViewById(R.id.home_page_recycler_view);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
         adapter=new RecyclerViewAdapter(getContext(),tasks);
 
         adapter.setItemClick(new RecyclerViewAdapter.ItemClick() {
@@ -120,36 +123,55 @@ public class HomeFragment  extends Fragment {
 
 
     //每次滑动到这个碎片就 实时 更新任务界面显示
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+   @Override
+   public void setUserVisibleHint(boolean isVisibleToUser) {
+    super.setUserVisibleHint(isVisibleToUser);
+    if (isVisibleToUser) {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        //不是第一次加载滑动到这个fragment
-                        if(adapter!=null) {
-                        tasks=DBControl.searchAllTask();
-                            adapter.setTasks(tasks);
-                            Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //不是第一次加载滑动到这个fragment
+                    if(adapter!=null) {
+                    tasks=DBControl.searchAllTask();
+                        adapter.setTasks(tasks);
+                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            }).start();
+            }
+        }).start();
 
 
-        }
-    }
+       }
+   }
 
+   public void refresh(){
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               try {
+                       tasks=DBControl.searchAllTask();
+                       adapter.setTasks(tasks);
+                       Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
+                               adapter.notifyDataSetChanged();
+                           }
+                       });
+                   } catch (SQLException ex) {
+                   ex.printStackTrace();
+               }
+           }
+       }).start();
+   }
 
 
     }

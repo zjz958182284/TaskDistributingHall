@@ -2,7 +2,9 @@ package com.example.taskdistributinghall.Activity.Launch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,17 +47,10 @@ public class CollectInformation extends AppCompatActivity {
                 String address=((EditText)findViewById(R.id.address_edit)).getText().toString();
                 String grade=((EditText)findViewById(R.id.grade_edit)).getText().toString();
                 String dept=((EditText)findViewById(R.id.dept_edit)).getText().toString();
-                Intent intent=getIntent();
 
                 if(name==null||address==null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-
-                        public void run() {
-                            Toast.makeText(CollectInformation.this,"请务必全部填写",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    Toast.makeText(CollectInformation.this,"请务必全部填写",Toast.LENGTH_SHORT).show();
+                }else {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -67,6 +62,11 @@ public class CollectInformation extends AppCompatActivity {
                                 public void run() {
                                     Toast.makeText(CollectInformation.this,"注册成功",
                                             Toast.LENGTH_SHORT).show();
+                                    SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=sp.edit();
+                                    editor.putString("phone",phone);
+                                    editor.putString("password",password);
+                                    editor.apply();
                                 }
                             });
                             Intent intent=new Intent();
@@ -85,7 +85,7 @@ public class CollectInformation extends AppCompatActivity {
                         }
                     }
                 }).start();
-            }
+            }}
         });
     }
 }
