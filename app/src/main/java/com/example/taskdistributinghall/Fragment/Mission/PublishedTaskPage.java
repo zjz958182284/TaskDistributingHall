@@ -44,7 +44,7 @@ public List<Task> getTasks(){return  tasks;}
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.published_task_page,null);
          recyclerView=view.findViewById(R.id.published_task_recycler_view);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
 
         adapter=new PublishedPageRecyclerViewAdapter(getContext(),tasks);
         adapter.setItemClick(new PublishedPageRecyclerViewAdapter.ItemClick() {
@@ -72,48 +72,71 @@ public List<Task> getTasks(){return  tasks;}
 
 
 
+ // @Override
+ // public void setUserVisibleHint(boolean isVisibleToUser) {
+ //     super.setUserVisibleHint(isVisibleToUser);
+ //     if (isVisibleToUser) {
+
+ //         new Thread(new Runnable() {
+ //             @Override
+ //             public void run() {
+ //                 //不是第一次加载滑动到这个fragment
+ //                 if(adapter!=null) {
+ //                     SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+ //                     String phone=sp.getString("phone","");
+ //                     tasks=DBControl.searchPublishedTask(phone);
+ //                     adapter.setTasks(tasks);
+ //                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+ //                         @Override
+ //                         public void run() {
+ //                             adapter.notifyDataSetChanged();
+ //                         }
+ //                     });
+ //                 }
+ //             }
+ //         }).start();
+
+ //     }
+ // }
+
    @Override
-   public void setUserVisibleHint(boolean isVisibleToUser) {
-       super.setUserVisibleHint(isVisibleToUser);
-       if (isVisibleToUser) {
+   public void onResume() {
+       super.onResume();
 
-           new Thread(new Runnable() {
-               @Override
-               public void run() {
-                   //不是第一次加载滑动到这个fragment
-                   if(adapter!=null) {
-                       SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                       String phone=sp.getString("phone","");
-                       tasks=DBControl.searchPublishedTask(phone);
-                       adapter.setTasks(tasks);
-                       Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                           @Override
-                           public void run() {
-                               adapter.notifyDataSetChanged();
-                           }
-                       });
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+               String phone=sp.getString("phone","");
+               tasks=DBControl.searchPublishedTask(phone);
+               adapter.setTasks(tasks);
+               Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       adapter.notifyDataSetChanged();
                    }
-               }
-           }).start();
+               });
+           }
+       }).start();
 
-       }
+
    }
 
-    public void refresh(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                    SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                    String phone=sp.getString("phone","");
-                    tasks=DBControl.searchPublishedTask(phone);
-                    adapter.setTasks(tasks);
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-        }).start();
-    }
+  // public void refresh(){
+  //     new Thread(new Runnable() {
+  //         @Override
+  //         public void run() {
+  //                 SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+  //                 String phone=sp.getString("phone","");
+  //                 tasks=DBControl.searchPublishedTask(phone);
+  //                 adapter.setTasks(tasks);
+  //                 Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+  //                     @Override
+  //                     public void run() {
+  //                         adapter.notifyDataSetChanged();
+  //                     }
+  //                 });
+  //             }
+  //     }).start();
+  // }
 }

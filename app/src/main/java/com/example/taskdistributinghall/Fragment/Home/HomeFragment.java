@@ -123,55 +123,82 @@ public class HomeFragment  extends Fragment {
 
 
     //每次滑动到这个碎片就 实时 更新任务界面显示
-   @Override
-   public void setUserVisibleHint(boolean isVisibleToUser) {
-    super.setUserVisibleHint(isVisibleToUser);
-    if (isVisibleToUser) {
+  // @Override
+  // public void setUserVisibleHint(boolean isVisibleToUser) {
+  //  super.setUserVisibleHint(isVisibleToUser);
+  //  if (isVisibleToUser) {
+//
+  //      new Thread(new Runnable() {
+  //          @Override
+  //          public void run() {
+  //              try {
+  //                  //不是第一次加载滑动到这个fragment
+  //                  if(adapter!=null) {
+  //                  tasks=DBControl.searchAllTask();
+  //                      adapter.setTasks(tasks);
+  //                      Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+  //                          @Override
+  //                          public void run() {
+  //                              adapter.notifyDataSetChanged();
+  //                          }
+  //                      });
+  //                  }
+  //              } catch (SQLException e) {
+  //                  e.printStackTrace();
+  //              }
+  //          }
+  //      }).start();
+//
+//
+  //     }
+  // }
+//
 
+    //比上下注释过的方法好用太多且不会造成系统崩溃
+    @Override
+    public void onResume() {
+        super.onResume();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //不是第一次加载滑动到这个fragment
-                    if(adapter!=null) {
                     tasks=DBControl.searchAllTask();
-                        adapter.setTasks(tasks);
-                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    adapter.setTasks(tasks);
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         }).start();
 
+    }
 
-       }
-   }
 
-   public void refresh(){
-       new Thread(new Runnable() {
-           @Override
-           public void run() {
-               try {
-                       tasks=DBControl.searchAllTask();
-                       adapter.setTasks(tasks);
-                       Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                           @Override
-                           public void run() {
-                               adapter.notifyDataSetChanged();
-                           }
-                       });
-                   } catch (SQLException ex) {
-                   ex.printStackTrace();
-               }
-           }
-       }).start();
-   }
+
+  //    public void refresh(){
+  //   new Thread(new Runnable() {
+  //       @Override
+  //       public void run() {
+  //           try {
+  //                   tasks=DBControl.searchAllTask();
+  //                   adapter.setTasks(tasks);
+  //                   Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+  //                       @Override
+  //                       public void run() {
+  //                           adapter.notifyDataSetChanged();
+  //                       }
+  //                   });
+  //               } catch (SQLException ex) {
+  //               ex.printStackTrace();
+  //           }
+  //       }
+  //   }).start();
+  //}
 
 
     }

@@ -46,8 +46,9 @@ public class DBControl {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select * from task where id=" + ID);
+            Task task = new Task();
             if (rs.next()) {
-                Task task = new Task();
+
                 task.id = rs.getInt("id");
                 task.date = rs.getString("date");
                 Blob blob=rs.getBlob("picture");
@@ -175,8 +176,9 @@ public class DBControl {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("select * from user where phone=" + "'" + phone + "'");
+            User user = new User();
             if (rs.next()) {
-                User user = new User();
+
                 Blob blob=rs.getBlob("picture");
                 if(blob!=null)
                     user.headPortrait = BitmapFactory.decodeStream(blob.getBinaryStream());
@@ -193,8 +195,8 @@ public class DBControl {
                 user.sex = rs.getString("sex");
                 user.name = rs.getString("name");
                 user.ip=rs.getString("ip");
-                return user;
-            } else return null;
+
+            } return user;
         } catch (SQLException e) {
             return null;
         }

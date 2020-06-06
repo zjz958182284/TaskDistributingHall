@@ -48,6 +48,7 @@
             android:layout_marginTop="16dp"
             android:ellipsize="end"
             android:text="任务完成率"
+            android:ems="10"
 
             android:textSize="10dp"
             app:layout_constraintLeft_toRightOf="@id/accept_people_name"
@@ -83,7 +84,7 @@
             android:id="@+id/accept_people_confirm_btn"
             android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="4dp"
             android:text="接受"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

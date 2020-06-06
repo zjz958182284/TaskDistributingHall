@@ -120,45 +120,71 @@ public class PersonalCenterFragment extends Fragment {
 
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            }).start();
-
-        }
-    }
-
-
-    public void refresh(){
-
-                new Thread(new Runnable() {
+    public void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                String phone=sp.getString("phone","");
+                user= DBControl.searchUserByPhone(phone);
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                        String phone=sp.getString("phone","");
-                        user= DBControl.searchUserByPhone(phone);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                TextView name=PersonalCenterFragment.this.getView().findViewById(R.id.personal_name_text);
-                                NiceImageView photo=PersonalCenterFragment.this.getView().findViewById(R.id.profile_photo);
-                                TextView publish=PersonalCenterFragment.this.getView().findViewById(R.id.published_task_number);
-                                TextView accept=PersonalCenterFragment.this.getView().findViewById(R.id.accepted_task_number);
-                                name.setText(user.name);
-                                publish.setText(String.valueOf(user.completedTask));
-                                accept.setText(String.valueOf(user.acceptedTask));
-                                photo.setImageBitmap(user.headPortrait);
-                            }
-                        });
-
+                        TextView name=PersonalCenterFragment.this.getView().findViewById(R.id.personal_name_text);
+                        NiceImageView photo=PersonalCenterFragment.this.getView().findViewById(R.id.profile_photo);
+                        TextView publish=PersonalCenterFragment.this.getView().findViewById(R.id.published_task_number);
+                        TextView accept=PersonalCenterFragment.this.getView().findViewById(R.id.accepted_task_number);
+                        name.setText(user.name);
+                        publish.setText(String.valueOf(user.completedTask));
+                        accept.setText(String.valueOf(user.acceptedTask));
+                        photo.setImageBitmap(user.headPortrait);
                     }
-                }).start();
+                });
             }
+        }).start();
+    }
+
+   //@Override
+   //public void setUserVisibleHint(boolean isVisibleToUser) {
+   //    super.setUserVisibleHint(isVisibleToUser);
+   //    if (isVisibleToUser) {
+
+   //        new Thread(new Runnable() {
+   //            @Override
+   //            public void run() {
+
+   //            }
+   //        }).start();
+
+   //    }
+   //}
+
+
+   //blic void refresh(){
+
+   //          new Thread(new Runnable() {
+   //              @Override
+   //              public void run() {
+   //                  SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+   //                  String phone=sp.getString("phone","");
+   //                  user= DBControl.searchUserByPhone(phone);
+   //                  getActivity().runOnUiThread(new Runnable() {
+   //                      @Override
+   //                      public void run() {
+   //                          TextView name=PersonalCenterFragment.this.getView().findViewById(R.id.personal_name_text);
+   //                          NiceImageView photo=PersonalCenterFragment.this.getView().findViewById(R.id.profile_photo);
+   //                          TextView publish=PersonalCenterFragment.this.getView().findViewById(R.id.published_task_number);
+   //                          TextView accept=PersonalCenterFragment.this.getView().findViewById(R.id.accepted_task_number);
+   //                          name.setText(user.name);
+   //                          publish.setText(String.valueOf(user.completedTask));
+   //                          accept.setText(String.valueOf(user.acceptedTask));
+   //                          photo.setImageBitmap(user.headPortrait);
+   //                      }
+   //                  });
+
+   //              }
+   //          }).start();
+   //      }
 }
 

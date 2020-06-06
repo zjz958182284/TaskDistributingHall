@@ -141,7 +141,7 @@ public class AcceptedTaskDetailPage extends AppCompatActivity {
                         String phone=sp.getString("phone","");
                         try {
                             DBControl.updateTaskState(task.id, Task.taskState.completed);
-                            PersonalCenterFragment.getInstance().refresh();
+                           // PersonalCenterFragment.getInstance().refresh();
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -198,8 +198,8 @@ public class AcceptedTaskDetailPage extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    AcceptedTaskPage acceptedTaskPage=AcceptedTaskPage.getInstance();
-                                    acceptedTaskPage.refresh();
+                                   // AcceptedTaskPage acceptedTaskPage=AcceptedTaskPage.getInstance();
+                                   // acceptedTaskPage.refresh();
                                     AcceptedTaskDetailPage.this.finish();
                                 }
                             });

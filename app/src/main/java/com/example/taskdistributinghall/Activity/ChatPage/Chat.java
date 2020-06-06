@@ -89,8 +89,8 @@ public class Chat extends AppCompatActivity {
         ((NiceImageView) findViewById(R.id.header_photo)).setImageBitmap(me.headPortrait);
         ((TextView)findViewById(R.id.textView2)).setText(me.name);
         listView=(ListView)findViewById(R.id.chat_list_view);
-     listViewAdapter=new ChatListViewAdapter(this,messages,me.headPortrait
-     ,he.headPortrait);
+     listViewAdapter=new ChatListViewAdapter(this,messages,he.headPortrait
+     ,me.headPortrait);
      listView.setAdapter(listViewAdapter);
      recordDatabase=new ChatRecordHelper(this).getReadableDatabase();
 

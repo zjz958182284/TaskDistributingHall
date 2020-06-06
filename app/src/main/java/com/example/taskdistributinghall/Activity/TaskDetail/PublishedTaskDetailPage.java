@@ -62,34 +62,36 @@ public class PublishedTaskDetailPage extends AppCompatActivity {
         }
 
         //布置界面
-        ((TextView) findViewById(R.id.published_task_detail_page_title_text)).setText(task.title);
-        ((TextView) findViewById(R.id.published_task_detail_page_date_text)).setText("发布日期:" + task.date.substring(0, 16));
-        ((TextView) findViewById(R.id.published_task_detail_page_bounty_text)).setText("酬劳金额:" + task.rewards + "元");
-        String type=task.type;
-        if(type.equals("errand"))
-            type="跑腿";
-        else if(type.equals("study"))
-            type="学习";
-        else type="合作";
-        ((TextView) findViewById(R.id.published_task_detail_page_type_text)).setText("任务类型:" + type);
-        ((TextView) findViewById(R.id.published_task_detail_page_detail_text)).setText(task.content);
-        ((ImageView) findViewById(R.id.published_task_detail_page_image_view)).setImageBitmap(task.taskPhoto);
+        if(task!=null) {
+            ((TextView) findViewById(R.id.published_task_detail_page_title_text)).setText(task.title);
+            ((TextView) findViewById(R.id.published_task_detail_page_date_text)).setText("发布日期:" + task.date.substring(0, 16));
+            ((TextView) findViewById(R.id.published_task_detail_page_bounty_text)).setText("酬劳金额:" + task.rewards + "元");
+            String type = task.type;
+            if (type.equals("errand"))
+                type = "跑腿";
+            else if (type.equals("study"))
+                type = "学习";
+            else type = "合作";
+            ((TextView) findViewById(R.id.published_task_detail_page_type_text)).setText("任务类型:" + type);
+            ((TextView) findViewById(R.id.published_task_detail_page_detail_text)).setText(task.content);
+            ((ImageView) findViewById(R.id.published_task_detail_page_image_view)).setImageBitmap(task.taskPhoto);
 
 
-        //编译器自动纠正
-        if (state == Task.taskState.unaccepted) {
-            button.setText("查看请求人列表");
-            cancelButton.setVisibility(View.VISIBLE);
-            cancelButton.setText("删除任务");
-        } else if (state == Task.taskState.accepted)
-            button.setText("点击进入与对方聊天");
-        else if (state == Task.taskState.cancelled) {
-            button.setText("重新发布");
-            cancelButton.setVisibility(View.VISIBLE);
-        } else {
-            button.setVisibility(View.GONE);
-            cancelButton.setVisibility(View.VISIBLE);
-            cancelButton.setText("对方已收到报酬点击将此任务删除");
+            //编译器自动纠正
+            if (state == Task.taskState.unaccepted) {
+                button.setText("查看请求人列表");
+                cancelButton.setVisibility(View.VISIBLE);
+                cancelButton.setText("删除任务");
+            } else if (state == Task.taskState.accepted)
+                button.setText("点击进入与对方聊天");
+            else if (state == Task.taskState.cancelled) {
+                button.setText("重新发布");
+                cancelButton.setVisibility(View.VISIBLE);
+            } else {
+                button.setVisibility(View.GONE);
+                cancelButton.setVisibility(View.VISIBLE);
+                cancelButton.setText("对方已收到报酬点击将此任务删除");
+            }
         }
 
         button.setOnClickListener(new View.OnClickListener()

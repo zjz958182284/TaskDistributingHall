@@ -122,8 +122,8 @@ public class AddMissionPage extends AppCompatActivity {
                                  public void run() {
                                      Toast.makeText(AddMissionPage.this, "发布任务成功",
                                              Toast.LENGTH_SHORT).show();
-                                     homeFragment.refresh();
-                                     button.setVisibility(View.GONE);
+                                   // homeFragment.refresh();
+                                    button.setVisibility(View.GONE);
 
                                    //  //更新任务大厅界面
                                    //  homeFragment.setTasks(tasks);

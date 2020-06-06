@@ -73,50 +73,71 @@ public class AcceptedTaskPage extends Fragment {
 
 
 
+
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //不是第一次加载滑动到这个fragment
-                    if(adapter!=null) {
-                        SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                        String phone=sp.getString("phone","");
-                        tasks= DBControl.searchAcceptedTask(phone);
-                        adapter.setTasks(tasks);
-                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-
-
-                    }
-                }
-            }).start();
-        }
-    }
-
-    public  void refresh(){
-
+    public void onResume() {
+        super.onResume();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                    String phone=sp.getString("phone","");
-                    tasks= DBControl.searchAcceptedTask(phone);
-                    adapter.setTasks(tasks);
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
+                SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                String phone=sp.getString("phone","");
+                tasks= DBControl.searchAcceptedTask(phone);
+                adapter.setTasks(tasks);
+                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }).start();
     }
+
+  //  @Override
+  //  public void setUserVisibleHint(boolean isVisibleToUser) {
+  //      super.setUserVisibleHint(isVisibleToUser);
+  //      if (isVisibleToUser) {
+//
+  //          new Thread(new Runnable() {
+  //              @Override
+  //              public void run() {
+  //                  //不是第一次加载滑动到这个fragment
+  //                  if(adapter!=null) {
+  //                      SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+  //                      String phone=sp.getString("phone","");
+  //                      tasks= DBControl.searchAcceptedTask(phone);
+  //                      adapter.setTasks(tasks);
+  //                      Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+  //                          @Override
+  //                          public void run() {
+  //                              adapter.notifyDataSetChanged();
+  //                          }
+  //                      });
+//
+//
+  //                  }
+  //              }
+  //          }).start();
+  //      }
+  //  }
+//
+  //  public  void refresh(){
+//
+  //      new Thread(new Runnable() {
+  //          @Override
+  //          public void run() {
+  //                  SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+  //                  String phone=sp.getString("phone","");
+  //                  tasks= DBControl.searchAcceptedTask(phone);
+  //                  adapter.setTasks(tasks);
+  //                  Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+  //                      @Override
+  //                      public void run() {
+  //                          adapter.notifyDataSetChanged();
+  //                      }
+  //                  });
+  //              }
+  //      }).start();
+  //  }
 }

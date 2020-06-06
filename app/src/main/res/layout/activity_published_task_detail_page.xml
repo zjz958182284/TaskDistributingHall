@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="这里放任务标题"
+                    android:text="任务标题"
                     android:textSize="25dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/published_task_detail_page_date_text"
@@ -54,7 +54,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
                     android:ems="5"
-                    android:text="悬赏:300元"
+                    android:text="悬赏:"
 
                     android:textSize="15dp"
                     app:layout_constraintRight_toRightOf="parent"
@@ -84,7 +84,7 @@
                     android:maxLines="20"
                     android:minLines="8"
                     android:scrollbars="vertical"
-                    android:text="这里写任务详情,因为要写很多，所以我会当成小学作文来写，2011年,刀剑神域出了，如果记错那就抱歉了，毕竟是小学生作文，kirito,桐人是我的偶像，我想像他一样那么厉害，拿着双刀流吊打boss，感觉无所不能，对我来说就是英雄的存在，就像我家后院的割草机，更重要的是他有一位漂亮的正宫还有无数的后宫。还有必须一提Asuna,是我心中的女神。如果不知道这是什么东西，那我推荐你去科普。我曾经幻想2022年会有像刀剑神域一样的游戏，可是现实总是残酷的...剧终。因为已经到达行数了。"
+                    android:text="这里是空的......"
                     app:layout_constraintTop_toBottomOf="@id/detail_page_detail_text"
                     tools:layout_editor_absoluteX="9dp" />
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="16dp"
-                    android:text="发布日期:大理"
+                    android:text="发布日期:"
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_title_text" />
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="16dp"
-                    android:text="任务类型：跑腿，代理"
+                    android:text="任务类型："
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/published_task_detail_page_date_text" />

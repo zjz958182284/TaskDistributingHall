@@ -22,7 +22,9 @@ import com.example.taskdistributinghall.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class AcceptorListAdapter extends RecyclerView.Adapter<AcceptorListAdapter.ViewHolder> {
@@ -69,7 +71,12 @@ public class AcceptorListAdapter extends RecyclerView.Adapter<AcceptorListAdapte
         holder.acceptedView.setText("任务接受总量:" + user.acceptedTask);
         holder.nameView.setText(user.name);
         if( user.acceptedTask==0) holder.completeRateView.setText("还未接受过任何任务");
-        else holder.completeRateView.setText("任务完成率:"+String.valueOf(user.completedTask/user.acceptedTask)+"%");
+        else{
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            String rate=  df.format((double)user.completedTask/user.acceptedTask*100);
+            holder.completeRateView.setText("任务完成率:"+rate+"%");
+        }
         View v = holder.itemView;
 
 
