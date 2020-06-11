@@ -31,7 +31,7 @@ import java.util.Objects;
 public class PersonalCenterFragment extends Fragment {
 
 
-    User user;
+    private User user;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 

@@ -52,19 +52,6 @@ public class ChatRoomFragment extends Fragment {
         appCompatActivity.setSupportActionBar(toolbar1);
 
 
-        // 把項目清單準備好，放在一個List物件裏頭
-        List<String> listStr = new ArrayList<>();
-        for (int i = 0; i < 50; i++)
-            listStr.add(new String("第" + String.valueOf(i+1) + "項"));
-        RecyclerView recyclerView1=view.findViewById(R.id.chat_list_recycler_view);
-
-        // 設定RecyclerView使用的LayoutManager，
-        // LayoutManager決定項目的排列方式。
-        recyclerView1.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
-
-        // 建立RecyclerView的Adapter物件，傳入包含項目清單的List物件
-        ChatPageRecyclerViewAdapter adapter=new ChatPageRecyclerViewAdapter(listStr);
-        recyclerView1.setAdapter(adapter);
 
     }
 
@@ -72,10 +59,7 @@ public class ChatRoomFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
 
-          // case R.id.add_bar:
-          //     Intent intent1=new Intent(getActivity(), Chat.class); /**  */
-
-            case R.id.chat_page_add_bar:
+            case R.id.chat_page_search_bar:
                 Intent intent1=new Intent(getActivity(), AddMissionPage.class);
 
                 startActivity(intent1);

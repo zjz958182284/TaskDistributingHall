@@ -2,7 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search_bar"
+
+    <item
+        android:id="@+id/sort_bar"
+        android:title="Item"
+        app:showAsAction="always"
+        android:icon="@drawable/sort"/>
+
+
+    <item android:id="@+id/search11_bar"
     android:icon="@drawable/search_icon"
     android:title="search"
     app:showAsAction="always"/>

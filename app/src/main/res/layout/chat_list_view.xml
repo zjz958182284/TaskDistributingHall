@@ -40,26 +40,26 @@
 
 
         <TextView
+            android:id="@+id/unread_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
             android:layout_marginBottom="8dp"
             android:text="未读消息:"
             app:layout_constraintBottom_toTopOf="@id/message_text"
-            app:layout_constraintHorizontal_bias="0.663"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toRightOf="@id/time" />
+            app:layout_constraintLeft_toRightOf="@id/chat_name" />
 
         <TextView
+            android:id="@+id/unread_message_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="36"
+            android:layout_marginLeft="3dp"
             android:textColor="@color/btn_bg_pressed"
             app:layout_constraintBottom_toTopOf="@id/message_text"
 
-            app:layout_constraintHorizontal_bias="0.461"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toRightOf="@id/time" />
+            app:layout_constraintLeft_toRightOf="@id/unread_message" />
 
         <TextView
             android:id="@+id/message_text"
@@ -77,16 +77,6 @@
             app:layout_constraintLeft_toRightOf="@id/chat_head_image"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chat_name" />
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="160dp"
-            android:text="上午0:12"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

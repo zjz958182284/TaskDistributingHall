@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.taskdistributinghall.Activity.Launch.Login;
 import com.example.taskdistributinghall.DBControl.ChatRecordHelper;
 import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Message;
@@ -53,6 +54,9 @@ public class Chat extends AppCompatActivity {
     private  boolean isSendOffLine=true;//默认离线发送
     private SQLiteDatabase  recordDatabase; //获得sqlite数据库操作对象
     private boolean flagOnline=true,flagOff=true,flagReceive=true;//控制三个线程结束de标志
+    private Thread sendOnLineThread;
+    private Thread sendOffLineThread;
+    private Thread receiveThread ;
 
 
 
@@ -60,13 +64,7 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_page);
-        //test HE
- //he=new User();he.phone="123";he.ip="192.168.0.101";
- //me=new User();me.phone="456";me.ip="192.168.200.2";
 
-        // test ME
- //me=new User();me.phone="123";me.ip="192.168.0.101";
- //he=new User();he.phone="456";he.ip="192.168.0.3";
         Thread thread=new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,8 +72,8 @@ public class Chat extends AppCompatActivity {
                 String hePhone = intent.getStringExtra("phone");
                 SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
                 String mPhone=sp.getString("phone","");
-                me=DBControl.searchUserByPhone(hePhone);
-                he=DBControl.searchUserByPhone(mPhone);
+                me=DBControl.searchUserByPhone(mPhone);
+                he=DBControl.searchUserByPhone(hePhone);
             }
         });
 
@@ -86,11 +84,11 @@ public class Chat extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ((NiceImageView) findViewById(R.id.header_photo)).setImageBitmap(me.headPortrait);
-        ((TextView)findViewById(R.id.textView2)).setText(me.name);
-        listView=(ListView)findViewById(R.id.chat_list_view);
-     listViewAdapter=new ChatListViewAdapter(this,messages,he.headPortrait
-     ,me.headPortrait);
+        ((NiceImageView) findViewById(R.id.header_photo)).setImageBitmap(he.headPortrait);
+        ((TextView)findViewById(R.id.textView2)).setText(he.name);
+        listView= findViewById(R.id.chat_list_view);
+     listViewAdapter=new ChatListViewAdapter(this,messages,me.headPortrait
+     ,he.headPortrait);
      listView.setAdapter(listViewAdapter);
      recordDatabase=new ChatRecordHelper(this).getReadableDatabase();
 
@@ -148,6 +146,7 @@ public class Chat extends AppCompatActivity {
                        isClimbTop = (rows <= 0);//判断聊天记录全部加载完毕
                        listViewAdapter.notifyDataSetChanged();
                        progressBar.setVisibility(View.GONE);
+
                        listView.setSelection(rows);  //保持当前位置不变
                    }
                }
@@ -168,64 +167,118 @@ public class Chat extends AppCompatActivity {
 
                 */
         //对方客户端退出连接,继续侦听下一次连接
-        Thread sendOnLineThread = new Thread(new Runnable() {
+        sendOnLineThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (flagOnline) {
-                    isSendOffLine = true;//尚未连接成功时离线发送
-                    try (Socket socket = new Socket(he.ip, 5000)) {
-                        isSendOffLine = false;//连接成功在线发送消息
-                        OutputStream os = socket.getOutputStream();
-                        OutputStreamWriter osw = new OutputStreamWriter(os);
-                        while (true) {
-                            if (isSend) {
-                                EditText editText = findViewById(R.id.chat_editText);
-                                String text = editText.getText().toString();
-                                osw.write(text);
-                                osw.flush();
-                                    /**
-                                     * 更新界面
-                                     */
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            messages.add(new Message(text, Message.Isend));
-                                            StoreNativeChatRecord(text, Message.Isend);
-                                            listViewAdapter.notifyDataSetChanged();
-                                            listView.setSelection(messages.size()-1);
-                                            editText.setText("");
-                                        }
-                                    });
-                                isSend = false;
+                  //尚未连接成功时离线发送
+                        while (flagOnline) {
+                            Socket socket;
+                            while (true) {
+                                try {
+                                    isSendOffLine = true;
+                                    //如果对方服务器没有监听8000端口的服务则不断向对方发出socket连接直到连接为止
+                                    //new Socket是有一定阻塞性的
+                                     socket= new Socket(he.ip, 8000);
+                                    isSendOffLine = false; //连接成功时不再离线发送
+                                    break;
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    try {
+                                        Thread.sleep(1);
+                                    } catch (InterruptedException ez) {
+                                        ez.printStackTrace();
+                                    }
                                 }
-                            /*
+                            }
+                            //在线发送模式
+                            while (flagOnline) {
+
+                                //不断循环监听有没有按下发送键
+                                if (isSend){
+                                    try {
+                                        OutputStream os = socket.getOutputStream();
+                                        OutputStreamWriter osw = new OutputStreamWriter(os);
+                                        EditText editText = findViewById(R.id.chat_editText);
+                                        String text = editText.getText().toString();
+                                        osw.write(text);
+                                        osw.flush();
+                                        //发送一个结束标识符告诉服务器我发送完了
+                                        socket.shutdownOutput();
+
+                                        isSend = false;
+
+                                        /**
+                                         * 更新界面
+                                         */
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                messages.add(new Message(text, Message.Isend));
+                                                StoreNativeChatRecord(text, Message.Isend);
+                                                listViewAdapter.notifyDataSetChanged();
+                                                listView.setSelection(messages.size() - 1);
+                                                editText.setText("");
+                                            }
+                                        });
+                                        //发送完此次消息进行下一次socket连接
+                                        break;
+                                    } catch (IOException e) {
+                                        //对方客户端退出连接,继续侦听下一次连接，这时启用离线发送模式
+                                    //   runOnUiThread(new Runnable() {
+                                    //       @Override
+                                    //       public void run() {
+                                    //           Toast.makeText(Chat.this, "O异常",
+                                    //                   Toast.LENGTH_SHORT).show();
+                                    //       }
+                                    //   });
+                                        break;
+                                    }finally {
+                                        try {
+                                            socket.close();
+                                        } catch (IOException ex) {
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                            }
+                                  /*
                             降低cpu占用率
                              */
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                try {
+                                    Thread.sleep(1);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    } catch (IOException ignored) {
-                        ;//对方客户端退出连接,继续侦听下一次连接
-                    }
 
-                }
+                            //最后如何退出线程后socket没有关闭则关闭它
+                            if(!socket.isClosed()) {
+                                try {
+                                    socket.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
             }
         });
 
-        Thread receiveThread = new Thread(new Runnable() {
+        receiveThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                try( ServerSocket serverSocket = new ServerSocket(8000);) {
+                    serverSocket.setReuseAddress(true);
                 while (flagReceive) {
-                    try {
-                        ServerSocket serverSocket = new ServerSocket(6000);
-                        try (Socket socket = serverSocket.accept()) {
-                            InputStreamReader isr = new InputStreamReader(socket.getInputStream());
-                            BufferedReader br = new BufferedReader(isr);
-                            StringBuilder builder = new StringBuilder();
-                            while (true) {
+
+                    //循环准备接受下一次连接
+                    //当CHAT_ACTIVITY退出时此线程会阻塞在readline仍然占用端口 对方再发送一条消息时
+                    //仍然可以接受并且存在本地聊天记录中
+
+                    try(Socket socket = serverSocket.accept();){
+                            isSendOffLine = false;
+                                InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+                                BufferedReader br = new BufferedReader(isr);
+                                StringBuilder builder = new StringBuilder();
                                 String line;
                                 while ((line = br.readLine()) != null)
                                     builder.append(line);
@@ -233,45 +286,56 @@ public class Chat extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        messages.add(new Message(content, Message.heSend));
-                                        StoreNativeChatRecord(content, Message.heSend);
-                                        listViewAdapter.notifyDataSetChanged();
-                                        listView.setSelection(messages.size()-1);
+                                        if(!content.equals("")) {
+                                            messages.add(new Message(content, Message.heSend));
+                                            StoreNativeChatRecord(content, Message.heSend);
+                                            listViewAdapter.notifyDataSetChanged();
+                                            listView.setSelection(messages.size() - 1);
+                                        }
                                     }
                                 });
+                             }catch (IOException ignored){
+                    }
+                    }
+                }catch (IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                               // Toast.makeText(Chat.this,e.getMessage()+"I异常",
+                               //        Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    } catch (IOException ignored) {
-                        ;
+                        });
                     }
                 }
-            }
+
         });
 
         //离线发送消息
-        Thread sendOffLineThread = new Thread(new Runnable() {
+         sendOffLineThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (flagOff) {
-                    if (isSendOffLine) {
+                    if (isSendOffLine&&isSend) {
                         EditText editText = findViewById(R.id.chat_editText);
                         String text = editText.getText().toString();
-                        if (isSend) {
                             //离线发送消息
                             StoreRemoteChatRecord(text);
-
+                            StoreNativeChatRecord(text,Message.Isend);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    StoreNativeChatRecord(text,Message.Isend);
                                     messages.add(new Message(text, Message.Isend));
                                     listViewAdapter.notifyDataSetChanged();
                                     listView.setSelection(messages.size()-1);
                                     editText.setText("");
+
+                                    //test
+                                   // Toast.makeText(Chat.this,"离线消息发送成功",
+                                   //         Toast.LENGTH_SHORT).show();
                                 }
                             });
                             isSend = false;
-                        }
+
                     }
                     try {
                         Thread.sleep(10);
@@ -283,10 +347,10 @@ public class Chat extends AppCompatActivity {
         });
         sendOffLineThread.setDaemon(true);
         sendOffLineThread.start();
-        sendOnLineThread.setDaemon(true);
-        sendOnLineThread.start();
-        receiveThread.setDaemon(true);
-        receiveThread.start();
+       sendOnLineThread.setDaemon(true);
+       sendOnLineThread.start();
+       receiveThread.setDaemon(true);
+       receiveThread.start();
     }
 
 
@@ -298,6 +362,7 @@ public class Chat extends AppCompatActivity {
                 //recordDatabase.execSQL("delete from chatTimeStamp");  //test
                 recordDatabase.insert("chatTimeStamp", null, contentValues);
 
+
     }
 
     /**
@@ -308,6 +373,7 @@ public class Chat extends AppCompatActivity {
                     int maxRecordItems=16;
                     int i=0;
                     for(;i<maxRecordItems;)   //编程提醒时刻注意循环的地方防止发生死循环
+                        //SQLite数据库
                     try (Cursor cursor1 = recordDatabase.query("chatTimeStamp", new String[]{"date"},
                           "date<? and senderphone=? and receiverphone=?", new String[]
                                    {chatTime,me.phone,he.phone}, null,
@@ -345,19 +411,12 @@ public class Chat extends AppCompatActivity {
                         ResultSet rs = stat.executeQuery("select record,date from chatRecordTemp where " +
                                 "senderPhone='" + he.phone + "' and receiverPhone='" + me.phone + "'" +
                                 " order by date");
-                        List<String> records = new ArrayList<String>();
-                        List<String> dates = new ArrayList<String>();
                         while (rs.next()) {
-                            records.add(rs.getString(1));
-                            dates.add(rs.getString(2));
-                        }
-                        for (int i = 0; i < records.size(); ++i) {
-                            String record=records.get(i);
-                            String date=dates.get(i);
-                            StoreNativeChatRecord(records.get(i),Message.heSend,date);
+                            String record=rs.getString(1);
+                            String date= rs.getString(2);
+                            StoreNativeChatRecord(record,Message.heSend,date);
                             messages.add(new Message(record, Message.heSend));
                         }
-
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -411,7 +470,6 @@ public class Chat extends AppCompatActivity {
                     DBControl.addTempChatRecord(me.phone, he.phone, record);
                 } catch (SQLException e) {
                     runOnUiThread(new Runnable() {
-
                         @Override
                         public void run() {
                             Toast.makeText(Chat.this, "消息发送失败", Toast.LENGTH_SHORT).show();
@@ -426,6 +484,8 @@ public class Chat extends AppCompatActivity {
     protected void onDestroy() {
 
         super.onDestroy();
+
         flagOff=flagOnline=flagReceive=false;
+
     }
 }

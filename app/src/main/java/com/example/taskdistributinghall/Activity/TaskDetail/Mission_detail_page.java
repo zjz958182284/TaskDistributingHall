@@ -17,7 +17,7 @@ import com.example.taskdistributinghall.DBControl.DBControl;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 import com.example.taskdistributinghall.R;
-import com.example.taskdistributinghall.Resume_page;
+import com.example.taskdistributinghall.Activity.Resume_page;
 
 public class Mission_detail_page extends AppCompatActivity {
 
@@ -25,19 +25,21 @@ public class Mission_detail_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_detail_page);
-        Toolbar toolbar=findViewById(R.id.mission_detail_page_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
-                Thread thread=  new Thread(new Runnable() {
+
+     //  Toolbar toolbar=findViewById(R.id.mission_detail_page_toolbar);
+     //  setSupportActionBar(toolbar);
+     //  ActionBar actionBar=getSupportActionBar();
+     //  actionBar.setDisplayHomeAsUpEnabled(true);
+     //  actionBar.setHomeButtonEnabled(true);
+     //  toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+     //       @Override
+     //       public void onClick(View v) {
+     //           finish();
+     //       }
+     //   });
+
+               new Thread(new Runnable() {
             @Override
             public void run() {
                 Intent intent=getIntent();
@@ -76,16 +78,15 @@ public class Mission_detail_page extends AppCompatActivity {
                         ((ImageView)findViewById(R.id.mission_show_picture)).setImageBitmap(task.taskPhoto);
                         ((TextView)findViewById(R.id.mission_detail_page_bounty_text)).setText("悬赏金额:"+String.valueOf(task.rewards)+"元");
 
+                        /**
+                         * 页面加载完成通知UI线程更改页面显示
+                         */
+                        findViewById(R.id.task_loading_constraint).setVisibility(View.GONE);
+                        findViewById(R.id.task_manifest).setVisibility(View.VISIBLE);
                     }
                 });
     }
-        });
-         thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        }).start();
         Button button=findViewById(R.id.accept_task_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

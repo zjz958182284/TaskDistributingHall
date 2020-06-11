@@ -33,7 +33,6 @@ public class AcceptedTaskPage extends Fragment {
         return  acceptedTaskPage;
     }
 
-
     public AcceptedTaskPage(List<Task> tasks){
         AcceptedTaskPage.acceptedTaskPage=this;
         this.tasks=tasks;
@@ -72,72 +71,41 @@ public class AcceptedTaskPage extends Fragment {
     }
 
 
-
-
     @Override
     public void onResume() {
         super.onResume();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                String phone=sp.getString("phone","");
-                tasks= DBControl.searchAcceptedTask(phone);
-                adapter.setTasks(tasks);
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        }).start();
+        refresh();
     }
 
-  //  @Override
-  //  public void setUserVisibleHint(boolean isVisibleToUser) {
-  //      super.setUserVisibleHint(isVisibleToUser);
-  //      if (isVisibleToUser) {
-//
-  //          new Thread(new Runnable() {
-  //              @Override
-  //              public void run() {
-  //                  //不是第一次加载滑动到这个fragment
-  //                  if(adapter!=null) {
-  //                      SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-  //                      String phone=sp.getString("phone","");
-  //                      tasks= DBControl.searchAcceptedTask(phone);
-  //                      adapter.setTasks(tasks);
-  //                      Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-  //                          @Override
-  //                          public void run() {
-  //                              adapter.notifyDataSetChanged();
-  //                          }
-  //                      });
-//
-//
-  //                  }
-  //              }
-  //          }).start();
-  //      }
-  //  }
-//
-  //  public  void refresh(){
-//
-  //      new Thread(new Runnable() {
-  //          @Override
-  //          public void run() {
-  //                  SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-  //                  String phone=sp.getString("phone","");
-  //                  tasks= DBControl.searchAcceptedTask(phone);
-  //                  adapter.setTasks(tasks);
-  //                  Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-  //                      @Override
-  //                      public void run() {
-  //                          adapter.notifyDataSetChanged();
-  //                      }
-  //                  });
-  //              }
-  //      }).start();
-  //  }
+
+    /**
+     * 动态实时更新
+     * @param isVisibleToUser 该fragment是否对用户可见
+     */
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) { super.setUserVisibleHint(isVisibleToUser);
+    if (isVisibleToUser) {
+        refresh();
+    } }
+
+
+
+  private void refresh(){
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+              if(getActivity()!=null) {
+                  SharedPreferences sp = getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                  String phone = sp.getString("phone", "");
+                  tasks = DBControl.searchAcceptedTask(phone);
+                  adapter.setTasks(tasks);
+                  Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+                          adapter.notifyDataSetChanged();
+                      }
+                  });
+              }
+              }
+      }).start();
+  }
 }

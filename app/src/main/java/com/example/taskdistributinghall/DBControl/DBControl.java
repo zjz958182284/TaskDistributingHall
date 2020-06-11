@@ -4,6 +4,7 @@ package com.example.taskdistributinghall.DBControl;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.taskdistributinghall.Fragment.Home.HomeFragment;
 import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.Model.User;
 
@@ -30,7 +31,7 @@ public class DBControl {
     public static Connection
     GetConnection() throws SQLException{
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://192.168.0.103:3306/taskhalldb";
+        String url = "jdbc:mysql://192.168.5.53:3306/taskhalldb";
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
@@ -39,6 +40,7 @@ public class DBControl {
         return DriverManager.getConnection(url, "zjz", "Xjz19990507");
 
     }
+
 
 
     //根据ID查询任务
@@ -70,13 +72,56 @@ public class DBControl {
         }
     }
 
+    //按条件搜索(初步模糊查询)
+    public static List<Task> searchTasksByFilter(String name,int mode) throws SQLException {
+        String[] args=name.split("");
+        StringBuilder likeStringBuilder=new StringBuilder();
+        for(String str : args) {
+            likeStringBuilder.append("%");
+            likeStringBuilder.append(str);
+        }
+        if(likeStringBuilder.length()>0)
+            likeStringBuilder.append("%");
+        String likeString=likeStringBuilder.toString();
+        String orderString=(mode==HomeFragment.OrderByDateMode?"date desc":"rewards desc");
+        try (Connection conn =GetConnection();
+        PreparedStatement stat=conn.prepareStatement("select * from task where title LIKE ? " +
+                "and status=? order by ?")){
+            stat.setString(1,likeString);
+            stat.setString(2,"unaccepted");
+            stat.setString(3,orderString);
+            List<Task> tasks=new ArrayList<>();
+            ResultSet rs=stat.executeQuery();
+            while ((rs.next())){
+                Task task=new Task();
+                Blob blob=rs.getBlob("picture");
+                if(blob!=null)
+                    task.taskPhoto= BitmapFactory.decodeStream(blob.getBinaryStream());//从数据库取出图片
+                task.id = rs.getInt("id");
+                task.date = rs.getString("date");
+                task.publisher = rs.getString("publisher");
+                task.content = rs.getString("content");
+                task.title = rs.getString("title");
+                task.rewards = rs.getInt("rewards");
+                task.acceptor = rs.getString("acceptor");
+                task.type = rs.getString("type");
+                tasks.add(task);
+            }
+            return tasks;
+        }
+
+    }
+
     //查询所有任务
-    public static List<Task> searchAllTask() throws SQLException {
+    public static List<Task> searchAllTask(int mode) throws SQLException {
         try (Connection conn = GetConnection();
              Statement stat = conn.createStatement()){
-           ResultSet rs= stat.executeQuery("select * from task order by date desc");
-           List<Task> tasks=new ArrayList<>();
-           while ((rs.next())){
+            ResultSet rs;
+            if(mode== HomeFragment.OrderByDateMode)
+                rs= stat.executeQuery("select * from task order by date desc");
+            else rs=stat.executeQuery("select * from task order by rewards desc");
+             List<Task> tasks=new ArrayList<>();
+             while ((rs.next())){
                String status=rs.getString("status");
                if(!status.equals("unaccepted")) continue;
                Task task=new Task();
@@ -626,7 +671,7 @@ public class DBControl {
             ResultSet rs= stat.executeQuery("select * from task  where id="+ID);
             if(rs.next()){
               if(status.equals("unaccepted")){
-                rs.updateDate("date",new Date(new java.util.Date().getTime()));//重置任务发布时间
+                rs.updateDate("date",new Date(System.currentTimeMillis()));//重置任务发布时间
                 rs.updateString("status",status);
                 rs.updateRow();
             }

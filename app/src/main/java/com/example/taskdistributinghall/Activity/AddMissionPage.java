@@ -7,13 +7,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,13 +37,16 @@ import com.example.taskdistributinghall.Model.Task;
 import com.example.taskdistributinghall.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
 import java.sql.SQLException;
 import java.util.List;
 
 public class AddMissionPage extends AppCompatActivity {
 
-    private final  static int REQUEST_IMAGE_CAPTURE=1;
+    private final static int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
+    static final int REQUEST_ALBUM = 2; //请求相册
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +54,11 @@ public class AddMissionPage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.add_mission_toolbar);
         setSupportActionBar(toolbar);
 
-         imageView = findViewById(R.id.select_view);
+        imageView = findViewById(R.id.select_view);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+              showBottomPopupWindow();
             }
         });
 
@@ -72,71 +81,68 @@ public class AddMissionPage extends AppCompatActivity {
                     public void run() {
                         String taskType;
                         RadioGroup radioGroup = findViewById(R.id.radio_group);
-                        int checkedId=radioGroup.getCheckedRadioButtonId();
+                        int checkedId = radioGroup.getCheckedRadioButtonId();
                         if (checkedId == R.id.errand)
                             taskType = "errand";
                         else if (checkedId == R.id.study)
                             taskType = "study";
-                        else if(checkedId==R.id.collaboration)
+                        else if (checkedId == R.id.collaboration)
                             taskType = "collaboration";
-                        else taskType="";
+                        else taskType = "";
                         EditText editTextTitle = findViewById(R.id.mission_title_edit);
                         EditText editTextDescription = findViewById((R.id.mission_description_edit));
                         EditText editTextBounty = findViewById(R.id.bounty_edit);
                         String title = editTextTitle.getText().toString();
                         String detail = editTextDescription.getText().toString();
-                        int bounty=0;
+                        int bounty = 0;
                         try {
-                             bounty = Integer.parseInt(editTextBounty.getText().toString());
-                        }catch (NumberFormatException e){
+                            bounty = Integer.parseInt(editTextBounty.getText().toString());
+                        } catch (NumberFormatException e) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(AddMissionPage.this,"请填写整数金额",
+                                    Toast.makeText(AddMissionPage.this, "请填写整数金额",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
                             return;
                         }
 
-                        Bitmap bitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
-                        SharedPreferences sp=getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-                        String phone=sp.getString("phone","");
+                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                        SharedPreferences sp = getApplicationContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                        String phone = sp.getString("phone", "");
                         try {
-                            boolean isComplete= !taskType.equals("")&&!detail.equals("") && !title.equals("") && bounty > 0;
-                            if(!isComplete)
+                            boolean isComplete = !taskType.equals("") && !detail.equals("") && !title.equals("") && bounty > 0;
+                            if (!isComplete)
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(AddMissionPage.this,"请填写完整信息",
+                                        Toast.makeText(AddMissionPage.this, "请填写完整信息",
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             else {
-                                HomeFragment homeFragment=HomeFragment.getInstance();
-                              //  RecyclerViewAdapter adapter=homeFragment.getAdapter();
-                                DBControl.addTask(bitmap,phone, detail, title, taskType, bounty);
-                               // List<Task> tasks=DBControl.searchAllTask();
-                             runOnUiThread(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     Toast.makeText(AddMissionPage.this, "发布任务成功",
-                                             Toast.LENGTH_SHORT).show();
-                                   // homeFragment.refresh();
-                                    button.setVisibility(View.GONE);
+                                DBControl.addTask(bitmap, phone, detail, title, taskType, bounty);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(AddMissionPage.this, "发布任务成功",
+                                                Toast.LENGTH_SHORT).show();
+                                        // homeFragment.refresh();
+                                        button.setVisibility(View.GONE);
 
-                                   //  //更新任务大厅界面
-                                   //  homeFragment.setTasks(tasks);
-                                   //  adapter.setTasks(tasks);
-                                   //  adapter.notifyDataSetChanged();
-                                 }
-                             });
+                                        //  //更新任务大厅界面
+                                        //  homeFragment.setTasks(tasks);
+                                        //  adapter.setTasks(tasks);
+                                        //  adapter.notifyDataSetChanged();
+                                    }
+                                });
                             }
                         } catch (SQLException e) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(AddMissionPage.this,"发布任务失败",
+                                    Toast.makeText(AddMissionPage.this, "发布任务失败",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -148,75 +154,130 @@ public class AddMissionPage extends AppCompatActivity {
 
     }
 
+
+    /**
+     * 打开相册选取照骗
+     */
+    private void dispatchGetAlbumIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_ALBUM);
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = null;
+            if (extras != null) {
+                imageBitmap = (Bitmap) extras.get("data");
+            }
+
+            // Get the dimensions of the View
+            int targetW = imageView.getWidth();
+            int targetH = imageView.getHeight();
+
+            if (imageBitmap != null) {
+                imageBitmap = zoomBitmap(imageBitmap, targetW, targetH);
+            }
+            imageView.setImageBitmap(imageBitmap);
+        } else if (requestCode == REQUEST_ALBUM && resultCode == RESULT_OK && null != data) {
+
+            Uri selectedImage = data.getData();
+
+           imageView.setImageBitmap(getBitmapFromUri(this, selectedImage));
+        }
+    }
         /*
     官方文档代码
      */
 
-        private void dispatchTakePictureIntent() {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+    }
+
+
+    public Bitmap zoomBitMap(Bitmap bitmap, int w, int h) {
+
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int photoW = bitmap.getWidth();
+        int photoH = bitmap.getHeight();
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(w, h);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] bytes = bos.toByteArray();
+        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, bmOptions);
+        return bitmap;
+    }
+
+    public Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleWidth = ((float) w / width);
+        float scaleHeight = ((float) h / height);
+        matrix.postScale(scaleWidth, scaleHeight);
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height,
+                matrix, true);
+    }
+
+
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) {
+
+        try {
+            ParcelFileDescriptor parcelFileDescriptor =
+                    context.getContentResolver().openFileDescriptor(uri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void showBottomPopupWindow() {
+
+        View popView = LayoutInflater.from(this).inflate(R.layout.capture_select, null, false);
+        PopupWindow popupWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setAnimationStyle(R.style.Animation_Design_BottomSheetDialog);
+        popView.findViewById(R.id.capture_picture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+                popupWindow.dismiss();
             }
-
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = null;
-                if (extras != null) {
-                    imageBitmap = (Bitmap) extras.get("data");
-                }
-
-            //    // Get the dimensions of the View
-            //    int targetW = imageView.getWidth();
-            //    int targetH = imageView.getHeight();
-//
-            //    if (imageBitmap != null) {
-            //        imageBitmap = zoomBitMap(imageBitmap, targetW, targetH);
-            //    }
-                imageView.setImageBitmap(imageBitmap);
+        });
+        popView.findViewById(R.id.select_picture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchGetAlbumIntent();
+                popupWindow.dismiss();
             }
-        }
-
-        public Bitmap zoomBitMap(Bitmap bitmap,int w,int h){
-
-
-            // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-
-            int photoW = bitmap.getWidth();
-            int photoH = bitmap.getHeight();
-
-            // Determine how much to scale down the image
-            int scaleFactor = Math.min(w,h);
-
-            // Decode the image file into a Bitmap sized to fill the View
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = scaleFactor;
-            bmOptions.inPurgeable = true;
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
-            byte[] bytes=bos.toByteArray();
-            bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,bmOptions);
-            return bitmap;
-        }
-
-        public  Bitmap zoomBitmap(Bitmap bitmap, int w, int h){
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-            Matrix matrix = new Matrix();
-            float scaleWidth = ((float) w / width);
-            float scaleHeight = ((float) h / height);
-            matrix.postScale(scaleWidth, scaleHeight);
-            return Bitmap.createBitmap(bitmap, 0, 0, width, height,
-                    matrix, true);
-        }
-
-
-
-
+        });
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
 }
+

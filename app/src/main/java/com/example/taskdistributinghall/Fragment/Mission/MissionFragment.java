@@ -42,6 +42,14 @@ public class MissionFragment extends Fragment {
         TabLayout tabLayout=view.findViewById(R.id.tab_layout);
         missionPageAdapter=new MissionPageAdapter(getChildFragmentManager(),fragmentList);
         viewPager=view.findViewById(R.id.view_Pager);
+
+        /**
+         * 设置缓存页数 如果不设置 从fragment1切换到fragment3然后再从fragment3切换到fragment1是会重复调用
+         * fragment1的onCreate方法容易造成程序崩溃
+         */
+
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setCurrentItem(1);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(missionPageAdapter);
         missionPageAdapter.notifyDataSetChanged();

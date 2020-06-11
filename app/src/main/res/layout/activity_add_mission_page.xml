@@ -210,11 +210,14 @@
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
-        android:text="确认发布"
+        android:text="确 认 发 布"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

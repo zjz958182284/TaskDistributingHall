@@ -7,11 +7,4 @@
         android:title="search"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/chat_page_add_bar"
-        android:icon="@drawable/add_icon"
-        android:title="add"
-        android:iconTintMode="add"
-        android:iconTint="#FFFAFA"
-        app:showAsAction="always"/>
-
 </menu>

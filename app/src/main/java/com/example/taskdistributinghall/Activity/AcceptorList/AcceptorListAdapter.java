@@ -72,7 +72,7 @@ public class AcceptorListAdapter extends RecyclerView.Adapter<AcceptorListAdapte
         holder.nameView.setText(user.name);
         if( user.acceptedTask==0) holder.completeRateView.setText("还未接受过任何任务");
         else{
-            DecimalFormat df = new DecimalFormat("0.00");
+            DecimalFormat df = new DecimalFormat("0.0");
             df.setRoundingMode(RoundingMode.HALF_UP);
             String rate=  df.format((double)user.completedTask/user.acceptedTask*100);
             holder.completeRateView.setText("任务完成率:"+rate+"%");

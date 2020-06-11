@@ -30,10 +30,14 @@ public class PublishedTaskPage extends Fragment {
     private RecyclerView recyclerView;
 
 
-public PublishedPageRecyclerViewAdapter getAdpter(){return adapter;}
-public List<Task> getTasks(){return  tasks;}
+    public PublishedPageRecyclerViewAdapter getAdpter(){return adapter;}
+
+    public List<Task> getTasks(){return  tasks;}
+
     public void setTasks(List<Task> tasks){this.tasks=tasks;}
-    public  PublishedTaskPage(List<Task> tasks){this.tasks=tasks;publishedTaskPage=this;}
+
+    PublishedTaskPage(List<Task> tasks){this.tasks=tasks;publishedTaskPage=this;}
+
     public static PublishedTaskPage  getInstance(){
         return publishedTaskPage;
     }
@@ -46,7 +50,12 @@ public List<Task> getTasks(){return  tasks;}
          recyclerView=view.findViewById(R.id.published_task_recycler_view);
          recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
 
+
         adapter=new PublishedPageRecyclerViewAdapter(getContext(),tasks);
+
+        /**
+         * 设置自定义接口的每一行点击事件
+         */
         adapter.setItemClick(new PublishedPageRecyclerViewAdapter.ItemClick() {
 
             @Override
@@ -59,7 +68,6 @@ public List<Task> getTasks(){return  tasks;}
             }
         });
         recyclerView.setAdapter(adapter);
-
         adapter.notifyDataSetChanged();
         return view;
     }
@@ -72,71 +80,37 @@ public List<Task> getTasks(){return  tasks;}
 
 
 
- // @Override
- // public void setUserVisibleHint(boolean isVisibleToUser) {
- //     super.setUserVisibleHint(isVisibleToUser);
- //     if (isVisibleToUser) {
-
- //         new Thread(new Runnable() {
- //             @Override
- //             public void run() {
- //                 //不是第一次加载滑动到这个fragment
- //                 if(adapter!=null) {
- //                     SharedPreferences sp=getActivity().getSharedPreferences("my_info", Context.MODE_PRIVATE);
- //                     String phone=sp.getString("phone","");
- //                     tasks=DBControl.searchPublishedTask(phone);
- //                     adapter.setTasks(tasks);
- //                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
- //                         @Override
- //                         public void run() {
- //                             adapter.notifyDataSetChanged();
- //                         }
- //                     });
- //                 }
- //             }
- //         }).start();
-
- //     }
- // }
+  @Override
+  public void setUserVisibleHint(boolean isVisibleToUser) {
+      super.setUserVisibleHint(isVisibleToUser);
+      if (isVisibleToUser) {
+         refresh();
+      }
+  }
 
    @Override
    public void onResume() {
        super.onResume();
+      refresh();
+   }
 
+   public void refresh(){
        new Thread(new Runnable() {
            @Override
            public void run() {
-               SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-               String phone=sp.getString("phone","");
-               tasks=DBControl.searchPublishedTask(phone);
-               adapter.setTasks(tasks);
-               Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       adapter.notifyDataSetChanged();
-                   }
-               });
-           }
+               if(getContext()!=null) {
+                   SharedPreferences sp = getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
+                   String phone = sp.getString("phone", "");
+                   tasks = DBControl.searchPublishedTask(phone);
+                   adapter.setTasks(tasks);
+                   Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           adapter.notifyDataSetChanged();
+                       }
+                   });
+               }
+               }
        }).start();
-
-
    }
-
-  // public void refresh(){
-  //     new Thread(new Runnable() {
-  //         @Override
-  //         public void run() {
-  //                 SharedPreferences sp=getContext().getSharedPreferences("my_info", Context.MODE_PRIVATE);
-  //                 String phone=sp.getString("phone","");
-  //                 tasks=DBControl.searchPublishedTask(phone);
-  //                 adapter.setTasks(tasks);
-  //                 Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-  //                     @Override
-  //                     public void run() {
-  //                         adapter.notifyDataSetChanged();
-  //                     }
-  //                 });
-  //             }
-  //     }).start();
-  // }
 }

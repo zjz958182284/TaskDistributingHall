@@ -42,6 +42,7 @@ public class Login extends AppCompatActivity {
                             try {
                                 int loginState=DBControl.validateAccount(phone,password);
                                 if(loginState==1){
+
                                     DBControl.updateIP(phone);
                                    runOnUiThread(new Runnable() {
                                        @Override
