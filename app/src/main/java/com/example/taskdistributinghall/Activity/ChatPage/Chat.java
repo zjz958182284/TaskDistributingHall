@@ -175,13 +175,15 @@ public class Chat extends AppCompatActivity {
                             Socket socket;
                             while (true) {
                                 try {
-                                    isSendOffLine = true;
+
                                     //如果对方服务器没有监听8000端口的服务则不断向对方发出socket连接直到连接为止
                                     //new Socket是有一定阻塞性的
                                      socket= new Socket(he.ip, 8000);
                                     isSendOffLine = false; //连接成功时不再离线发送
                                     break;
                                 } catch (IOException e) {
+                                    //socket连接失败置离线发送
+                                    isSendOffLine=true;
                                     e.printStackTrace();
                                     try {
                                         Thread.sleep(1);
@@ -206,6 +208,7 @@ public class Chat extends AppCompatActivity {
                                         socket.shutdownOutput();
 
                                         isSend = false;
+                                        isSendOffLine = true;
 
                                         /**
                                          * 更新界面
@@ -231,6 +234,7 @@ public class Chat extends AppCompatActivity {
                                     //                   Toast.LENGTH_SHORT).show();
                                     //       }
                                     //   });
+
                                         break;
                                     }finally {
                                         try {
@@ -316,6 +320,7 @@ public class Chat extends AppCompatActivity {
             public void run() {
                 while (flagOff) {
                     if (isSendOffLine&&isSend) {
+                        isSend = false;
                         EditText editText = findViewById(R.id.chat_editText);
                         String text = editText.getText().toString();
                             //离线发送消息
@@ -334,7 +339,7 @@ public class Chat extends AppCompatActivity {
                                    //         Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            isSend = false;
+
 
                     }
                     try {
